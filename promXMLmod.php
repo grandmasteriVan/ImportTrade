@@ -85,7 +85,8 @@ class ParseXML
 
     private function getItemHead($item)
     {
-
+        $itemHead=explode("<param name",$item);
+        return $itemHead[0];
     }
 
     public function parseXML($xml)
