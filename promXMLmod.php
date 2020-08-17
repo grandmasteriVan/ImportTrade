@@ -228,9 +228,9 @@ class testXML
                     if (strcmp($paramName,"Пол")==0)
                     {
                         $param_new=str_ireplace("Для женщин","Женский",$param);
-                        $param_new=str_ireplace("Для мужчин","Мужской",$param);
-                        $param_new=str_ireplace("Для женщин;Для мужчин","Унисекс",$param);
-                        $param_new=str_ireplace("Для мужчин;Для женщин","Унисекс",$param);
+                        $param_new=str_ireplace("Для мужчин","Мужской",$param_new);
+                        $param_new=str_ireplace("Женский;Мужской","Унисекс",$param_new);
+                        $param_new=str_ireplace("Мужской;Женский","Унисекс",$param_new);
                     }
                     $params_new[]=$param_new;
                 }
