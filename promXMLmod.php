@@ -147,6 +147,8 @@ class testXML
                 //echo "нашли позицию с нужным ИД<br>";
                 //обнуляем список новых параметров для каждого айтема
                 $param_new=null;
+                $params_new=null;
+                $new_params=null;
                 //идем по списку старых параметров
                 foreach ($params as $param)
                 {
@@ -195,7 +197,61 @@ class testXML
                 //получаем новый айтем (не забываем закрывающий тег)
                 $new_item=$itemHead.$country.$new_params."</item>".PHP_EOL;
                 //break;
-                var_dump ($new_item);
+                //var_dump ($new_item);
+            }
+            //new test
+            if ($catId==160)
+            {
+                //echo "нашли позицию с нужным ИД<br>";
+                //обнуляем список новых параметров для каждого айтема
+                $param_new=null;
+                $params_new=null;
+                $new_params=null;
+                //идем по списку старых параметров
+                foreach ($params as $param)
+                {
+                    $paramName=$this->getParamName($param);
+                    $paramVal=$this->getParamVal($param);
+                    //если параметр нам не нужен для Прома - мы его все равно оставим как Пользовательскую характеристику. Если нам это не надо - то строчку можно закоментить
+                    $param_new=$param;
+                    if (strcmp($paramName,"Страна")==0)
+                    {
+                        //$param_new=str_ireplace("Страна","Страна производитель",$param);
+                        //тут вообще надо параметр менять на <country>Страна_производитель</country>
+                        $country=$paramVal;
+                        $param_new=null;
+                    }
+                    if (strcmp($paramName,"Объем")==0)
+                    {
+                        $param_new=str_ireplace("Объем","Объем (мл)",$param);
+                    }
+                    if (strcmp($paramName,"Пол")==0)
+                    {
+                        $param_new=str_ireplace("Для женщин","Женский",$param);
+                        $param_new=str_ireplace("Для мужчин","Мужской",$param);
+                        $param_new=str_ireplace("Для женщин;Для мужчин","Унисекс",$param);
+                        $param_new=str_ireplace("Для мужчин;Для женщин","Унисекс",$param);
+                    }
+                    $params_new[]=$param_new;
+                }
+                //а тут мы будем прописывать захардкодженные параметры
+                //а теперь собираем айтем (старую шапку+новые параметры)
+                //сначала склеиваем параметры
+                foreach ($params_new as $new_param)
+                {
+                    //отсекаем страну, которая у нас пустая (NULL)
+                    if ($new_param!=null)
+                    {
+                        $new_params.=$new_param.PHP_EOL;
+                    }
+                    
+                }
+                //записываем страну как отдельный параметр
+                $country="<country>".$country."</country>".PHP_EOL;
+                //получаем новый айтем (не забываем закрывающий тег)
+                $new_item=$itemHead.$country.$new_params."</item>".PHP_EOL;
+                //break;
+                //var_dump ($new_item);
             }
             //тут будем сорбиратьвсе позиции
             $items_new.=$new_item;
