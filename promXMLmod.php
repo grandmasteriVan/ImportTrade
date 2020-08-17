@@ -115,6 +115,7 @@ class ParseXML
                     if (strcmp($paramName,"Страна")==0)
                     {
                         $param_new=str_ireplace("Страна","Страна производитель",$param);
+                        //тут вообще надо параметр менять на <country>Страна_производитель</country>
                     }
                     if (strcmp($paramName,"Пол")==0)
                     {
