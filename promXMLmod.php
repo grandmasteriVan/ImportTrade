@@ -67,6 +67,13 @@ class testXML
         return $id;
     }
 
+    private function getItemName($item)
+    {
+        preg_match("#<name>(.*?)<\/name>#",$item,$matches);
+        $name=$matches[1];
+        return $name;
+    }
+
     private function getParamName($param)
     {
         if (preg_match("#\"(.+?)\"#",$param,$matches))
@@ -199,7 +206,7 @@ class testXML
                 //break;
                 //var_dump ($new_item);
             }
-            //new test
+            
             if ($catId==160)
             {
                 //echo "нашли позицию с нужным ИД<br>";
@@ -231,6 +238,74 @@ class testXML
                         $param_new=str_ireplace("Для мужчин","Мужской",$param_new);
                         $param_new=str_ireplace("Женский;Мужской","Унисекс",$param_new);
                         $param_new=str_ireplace("Мужской;Женский","Унисекс",$param_new);
+                    }
+                    $params_new[]=$param_new;
+                }
+                //а тут мы будем прописывать захардкодженные параметры
+                //а теперь собираем айтем (старую шапку+новые параметры)
+                //сначала склеиваем параметры
+                foreach ($params_new as $new_param)
+                {
+                    //отсекаем страну, которая у нас пустая (NULL)
+                    if ($new_param!=null)
+                    {
+                        $new_params.=$new_param.PHP_EOL;
+                    }
+                    
+                }
+                //записываем страну как отдельный параметр
+                $country="<country>".$country."</country>".PHP_EOL;
+                //получаем новый айтем (не забываем закрывающий тег)
+                $new_item=$itemHead.$country.$new_params."</item>".PHP_EOL;
+                //break;
+                //var_dump ($new_item);
+            }
+            if ($catId==138||$catId==100||$catId==94||$catId==92||$catId==3)
+            {
+                //находим имя айтема для поиска тематики костюма
+                $itemName=$this->getItemName($item);
+                //echo "нашли позицию с нужным ИД<br>";
+                //обнуляем список новых параметров для каждого айтема
+                $param_new=null;
+                $params_new=null;
+                $new_params=null;
+                //идем по списку старых параметров
+                foreach ($params as $param)
+                {
+                    $paramName=$this->getParamName($param);
+                    $paramVal=$this->getParamVal($param);
+                    //если параметр нам не нужен для Прома - мы его все равно оставим как Пользовательскую характеристику. Если нам это не надо - то строчку можно закоментить
+                    $param_new=$param;
+                    if (strcmp($paramName,"Страна")==0)
+                    {
+                        //$param_new=str_ireplace("Страна","Страна производитель",$param);
+                        //тут вообще надо параметр менять на <country>Страна_производитель</country>
+                        $country=$paramVal;
+                        $param_new=null;
+                    }
+                    if (strcmp($paramName,"Пол")==0)
+                    {
+                        $param_new=str_ireplace("Для женщин","Женский",$param);
+                        $param_new=str_ireplace("Для мужчин","Мужской",$param_new);
+                        $param_new=str_ireplace("Женский;Мужской","Унисекс",$param_new);
+                        $param_new=str_ireplace("Мужской;Женский","Унисекс",$param_new);
+                    }
+                    //вот тут надо из названия позиции вытащить тематику
+                    $itemName=strtolower($itemName);
+                    if (strcmp($paramName,"Цвет")==0)
+                    {
+                        $param_new=str_ireplace("Золотой","Золотистый",$param);
+                        $param_new=str_ireplace("Салатовый","Зеленый",$param_new);
+                    }
+                    if (strcmp($paramName,"Материал")==0)
+                    {
+                        $param_new=str_ireplace("Материал","Тип ткани",$param);
+                        $param_new=str_ireplace("Кожзаменитель","Искусственная кожа",$param_new);
+                    }
+                    if (strcmp($paramName,"Размер")==0)
+                    {
+                        $param_new=str_ireplace("Размер","Международный размер",$param);
+                        $param_new=str_ireplace("One size","S\/M\/L",$param_new);
                     }
                     $params_new[]=$param_new;
                 }
