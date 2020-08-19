@@ -677,6 +677,8 @@ class testXML
             if ($catId==83||$catId==5)
             {
                 //echo "нашли позицию с нужным ИД<br>";
+                //находим имя айтема для поиска вкуса
+                $itemName=$this->getItemName($item);
                 //обнуляем список новых параметров для каждого айтема
                 $param_new=null;
                 $params_new=null;
@@ -688,6 +690,7 @@ class testXML
                     $paramName=$this->getParamName($param);
                     $paramVal=$this->getParamVal($param);
                     //если параметр нам не нужен для Прома - мы его все равно оставим как Пользовательскую характеристику. Если нам это не надо - то строчку можно закоментить
+                    $param=str_ireplace(";","|",$param);
                     $param_new=$param;
                     if (strcmp($paramName,"Страна")==0)
                     {
@@ -705,11 +708,379 @@ class testXML
                         $param_new=str_ireplace("Вагинальная","Для вагинального секса",$param);
                         $param_new=str_ireplace("Оральная","Для орального секса",$param_new);
                         $param_new=str_ireplace("Анальная","Для анального секса",$param_new);
+                        $param_new=str_ireplace("Для анального секса|Для вагинального секса","Универсальное",$param_new);
+                        $param_new=str_ireplace("Для вагинального секса|Для орального секса","Для орального/вагинального секса",$param_new);
+                    }
+                    if (strcmp($paramName,"Основа")==0)
+                    {
+                        $param_new=str_ireplace("На водной","Водная",$param);
+                        $param_new=str_ireplace("На масляной","Масляная",$param_new);
+                    }
+                    if (strcmp($paramName,"Свойства")==0)
+                    {
+                        $param_new=str_ireplace("Свойства","Дополнительный эффект",$param);
+                        $param_new=str_ireplace("Возбуждающая, согревающая","Возбуждающий",$param_new);
+                        $param_new=str_ireplace("Обезболивающая/Охлаждающая","Охлаждающий",$param_new);
+                        //отсекаем лишние значения параметров. Иначе у нас не подтяется то, что точно должно подтянутся
+                        /*$param_new=str_ireplace("Съедобный/ C ароматом","",$param_new);
+                        if(strcmp (" ".$param_new,"<param name=\"Свойства\"></param>"))
+                        {
+                            $param_new="<param name=\"Свойства\">Съедобный/ C ароматом</param>";
+                        }*/
+                        
+
                     }
                     $params_new[]=$param_new;
                 }
                 //а тут мы будем прописывать захардкодженные параметры
+                $itemName=" ".mb_strtolower($itemName);
+                 
+                if (strripos($itemName,"арбуз"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Арбуз</param>";
+                }
+                if (strripos($itemName,"банан"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Банан</param>";
+                }
+                if (strripos($itemName,"ванил"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Ваниль</param>";
+                }
+                if (strripos($itemName,"виш"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Вишня</param>";
+                }
+                if (strripos($itemName,"гранат"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Гранат</param>";
+                }
+                if (strripos($itemName,"pomegranate"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Гранат</param>";
+                }
+                if (strripos($itemName,"дыня"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Дыня</param>";
+                }
+                if (strripos($itemName,"жвачк"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Жвачка</param>";
+                }
+                if (strripos($itemName,"карам"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Карамель</param>";
+                }
+                if (strripos($itemName,"клубн"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Клубника</param>";
+                }
+                if (strripos($itemName,"лимон"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Лимон</param>";
+                }
+                if (strripos($itemName,"малин"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Малина</param>";
+                }
+                if (strripos($itemName,"манго"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Манго</param>";
+                }
+                if (strripos($itemName,"персик"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Персик</param>";
+                }
+                if (strripos($itemName,"тропи"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Тропический</param>";
+                }
+                if (strripos($itemName,"фрук"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Фруктово-ягодный</param>";
+                }
+                if (strripos($itemName,"tropical"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Фруктово-ягодный</param>";
+                }
+                if (strripos($itemName,"aperol"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Цитрусовый</param>";
+                }
+                if (strripos($itemName,"шоколад"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Шоколад</param>";
+                }
+                if (strripos($itemName,"ябло"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Яблоко</param>";
+                }
+
+                if (strripos($itemName,"cupcake"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Десерт</param>";
+                }
+                if (strripos($itemName,"сливк"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Десерт</param>";
+                }
+                if (strripos($itemName,"брюле"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Десерт</param>";
+                }
+                if (strripos($itemName,"булоч"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Десерт</param>";
+                }
+                if (strripos($itemName,"понч"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Десерт</param>";
+                }
+                if (strripos($itemName,"donut"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Десерт</param>";
+                }
+                if (strripos($itemName,"суфл"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Десерт</param>";
+                }
+                if (strripos($itemName,"ваты"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Десерт</param>";
+                }
+                if (strripos($itemName,"вата"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Десерт</param>";
+                }
+                if (strripos($itemName,"тирамис"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Десерт</param>";
+                }
+                
+                //на всякий случай удаляем возможные дубли
+                $params_new=array_unique($params_new);
+                /*
+                echo "<b>$itemName</b><br>";
+                echo "<pre>";
+                print_r($params_new);
+                echo "</pre>";
+                */
+                //а теперь собираем айтем (старую шапку+новые параметры)
+                //сначала склеиваем параметры
+                foreach ($params_new as $new_param)
+                {
+                    //отсекаем страну, которая у нас пустая (NULL)
+                    if ($new_param!=null)
+                    {
+                        $new_params.=$new_param.PHP_EOL;
+                    }
+                    
+                }
+                //записываем страну как отдельный параметр
+                $country="<country>".$country."</country>".PHP_EOL;
+                //бывает случай, когда позиция у нас не имеет ни одного парамептра. Тогда у нее появляется лишний тег </item>. На всякий случай убираем его
+                $itemHead=str_ireplace("</item>","",$itemHead);
+                //получаем новый айтем (не забываем закрывающий тег)
+                $new_item=$itemHead.$country.$new_params."</item>".PHP_EOL;
+                //break;
+                //var_dump ($new_item);
+            }
+
+            if ($catId==55||$catId==54||$catId==28||$catId==19||$catId==11)
+            {
+                //echo "нашли позицию с нужным ИД<br>";
+                //находим имя айтема для поиска вкуса
+                $itemName=$this->getItemName($item);
+                //обнуляем список новых параметров для каждого айтема
+                $param_new=null;
+                $params_new=null;
+                $new_params=null;
+                $country=null;
+                //идем по списку старых параметров
+                foreach ($params as $param)
+                {
+                    $paramName=$this->getParamName($param);
+                    $paramVal=$this->getParamVal($param);
+                    //если параметр нам не нужен для Прома - мы его все равно оставим как Пользовательскую характеристику. Если нам это не надо - то строчку можно закоментить
+                    $param=str_ireplace(";","|",$param);
+                    $param_new=$param;
+                    if (strcmp($paramName,"Страна")==0)
+                    {
+                        //$param_new=str_ireplace("Страна","Страна производитель",$param);
+                        //тут вообще надо параметр менять на <country>Страна_производитель</country>
+                        $country=$paramVal;
+                        $param_new=null;
+                    }
+                    if (strcmp($paramName,"Пол")==0)
+                    {
+                        $param_new=str_ireplace("Для женщин","Женский",$param);
+                        $param_new=str_ireplace("Для мужчин","Мужской",$param_new);
+                        $param_new=str_ireplace("Женский|Мужской","Унисекс",$param_new);
+                        $param_new=str_ireplace("Мужской|Женский","Унисекс",$param_new);
+                        $param_new=str_ireplace("Унисекс|Для пары","Унисекс",$param_new);
+                        $param_new=str_ireplace("Унисекс|Унисекс","Унисекс",$param_new);
+                    }
+                    if (strcmp($paramName,"Тип")==0)
+                    {
+                        $param_new=str_ireplace("Тип","Форма выпуска",$param);
+                        $param_new=str_ireplace("Гель, мазь","Гель",$param_new);
+                    }
+                    if (strcmp($paramName,"Объем")==0)
+                    {
+                        $param_new=str_ireplace("Объем","Объем (мл)",$param);
+                    }
+                    /*if (strcmp($paramName,"Свойства")==0)
+                    {
+                        $param_new=str_ireplace("Свойства","Дополнительный эффект",$param);
+                        $param_new=str_ireplace("Возбуждающая, согревающая","Возбуждающий",$param_new);
+                        $param_new=str_ireplace("Обезболивающая/Охлаждающая","Охлаждающий",$param_new);
+                        
+                    }*/
+                    if (strcmp($paramName,"Функции")==0)
+                    {
+                        $param_new=str_ireplace("Функции","Дополнительный эффект",$param);
+                        $param_new=str_ireplace("Возбуждающие, стимулирующие","Возбуждающий",$param_new);
+                        $param_new=str_ireplace("Продлевающие","Пролонгирующий эффект",$param_new);
+                    }
+                    
+                    $params_new[]=$param_new;
+                }
+                //а тут мы будем прописывать захардкодженные параметры
+                $params_new[]="<param name=\"Количество в упаковке (шт.)\">1</param>";
                 $params_new[]="<param name=\"Возраст\">18+</param>";
+                
+                $itemName=" ".mb_strtolower($itemName);
+                 
+                if (strripos($itemName,"арбуз"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Арбуз</param>";
+                }
+                if (strripos($itemName,"банан"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Банан</param>";
+                }
+                if (strripos($itemName,"ванил"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Ваниль</param>";
+                }
+                if (strripos($itemName,"виш"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Вишня</param>";
+                }
+                if (strripos($itemName,"гранат"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Гранат</param>";
+                }
+                if (strripos($itemName,"pomegranate"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Гранат</param>";
+                }
+                if (strripos($itemName,"дыня"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Дыня</param>";
+                }
+                if (strripos($itemName,"жвачк"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Жвачка</param>";
+                }
+                if (strripos($itemName,"карам"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Карамель</param>";
+                }
+                if (strripos($itemName,"клубн"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Клубника</param>";
+                }
+                if (strripos($itemName,"лимон"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Лимон</param>";
+                }
+                if (strripos($itemName,"малин"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Малина</param>";
+                }
+                if (strripos($itemName,"манго"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Манго</param>";
+                }
+                if (strripos($itemName,"персик"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Персик</param>";
+                }
+                if (strripos($itemName,"тропи"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Тропический</param>";
+                }
+                if (strripos($itemName,"фрук"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Фруктово-ягодный</param>";
+                }
+                if (strripos($itemName,"tropical"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Фруктово-ягодный</param>";
+                }
+                if (strripos($itemName,"aperol"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Цитрусовый</param>";
+                }
+                if (strripos($itemName,"шоколад"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Шоколад</param>";
+                }
+                if (strripos($itemName,"ябло"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Яблоко</param>";
+                }
+
+                if (strripos($itemName,"cupcake"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Десерт</param>";
+                }
+                if (strripos($itemName,"сливк"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Десерт</param>";
+                }
+                if (strripos($itemName,"брюле"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Десерт</param>";
+                }
+                if (strripos($itemName,"булоч"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Десерт</param>";
+                }
+                if (strripos($itemName,"понч"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Десерт</param>";
+                }
+                if (strripos($itemName,"donut"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Десерт</param>";
+                }
+                if (strripos($itemName,"суфл"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Десерт</param>";
+                }
+                if (strripos($itemName,"ваты"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Десерт</param>";
+                }
+                if (strripos($itemName,"вата"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Десерт</param>";
+                }
+                if (strripos($itemName,"тирамис"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Десерт</param>";
+                }
+                
+                //на всякий случай удаляем возможные дубли
+                $params_new=array_unique($params_new);
+                /*
+                echo "<b>$itemName</b><br>";
+                echo "<pre>";
+                print_r($params_new);
+                echo "</pre>";
+                */
                 //а теперь собираем айтем (старую шапку+новые параметры)
                 //сначала склеиваем параметры
                 foreach ($params_new as $new_param)
