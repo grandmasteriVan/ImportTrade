@@ -1352,7 +1352,6 @@ class testXML
                     $paramName=$this->getParamName($param);
                     $paramVal=$this->getParamVal($param);
                     //если параметр нам не нужен для Прома - мы его все равно оставим как Пользовательскую характеристику. Если нам это не надо - то строчку можно закоментить
-                    $param=str_ireplace(";","|",$param);
                     $param_new=$param;
                     if (strcmp($paramName,"Страна")==0)
                     {
@@ -1514,7 +1513,333 @@ class testXML
                 {
                     $params_new[]="<param name=\"Вид изделия\">Халат</param>";
                 }
-                if (strripos($itemName,"чулки"))
+                if (strripos($itemName,"чулк"))
+                {
+                    $params_new[]="<param name=\"Вид изделия\">Чулки</param>";
+                }
+                if (strripos($itemName,"чуло"))
+                {
+                    $params_new[]="<param name=\"Вид изделия\">Чулки</param>";
+                }
+                if (strripos($itemName,"юбка"))
+                {
+                    $params_new[]="<param name=\"Вид изделия\">Юбка</param>";
+                }
+
+                //трусики в комплекте - по названию "комплект"
+                if (strripos($itemName,"комплект"))
+                {
+                    $params_new[]="<param name=\"Трусики в комплекте\">Да</param>";
+                }
+                
+                //отделка: тут хитро. У прома это мультиселект. У нас это или в названии, или в параметрах. Если мы нашли в параметрах - то это там и отлавливается и ставится соответствующий флаг. Дальше проверяем есть ли либо флаг либо упоминание в названии. Если есть - записываем значение параметра
+                $finishing="";
+                $finishingCount=0;
+                if (strripos($itemName,"кружев")||$hasLace==true)
+                {
+                    //$params_new[]="<param name=\"Отделка и украшения\">Кружева</param>";
+                    //$hasLace=true;
+                    $finishing.="Кружева";
+                    $finishingCount++;
+                }
+                if (strripos($itemName,"страз")||$hasRhinestone==true)
+                {
+                    //$params_new[]="<param name=\"Отделка и украшения\">Кружева</param>";
+                    //$hasLace=true;
+                    $finishing.="Стразы";
+                    $finishingCount++;
+                }
+                if ($finishingCount>0)
+                {
+                    $finishing=str_ireplace("КружеваСтразы","Кружева|Стразы",$finishing);
+                    $params_new[]="<param name=\"Отделка и украшения\">".$finishing."</param>";
+                }
+                //
+                //на всякий случай удаляем возможные дубли
+                $params_new=array_unique($params_new);
+                /*
+                echo "<b>$itemName</b><br>";
+                echo "<pre>";
+                print_r($params_new);
+                echo "</pre>";
+                */
+                //а теперь собираем айтем (старую шапку+новые параметры)
+                //сначала склеиваем параметры
+                foreach ($params_new as $new_param)
+                {
+                    //отсекаем страну, которая у нас пустая (NULL)
+                    if ($new_param!=null)
+                    {
+                        $new_params.=$new_param.PHP_EOL;
+                    }
+                    
+                }
+                //записываем страну как отдельный параметр
+                $country="<country>".$country."</country>".PHP_EOL;
+                //бывает случай, когда позиция у нас не имеет ни одного парамептра. Тогда у нее появляется лишний тег </item>. На всякий случай убираем его
+                $itemHead=str_ireplace("</item>","",$itemHead);
+                //получаем новый айтем (не забываем закрывающий тег)
+                $new_item=$itemHead.$country.$new_params."</item>".PHP_EOL;
+                //break;
+                //var_dump ($new_item);
+            }
+
+            if ($catId==72||$catId==25)
+            {
+                //echo "нашли позицию с нужным ИД<br>";
+                //обнуляем список новых параметров для каждого айтема
+                $itemName=$this->getItemName($item);
+                $param_new=null;
+                $params_new=null;
+                $new_params=null;
+                $country=null;
+                
+                //var_dump ($item);
+                //идем по списку старых параметров
+                foreach ($params as $param)
+                {
+                    $param=str_ireplace(";","|",$param);
+                    $paramName=$this->getParamName($param);
+                    $paramVal=$this->getParamVal($param);
+                    //если параметр нам не нужен для Прома - мы его все равно оставим как Пользовательскую характеристику. Если нам это не надо - то строчку можно закоментить
+                    $param_new=$param;
+                    if (strcmp($paramName,"Страна")==0)
+                    {
+                        //$param_new=str_ireplace("Страна","Страна производитель",$param);
+                        //тут вообще надо параметр менять на <country>Страна_производитель</country>
+                        $country=$paramVal;
+                        $param_new=null;
+                    }
+                    
+                    if (strcmp($paramName,"Цвет")==0)
+                    {
+                        //echo "вошли в цвет<br>$paramVal<br>";
+                        $firstParamVal=$this->getFirstParamVal($param);
+                        $param="<param name=\"Цвет\">".$firstParamVal."</param>";
+                        $param_new=str_ireplace("Золотой","Золотистый",$param);
+                        $param_new=str_ireplace("Салатовый","Зеленый",$param_new);
+                        $param_new=str_ireplace("Мулат","Терракота",$param_new);
+                        $param_new=str_ireplace("Леопардовый","Бежевый",$param_new);
+                    }
+
+                    if (strcmp($paramName,"Материал")==0)
+                    {        
+                        $param_new=str_ireplace("Материал","Тип ткани",$param);
+                        //$firstParamVal=$this->getFirstParamVal($param);
+                        $param_new="<param name=\"Тип ткани\">".$paramVal."</param>";
+                        $param_new=str_ireplace("Кожзаменитель","Искусственная кожа",$param_new);
+                        
+                    }
+                    if (strcmp($paramName,"Размер")==0)
+                    {
+                        
+                        $param_new=str_ireplace("Размер","Международный размер",$param);
+                        $param_new=str_ireplace("One size","S/M/L",$param_new);
+                        $param_new=str_ireplace("|","/",$param_new);
+                        $param_new=str_ireplace("Plus Size/","",$param_new);
+                    }
+                    
+ 
+                    $params_new[]=$param_new;
+                }
+                //а тут мы будем прописывать захардкодженные параметры
+                //модель-майка
+                
+                //на всякий случай удаляем возможные дубли
+                $params_new=array_unique($params_new);
+                /*
+                echo "<b>$itemName</b><br>";
+                echo "<pre>";
+                print_r($params_new);
+                echo "</pre>";
+                */
+                //а теперь собираем айтем (старую шапку+новые параметры)
+                //сначала склеиваем параметры
+                foreach ($params_new as $new_param)
+                {
+                    //отсекаем страну, которая у нас пустая (NULL)
+                    if ($new_param!=null)
+                    {
+                        $new_params.=$new_param.PHP_EOL;
+                    }
+                    
+                }
+                //записываем страну как отдельный параметр
+                $country="<country>".$country."</country>".PHP_EOL;
+                //бывает случай, когда позиция у нас не имеет ни одного парамептра. Тогда у нее появляется лишний тег </item>. На всякий случай убираем его
+                $itemHead=str_ireplace("</item>","",$itemHead);
+                //получаем новый айтем (не забываем закрывающий тег)
+                $new_item=$itemHead.$country.$new_params."</item>".PHP_EOL;
+                //break;
+                //var_dump ($new_item);
+            }
+
+            //BDSM
+            if ($catId==118||$catId==117||$catId==89||$catId==26)
+            {
+                //echo "нашли позицию с нужным ИД<br>";
+                //обнуляем список новых параметров для каждого айтема
+                $itemName=$this->getItemName($item);
+                $param_new=null;
+                $params_new=null;
+                $new_params=null;
+                $country=null;
+                //кружева
+                $hasLace=false;
+                $hasRhinestone=false;
+                //var_dump ($item);
+                //идем по списку старых параметров
+                foreach ($params as $param)
+                {
+                    $param=str_ireplace(";","|",$param);
+                    $paramName=$this->getParamName($param);
+                    $paramVal=$this->getParamVal($param);
+                    //если параметр нам не нужен для Прома - мы его все равно оставим как Пользовательскую характеристику. Если нам это не надо - то строчку можно закоментить
+                    $param_new=$param;
+                    if (strcmp($paramName,"Страна")==0)
+                    {
+                        //$param_new=str_ireplace("Страна","Страна производитель",$param);
+                        //тут вообще надо параметр менять на <country>Страна_производитель</country>
+                        $country=$paramVal;
+                        $param_new=null;
+                    }
+
+                    if (strcmp($paramName,"Материал")==0)
+                    {        
+                        $param_new=str_ireplace("Кожа Италия","Натуральная кожа",$param);
+                        $param_new=str_ireplace("Кожзаменитель","Искусственная кожа",$param_new);
+                        $param_new=str_ireplace("Хлопок","Хлопковая ткань",$param_new);
+                        $param_new=str_ireplace("Хлопок","Хлопковая ткань",$param_new);
+                        $param_new=str_replace("Кожа","Натуральная кожа",$param_new);
+                        $param_new=str_ireplace("Поливинилхлорид (PVC, ПВХ)","ПВХ",$param_new);
+                        $param_new=str_ireplace("Спандекс","Полиуретан",$param_new);
+                    }
+                    if (strcmp($paramName,"Цвет")==0)
+                    {
+                        //echo "вошли в цвет<br>$paramVal<br>";
+                        $firstParamVal=$this->getFirstParamVal($param);
+                        $param="<param name=\"Цвет\">".$firstParamVal."</param>";
+                        $param_new=str_ireplace("Золотой","Золотистый",$param);
+                        $param_new=str_ireplace("Салатовый","Зеленый",$param_new);
+                        $param_new=str_ireplace("Мулат","Терракота",$param_new);
+                        $param_new=str_ireplace("Леопардовый","Бежевый",$param_new);
+                    }
+
+                    
+                    if (strcmp($paramName,"Размер")==0)
+                    {
+                        
+                        $param_new=str_ireplace("Размер","Международный размер",$param);
+                        $param_new=str_ireplace("One size","S/M/L",$param_new);
+                        $param_new=str_ireplace("|","/",$param_new);
+                        $param_new=str_ireplace("Plus Size/","",$param_new);
+                    }
+                    
+ 
+                    $params_new[]=$param_new;
+                }
+                //а тут мы будем прописывать захардкодженные параметры
+                
+                //вид изделия
+                $itemName=" ".mb_strtolower($itemName);
+                 
+                if (strripos($itemName,"штаны"))
+                {
+                    $params_new[]="<param name=\"Вид изделия\">Брюки</param>";
+                }
+                if (strripos($itemName,"брюки"))
+                {
+                    $params_new[]="<param name=\"Вид изделия\">Брюки</param>";
+                }
+                if (strripos($itemName,"бебидол"))
+                {
+                    $params_new[]="<param name=\"Вид изделия\">Бэби-долл</param>";
+                }
+                if (strripos($itemName,"Беби долл"))
+                {
+                    $params_new[]="<param name=\"Вид изделия\">Бэби-долл</param>";
+                }
+                if (strripos($itemName,"колгот"))
+                {
+                    $params_new[]="<param name=\"Вид изделия\">Колготки</param>";
+                }
+                if (strripos($itemName,"боди "))
+                {
+                    $params_new[]="<param name=\"Вид изделия\">Комбидресс</param>";
+                }
+                if (strripos($itemName,"боди- "))
+                {
+                    $params_new[]="<param name=\"Вид изделия\">Комбидресс</param>";
+                }
+                if (strripos($itemName,"боди-сетка"))
+                {
+                    $params_new[]="<param name=\"Вид изделия\">Комбидресс</param>";
+                }
+                if (strripos($itemName,"комбинация"))
+                {
+                    $params_new[]="<param name=\"Вид изделия\">Комбинация</param>";
+                }
+                if (strripos($itemName,"комбинезон"))
+                {
+                    $params_new[]="<param name=\"Вид изделия\">Комбинезон</param>";
+                }
+                if (strripos($itemName,"бодистокинг"))
+                {
+                    $params_new[]="<param name=\"Вид изделия\">Комбинезон</param>";
+                }
+                if (strripos($itemName,"комплект"))
+                {
+                    $params_new[]="<param name=\"Вид изделия\">Комплект белья</param>";
+                }
+                if (strripos($itemName,"корсаж"))
+                {
+                    $params_new[]="<param name=\"Вид изделия\">Корсаж</param>";
+                }
+                if (strripos($itemName,"корсет"))
+                {
+                    $params_new[]="<param name=\"Вид изделия\">Корсет</param>";
+                }
+                if (strripos($itemName,"пеньюар"))
+                {
+                    $params_new[]="<param name=\"Вид изделия\">Пеньюар</param>";
+                }
+                if (strripos($itemName,"платье"))
+                {
+                    $params_new[]="<param name=\"Вид изделия\">Платье</param>";
+                }
+                if (strripos($itemName,"портупея"))
+                {
+                    $params_new[]="<param name=\"Вид изделия\">Портупея</param>";
+                }
+                if (strripos($itemName,"сорочка"))
+                {
+                    $params_new[]="<param name=\"Вид изделия\">Сорочка</param>";
+                }
+                if (strripos($itemName,"ночнушка"))
+                {
+                    $params_new[]="<param name=\"Вид изделия\">Сорочка</param>";
+                }
+                if (strripos($itemName,"трусики"))
+                {
+                    $params_new[]="<param name=\"Вид изделия\">Трусики</param>";
+                }
+                if (strripos($itemName,"стринги"))
+                {
+                    $params_new[]="<param name=\"Вид изделия\">Трусики</param>";
+                }
+                if (strripos($itemName,"шорты"))
+                {
+                    $params_new[]="<param name=\"Вид изделия\">Трусики</param>";
+                }
+                if (strripos($itemName,"шортики"))
+                {
+                    $params_new[]="<param name=\"Вид изделия\">Трусики</param>";
+                }
+                if (strripos($itemName,"халат"))
+                {
+                    $params_new[]="<param name=\"Вид изделия\">Халат</param>";
+                }
+                if (strripos($itemName,"чулк"))
                 {
                     $params_new[]="<param name=\"Вид изделия\">Чулки</param>";
                 }
@@ -1593,6 +1918,7 @@ class testXML
         //начинаем собирать финальную ХМЛку
         $XMLnew=$xmlHead.PHP_EOL."</categories>".PHP_EOL.$items_new.PHP_EOL."</price>";
         $XMLnew=$this->delSpaces($XMLnew);
+        $XMLnew=str_ireplace("Sunspice","Sunspice Lingerie",$XMLnew);
         //var_dump($XMLnew);
         file_put_contents("new_test.xml",$XMLnew);
         echo "<b>Done</b>";
