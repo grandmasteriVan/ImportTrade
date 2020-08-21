@@ -2103,7 +2103,7 @@ class testXML
                 {
                     $params_new[]="<param name=\"Тип интимной игрушки\">Анальный стимулятор</param>";
                 }
-                if (strripos($itemName,"вагин")&&strripos($itemName,"шар"))
+                if ((strripos($itemName,"вагин")&&strripos($itemName,"шар"))||strripos($itemName,"lelo"))
                 {
                     $params_new[]="<param name=\"Тип интимной игрушки\">Вагинальные шарики</param>";
                 }
@@ -2123,14 +2123,19 @@ class testXML
                 {
                     $params_new[]="<param name=\"Тип интимной игрушки\">Вибро яйцо</param>";
                 }
+                if (strripos($itemName,"egg"))
+                {
+                    $params_new[]="<param name=\"Тип интимной игрушки\">Вибро яйцо</param>";
+                }
                 if (strripos($itemName,"простат"))
                 {
                     $params_new[]="<param name=\"Тип интимной игрушки\">Массажер простаты</param>";
                 }
-                if (strripos($itemName,"мастурб"))
+                if (strripos($itemName,"маструб"))
                 {
                     $params_new[]="<param name=\"Тип интимной игрушки\">Мастурбатор</param>";
                 }
+
                 if (strripos($itemName,"кукл"))
                 {
                     $params_new[]="<param name=\"Тип интимной игрушки\">Надувная кукла</param>";
@@ -2147,9 +2152,17 @@ class testXML
                 {
                     $params_new[]="<param name=\"Тип интимной игрушки\">Фаллоимитатор</param>";
                 }
-                if (strripos($itemName,"эрекционное"))
+                if (strripos($itemName,"эрекционн"))
                 {
                     $params_new[]="<param name=\"Тип интимной игрушки\">Эрекционное кольцо</param>";
+                }
+                if (strripos($itemName,"лассо"))
+                {
+                    $params_new[]="<param name=\"Тип интимной игрушки\">Эрекционное кольцо</param>";
+                }
+                if (strripos($itemName,"реалистичная вагина"))
+                {
+                    $params_new[]="<param name=\"Тип интимной игрушки\">Вагина</param>";
                 }
 
 
