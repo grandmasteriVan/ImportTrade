@@ -2013,7 +2013,7 @@ class testXML
                         $param_new=str_replace("Кожа","Натуральная кожа",$param_new);
                         $param_new=str_ireplace("Полиуретан (без латекса)","Полиуретан",$param_new);
                         $param_new=str_ireplace("Спандекс","Полиуретан",$param_new);
-                        $param_new=str_ireplace("Мед. Силикон","Силикон",$param_new);
+                        $param_new=str_ireplace("Мед. силикон","Силикон",$param_new);
                         $param_new=str_ireplace("Медицинский пластик","Пластик",$param_new);
                         $param_new=str_ireplace("Полиамид","Пластик",$param_new);
                         $param_new=str_ireplace("Эластан","Полиуретан",$param_new);
@@ -2052,6 +2052,17 @@ class testXML
                         //echo "Диаметр=$paramVal<br>";
                         $param_new="<param name=\"Диаметр (мм)\">".$paramVal."</param>";
                     }
+                    if (strcmp($paramName,"Цвет")==0)
+                    {
+                        //echo "вошли в цвет<br>$paramVal<br>";
+                        $firstParamVal=$this->getFirstParamVal($param);
+                        $param="<param name=\"Цвет\">".$firstParamVal."</param>";
+                        $param_new=str_ireplace("Золотой","Золотистый",$param);
+                        $param_new=str_ireplace("Салатовый","Зеленый",$param_new);
+                        $param_new=str_ireplace("Лиловый","Фиолетовый",$param_new);
+                        $param_new=str_ireplace("Разные","Разные цвета",$param_new);
+                        $param_new=str_ireplace("Леопардовый","Бежевый",$param_new);
+                    }
  
                     $params_new[]=$param_new;
                 }
@@ -2072,10 +2083,75 @@ class testXML
 
                 //Тип интимной игрушки
 
-                if (strripos($itemName,"зажимы на соски"))
+                if (strripos($itemName,"проб"))
                 {
-                    $params_new[]="<param name=\"Тип интимной игрушки\">Зажимы для сосков</param>";
+                    $params_new[]="<param name=\"Тип интимной игрушки\">Анальная пробка</param>";
                 }
+                if (strripos($itemName,"плаг"))
+                {
+                    $params_new[]="<param name=\"Тип интимной игрушки\">Анальная пробка</param>";
+                }
+                if (strripos($itemName,"анал")&&strripos($itemName,"шар"))
+                {
+                    $params_new[]="<param name=\"Тип интимной игрушки\">Анальные шарики</param>";
+                }
+                if (strripos($itemName,"анал")&&strripos($itemName,"бус"))
+                {
+                    $params_new[]="<param name=\"Тип интимной игрушки\">Анальные шарики</param>";
+                }
+                if (strripos($itemName,"анал")&&strripos($itemName,"стим"))
+                {
+                    $params_new[]="<param name=\"Тип интимной игрушки\">Анальный стимулятор</param>";
+                }
+                if (strripos($itemName,"вагин")&&strripos($itemName,"шар"))
+                {
+                    $params_new[]="<param name=\"Тип интимной игрушки\">Вагинальные шарики</param>";
+                }
+                if (strripos($itemName,"вагин")&&strripos($itemName,"трен"))
+                {
+                    $params_new[]="<param name=\"Тип интимной игрушки\">Вагинальный тренажер</param>";
+                }
+                if (strripos($itemName,"помп"))
+                {
+                    $params_new[]="<param name=\"Тип интимной игрушки\">Вакуумная помпа</param>";
+                }
+                if (strripos($itemName,"вибра")&&!strripos($itemName,"яйцо "))
+                {
+                    $params_new[]="<param name=\"Тип интимной игрушки\">Вибратор</param>";
+                }
+                if (strripos($itemName,"яйцо"))
+                {
+                    $params_new[]="<param name=\"Тип интимной игрушки\">Вибро яйцо</param>";
+                }
+                if (strripos($itemName,"простат"))
+                {
+                    $params_new[]="<param name=\"Тип интимной игрушки\">Массажер простаты</param>";
+                }
+                if (strripos($itemName,"мастурб"))
+                {
+                    $params_new[]="<param name=\"Тип интимной игрушки\">Мастурбатор</param>";
+                }
+                if (strripos($itemName,"кукл"))
+                {
+                    $params_new[]="<param name=\"Тип интимной игрушки\">Надувная кукла</param>";
+                }
+                if (strripos($itemName,"насад"))
+                {
+                    $params_new[]="<param name=\"Тип интимной игрушки\">Насадка на половой член</param>";
+                }
+                if (strripos($itemName,"страп"))
+                {
+                    $params_new[]="<param name=\"Тип интимной игрушки\">Страпон</param>";
+                }
+                if (strripos($itemName,"фалло"))
+                {
+                    $params_new[]="<param name=\"Тип интимной игрушки\">Фаллоимитатор</param>";
+                }
+                if (strripos($itemName,"эрекционное"))
+                {
+                    $params_new[]="<param name=\"Тип интимной игрушки\">Эрекционное кольцо</param>";
+                }
+
 
                 //на всякий случай удаляем возможные дубли
                 $params_new=array_unique($params_new);
@@ -2116,7 +2192,7 @@ class testXML
         $XMLnew=$this->delSpaces($XMLnew);
         $XMLnew=str_ireplace("Sunspice","Sunspice Lingerie",$XMLnew);
         //var_dump($XMLnew);
-        //file_put_contents("new_test.xml",$XMLnew);
+        file_put_contents("new_test.xml",$XMLnew);
         echo "<b>Done</b>";
 
     }
