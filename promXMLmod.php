@@ -1911,6 +1911,15 @@ class testXML
                         $country=$paramVal;
                         $param_new=null;
                     }
+                    if (strcmp($paramName,"Пол")==0)
+                    {
+                        $param_new=str_ireplace("Для женщин","Женский",$param);
+                        $param_new=str_ireplace("Для мужчин","Мужской",$param_new);
+                        $param_new=str_ireplace("Для пары","Унисекс",$param_new);
+                        $param_new=str_ireplace("Женский|Мужской","Унисекс",$param_new);
+                        $param_new=str_ireplace("Мужской|Женский","Унисекс",$param_new);
+                        $param_new=str_ireplace("Унисекс|Унисекс","Унисекс",$param_new);
+                    }
  
                     $params_new[]=$param_new;
                 }
@@ -1946,6 +1955,157 @@ class testXML
                 //var_dump ($new_item);
             }
 
+            if ($catId==147||$catId==127||$catId==106||$catId==88||$catId==53||$catId==50||$catId==48||$catId==43||$catId==21||$catId==20||$catId==18||$catId==16||$catId==10||$catId==9||$catId==8||$catId==7||$catId==6||$catId==1||$catId==10)
+            {
+                //echo "нашли позицию с нужным ИД<br>";
+                //обнуляем список новых параметров для каждого айтема
+                $param_new=null;
+                $params_new=null;
+                $new_params=null;
+                $country=null;
+                $itemName=$this->getItemName($item);
+                $hasVibro=false;
+                $hasWaterRes=false;
+                //var_dump ($item);
+                //идем по списку старых параметров
+                foreach ($params as $param)
+                {
+                    $paramName=$this->getParamName($param);
+                    $paramVal=$this->getParamVal($param);
+                    //если параметр нам не нужен для Прома - мы его все равно оставим как Пользовательскую характеристику. Если нам это не надо - то строчку можно закоментить
+                    $param=str_ireplace(";","|",$param);
+                    $param_new=$param;
+                    if (strcmp($paramName,"Страна")==0)
+                    {
+                        //$param_new=str_ireplace("Страна","Страна производитель",$param);
+                        //тут вообще надо параметр менять на <country>Страна_производитель</country>
+                        $country=$paramVal;
+                        $param_new=null;
+                    }
+                    if (strcmp($paramName,"Пол")==0)
+                    {
+                        $param_new=str_ireplace("Для женщин","Женский",$param);
+                        $param_new=str_ireplace("Для мужчин","Мужской",$param_new);
+                        $param_new=str_ireplace("Для пары","Унисекс",$param_new);
+                        $param_new=str_ireplace("Женский|Мужской","Унисекс",$param_new);
+                        $param_new=str_ireplace("Мужской|Женский","Унисекс",$param_new);
+                        $param_new=str_ireplace("Унисекс|Унисекс","Унисекс",$param_new);
+                        $param_new=str_ireplace("Мужской|Унисекс","Мужской",$param_new);
+                        $param_new=str_ireplace("Женский|Унисекс","Женский",$param_new);
+                    }
+                    if (strcmp($paramName,"Вид")==0)
+                    {
+                        $param_new=str_ireplace("Вид","Тип вибратора",$param);
+                        $param_new=str_ireplace("Анальные","Анальный",$param_new);
+                        $param_new=str_ireplace("Жидкий вибратор","Комбинированный",$param_new);
+                        $param_new=str_ireplace("Вагинальные","Вагинальный",$param_new);
+                        $param_new=str_ireplace("Клиторальный","Клиторальный",$param_new);
+                        $param_new=str_ireplace("Компьютерные","Компьютерный",$param_new);
+                        $param_new=str_ireplace("Для точки G","G-точки",$param_new);
+                    }
+
+                    if (strcmp($paramName,"Материал")==0)
+                    {        
+                        $param_new=str_ireplace("TPR(термопластичная резина)","ТПЭ (термопластичный эластомер)",$param);
+                        $param_new=str_ireplace("Кожзаменитель","Искусственная кожа",$param_new);
+                        $param_new=str_ireplace("Латекс (резина)","Латекс",$param_new);
+                        $param_new=str_ireplace("Поливинилхлорид (PVC, ПВХ)","Поливинилхлорид",$param_new);
+                        $param_new=str_replace("Кожа","Натуральная кожа",$param_new);
+                        $param_new=str_ireplace("Полиуретан (без латекса)","Полиуретан",$param_new);
+                        $param_new=str_ireplace("Спандекс","Полиуретан",$param_new);
+                        $param_new=str_ireplace("Мед. Силикон","Силикон",$param_new);
+                        $param_new=str_ireplace("Медицинский пластик","Пластик",$param_new);
+                        $param_new=str_ireplace("Полиамид","Пластик",$param_new);
+                        $param_new=str_ireplace("Эластан","Полиуретан",$param_new);
+                    }
+                    if (strcmp($paramName,"Функции")==0)
+                    {
+                        if (strripos($param,"С вибрацией"))
+                        {
+                            //echo "$param<br>";
+                            //$param_new="<param name=\"Функция вибрации\">Да</param>";
+                            $hasVibro=true;
+                        }
+                        else
+                        {
+                            //$param_new="<param name=\"Функция вибрации\">Нет</param>";
+                            $hasVibro=false;
+                        }
+                        if (strripos($param,"Водонепроницаемые"))
+                        {
+                            //echo "$param<br>";
+                            //$param_new="<param name=\"Функция вибрации\">Да</param>";
+                            $hasWaterRes=true;
+                        }
+                    }
+                    if(strcmp($paramName,"Длина")==0)
+                    {
+                        //$param_new=str_ireplace("Длина","Длина (мм)",$param);
+                        $paramVal=$paramVal*10;
+                        //echo "Длина=$paramVal<br>";
+                        $param_new="<param name=\"Длина (мм)\">".$paramVal."</param>";
+                    }
+                    if(strcmp($paramName,"Диаметр")==0)
+                    {
+                        //$param_new=str_ireplace("Длина","Длина (мм)",$param);
+                        $paramVal=$paramVal*10;
+                        //echo "Диаметр=$paramVal<br>";
+                        $param_new="<param name=\"Диаметр (мм)\">".$paramVal."</param>";
+                    }
+ 
+                    $params_new[]=$param_new;
+                }
+                //а тут мы будем прописывать захардкодженные параметры
+                $itemName=" ".mb_strtolower($itemName);
+                if ($hasVibro||strripos($itemName,"вибр"))
+                {
+                    $params_new[]="<param name=\"Функция вибрации\">Да</param>";
+                }
+                else
+                {
+                    $params_new[]="<param name=\"Функция вибрации\">Нет</param>";
+                }
+                if ($hasWaterRes)
+                {
+                    $params_new[]="<param name=\"Водостойкость\">Да</param>";
+                }
+
+                //Тип интимной игрушки
+
+                if (strripos($itemName,"зажимы на соски"))
+                {
+                    $params_new[]="<param name=\"Тип интимной игрушки\">Зажимы для сосков</param>";
+                }
+
+                //на всякий случай удаляем возможные дубли
+                $params_new=array_unique($params_new);
+                
+                echo "<b>$itemName</b><br>";
+                echo "<pre>";
+                print_r($params_new);
+                echo "</pre>";
+                
+                //а теперь собираем айтем (старую шапку+новые параметры)
+                //сначала склеиваем параметры
+                foreach ($params_new as $new_param)
+                {
+                    //отсекаем страну, которая у нас пустая (NULL)
+                    if ($new_param!=null)
+                    {
+                        $new_params.=$new_param.PHP_EOL;
+                    }
+                    
+                }
+                //записываем страну как отдельный параметр
+                $country="<country>".$country."</country>".PHP_EOL;
+                //бывает случай, когда позиция у нас не имеет ни одного парамептра. Тогда у нее появляется лишний тег </item>. На всякий случай убираем его
+                $itemHead=str_ireplace("</item>","",$itemHead);
+                //получаем новый айтем (не забываем закрывающий тег)
+                $new_item=$itemHead.$country.$new_params."</item>".PHP_EOL;
+                //break;
+                //var_dump ($new_item);
+            }
+
             //тут будем сорбирать все позиции
             $items_new.=$new_item;
         }
@@ -1956,7 +2116,7 @@ class testXML
         $XMLnew=$this->delSpaces($XMLnew);
         $XMLnew=str_ireplace("Sunspice","Sunspice Lingerie",$XMLnew);
         //var_dump($XMLnew);
-        file_put_contents("new_test.xml",$XMLnew);
+        //file_put_contents("new_test.xml",$XMLnew);
         echo "<b>Done</b>";
 
     }
