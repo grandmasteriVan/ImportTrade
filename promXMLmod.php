@@ -2168,6 +2168,10 @@ class testXML
                 {
                     $params_new[]="<param name=\"Тип интимной игрушки\">Вагина</param>";
                 }
+                if (strripos($itemName,"tight puss"))
+                {
+                    $params_new[]="<param name=\"Тип интимной игрушки\">Вагина</param>";
+                }
 
 
                 //на всякий случай удаляем возможные дубли
