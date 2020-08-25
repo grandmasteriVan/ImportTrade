@@ -224,7 +224,7 @@ class testXML
                 //бывает случай, когда позиция у нас не имеет ни одного парамептра. Тогда у нее появляется лишний тег </item>. На всякий случай убираем его
                 $itemHead=str_ireplace("</item>","",$itemHead);
                 //получаем новый айтем (не забываем закрывающий тег)
-                $new_item=$itemHead.$country.$new_params."</item>".PHP_EOL;
+                $new_item=$itemHead.$country.$new_params."</item>";
                 //break;
                 //var_dump ($new_item);
             }
@@ -286,7 +286,7 @@ class testXML
                 //бывает случай, когда позиция у нас не имеет ни одного парамептра. Тогда у нее появляется лишний тег </item>. На всякий случай убираем его
                 $itemHead=str_ireplace("</item>","",$itemHead);
                 //получаем новый айтем (не забываем закрывающий тег)
-                $new_item=$itemHead.$country.$new_params."</item>".PHP_EOL;
+                $new_item=$itemHead.$country.$new_params."</item>";
                 //break;
                 //var_dump ($new_item);
             }
@@ -672,7 +672,7 @@ class testXML
                 //бывает случай, когда позиция у нас не имеет ни одного парамептра. Тогда у нее появляется лишний тег </item>. На всякий случай убираем его
                 $itemHead=str_ireplace("</item>","",$itemHead);
                 //получаем новый айтем (не забываем закрывающий тег)
-                $new_item=$itemHead.$country.$new_params."</item>".PHP_EOL;
+                $new_item=$itemHead.$country.$new_params."</item>";
                 //break;
                 //var_dump ($new_item);
             }
@@ -884,7 +884,7 @@ class testXML
                 //бывает случай, когда позиция у нас не имеет ни одного парамептра. Тогда у нее появляется лишний тег </item>. На всякий случай убираем его
                 $itemHead=str_ireplace("</item>","",$itemHead);
                 //получаем новый айтем (не забываем закрывающий тег)
-                $new_item=$itemHead.$country.$new_params."</item>".PHP_EOL;
+                $new_item=$itemHead.$country.$new_params."</item>";
                 //break;
                 //var_dump ($new_item);
             }
@@ -1100,7 +1100,7 @@ class testXML
                 //бывает случай, когда позиция у нас не имеет ни одного парамептра. Тогда у нее появляется лишний тег </item>. На всякий случай убираем его
                 $itemHead=str_ireplace("</item>","",$itemHead);
                 //получаем новый айтем (не забываем закрывающий тег)
-                $new_item=$itemHead.$country.$new_params."</item>".PHP_EOL;
+                $new_item=$itemHead.$country.$new_params."</item>";
                 //break;
                 //var_dump ($new_item);
             }
@@ -1181,7 +1181,7 @@ class testXML
                 //бывает случай, когда позиция у нас не имеет ни одного парамептра. Тогда у нее появляется лишний тег </item>. На всякий случай убираем его
                 $itemHead=str_ireplace("</item>","",$itemHead);
                 //получаем новый айтем (не забываем закрывающий тег)
-                $new_item=$itemHead.$country.$new_params."</item>".PHP_EOL;
+                $new_item=$itemHead.$country.$new_params."</item>";
                 //break;
                 //var_dump ($new_item);
             }
@@ -1267,7 +1267,7 @@ class testXML
                 //бывает случай, когда позиция у нас не имеет ни одного парамептра. Тогда у нее появляется лишний тег </item>. На всякий случай убираем его
                 $itemHead=str_ireplace("</item>","",$itemHead);
                 //получаем новый айтем (не забываем закрывающий тег)
-                $new_item=$itemHead.$country.$new_params."</item>".PHP_EOL;
+                $new_item=$itemHead.$country.$new_params."</item>";
                 //break;
                 //var_dump ($new_item);
             }
@@ -1327,7 +1327,7 @@ class testXML
                 //бывает случай, когда позиция у нас не имеет ни одного парамептра. Тогда у нее появляется лишний тег </item>. На всякий случай убираем его
                 $itemHead=str_ireplace("</item>","",$itemHead);
                 //получаем новый айтем (не забываем закрывающий тег)
-                $new_item=$itemHead.$country.$new_params."</item>".PHP_EOL;
+                $new_item=$itemHead.$country.$new_params."</item>";
                 //break;
                 //var_dump ($new_item);
             }
@@ -1579,7 +1579,7 @@ class testXML
                 //бывает случай, когда позиция у нас не имеет ни одного парамептра. Тогда у нее появляется лишний тег </item>. На всякий случай убираем его
                 $itemHead=str_ireplace("</item>","",$itemHead);
                 //получаем новый айтем (не забываем закрывающий тег)
-                $new_item=$itemHead.$country.$new_params."</item>".PHP_EOL;
+                $new_item=$itemHead.$country.$new_params."</item>";
                 //break;
                 //var_dump ($new_item);
             }
@@ -1669,7 +1669,7 @@ class testXML
                 //бывает случай, когда позиция у нас не имеет ни одного парамептра. Тогда у нее появляется лишний тег </item>. На всякий случай убираем его
                 $itemHead=str_ireplace("</item>","",$itemHead);
                 //получаем новый айтем (не забываем закрывающий тег)
-                $new_item=$itemHead.$country.$new_params."</item>".PHP_EOL;
+                $new_item=$itemHead.$country.$new_params."</item>";
                 //break;
                 //var_dump ($new_item);
             }
@@ -1882,7 +1882,7 @@ class testXML
                 //бывает случай, когда позиция у нас не имеет ни одного парамептра. Тогда у нее появляется лишний тег </item>. На всякий случай убираем его
                 $itemHead=str_ireplace("</item>","",$itemHead);
                 //получаем новый айтем (не забываем закрывающий тег)
-                $new_item=$itemHead.$country.$new_params."</item>".PHP_EOL;
+                $new_item=$itemHead.$country.$new_params."</item>";
                 //break;
                 //var_dump ($new_item);
             }
@@ -1950,7 +1950,7 @@ class testXML
                 //бывает случай, когда позиция у нас не имеет ни одного парамептра. Тогда у нее появляется лишний тег </item>. На всякий случай убираем его
                 $itemHead=str_ireplace("</item>","",$itemHead);
                 //получаем новый айтем (не забываем закрывающий тег)
-                $new_item=$itemHead.$country.$new_params."</item>".PHP_EOL;
+                $new_item=$itemHead.$country.$new_params."</item>";
                 //break;
                 //var_dump ($new_item);
             }
@@ -2198,7 +2198,7 @@ class testXML
                 //бывает случай, когда позиция у нас не имеет ни одного парамептра. Тогда у нее появляется лишний тег </item>. На всякий случай убираем его
                 $itemHead=str_ireplace("</item>","",$itemHead);
                 //получаем новый айтем (не забываем закрывающий тег)
-                $new_item=$itemHead.$country.$new_params."</item>".PHP_EOL;
+                $new_item=$itemHead.$country.$new_params."</item>";
                 //break;
                 //var_dump ($new_item);
             }
@@ -2211,7 +2211,7 @@ class testXML
         //начинаем собирать финальную ХМЛку
         $XMLnew=$xmlHead.PHP_EOL."</categories>".PHP_EOL.$items_new.PHP_EOL."</price>";
         $XMLnew=$this->delSpaces($XMLnew);
-        $XMLnew=str_ireplace("Sunspice","Sunspice Lingerie",$XMLnew);
+        $XMLnew=str_replace("Sunspice","Sunspice Lingerie",$XMLnew);
         //var_dump($XMLnew);
         file_put_contents("new_test.xml",$XMLnew);
         echo "<b>Done</b>";
