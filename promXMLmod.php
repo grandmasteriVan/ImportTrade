@@ -2043,14 +2043,14 @@ class testXML
                         //$param_new=str_ireplace("Длина","Длина (мм)",$param);
                         $paramVal=$paramVal*10;
                         //echo "Длина=$paramVal<br>";
-                        $param_new="<param name=\"Длина (мм)\">".$paramVal."</param>";
+                        $param_new="<param name=\"Длина\">".$paramVal."</param>";
                     }
                     if(strcmp($paramName,"Диаметр")==0)
                     {
                         //$param_new=str_ireplace("Длина","Длина (мм)",$param);
                         $paramVal=$paramVal*10;
                         //echo "Диаметр=$paramVal<br>";
-                        $param_new="<param name=\"Диаметр (мм)\">".$paramVal."</param>";
+                        $param_new="<param name=\"Диаметр\">".$paramVal."</param>";
                     }
                     if (strcmp($paramName,"Цвет")==0)
                     {
@@ -2062,6 +2062,7 @@ class testXML
                         $param_new=str_ireplace("Лиловый","Фиолетовый",$param_new);
                         $param_new=str_ireplace("Разные","Разные цвета",$param_new);
                         $param_new=str_ireplace("Леопардовый","Бежевый",$param_new);
+                        $param_new=str_ireplace("Металлик","Серый",$param_new);
                     }
  
                     $params_new[]=$param_new;
@@ -2176,12 +2177,12 @@ class testXML
 
                 //на всякий случай удаляем возможные дубли
                 $params_new=array_unique($params_new);
-                
+                /*
                 echo "<b>$itemName</b><br>";
                 echo "<pre>";
                 print_r($params_new);
                 echo "</pre>";
-                
+                */
                 //а теперь собираем айтем (старую шапку+новые параметры)
                 //сначала склеиваем параметры
                 foreach ($params_new as $new_param)
@@ -2212,6 +2213,19 @@ class testXML
         $XMLnew=$xmlHead.PHP_EOL."</categories>".PHP_EOL.$items_new.PHP_EOL."</price>";
         $XMLnew=$this->delSpaces($XMLnew);
         $XMLnew=str_replace("Sunspice","Sunspice Lingerie",$XMLnew);
+        $XMLnew=str_replace("Me-Seduce","Me Seduse",$XMLnew);
+        $XMLnew=str_replace("Pink Lipstick","Pink Lipstick Lingerie",$XMLnew);
+        $XMLnew=str_replace("COBECO","Cobeco Pharma",$XMLnew);
+        $XMLnew=str_replace("Be Wicked","Wicked",$XMLnew);
+        $XMLnew=str_replace("Soft Line","Softline",$XMLnew);
+        $XMLnew=str_replace("Noir Handmade","NOIR",$XMLnew);
+        $XMLnew=str_replace("EDC Collections","EDC",$XMLnew);
+        $XMLnew=str_replace("Pretty Love","Baile",$XMLnew);
+        $XMLnew=str_replace("MyMagicWand","EDC",$XMLnew);
+        $XMLnew=str_replace("Master Series","XR Brands",$XMLnew);
+        $XMLnew=str_replace("Tom of Finland","XR Brands",$XMLnew);
+        $XMLnew=str_replace("London Coco De Mer","Lovehoney",$XMLnew);
+        $XMLnew=str_replace("<vendor>Sensuva","<vendor>ON by Sensuva",$XMLnew);
         //var_dump($XMLnew);
         file_put_contents("new_test.xml",$XMLnew);
         echo "<b>Done</b>";
