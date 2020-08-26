@@ -2043,14 +2043,14 @@ class testXML
                         //$param_new=str_ireplace("Длина","Длина (мм)",$param);
                         $paramVal=$paramVal*10;
                         //echo "Длина=$paramVal<br>";
-                        $param_new="<param name=\"Длина\">".$paramVal."</param>";
+                        $param_new="<param name=\"Длина\" unit=\"мм\">".$paramVal."</param>";
                     }
                     if(strcmp($paramName,"Диаметр")==0)
                     {
                         //$param_new=str_ireplace("Длина","Длина (мм)",$param);
                         $paramVal=$paramVal*10;
                         //echo "Диаметр=$paramVal<br>";
-                        $param_new="<param name=\"Диаметр\">".$paramVal."</param>";
+                        $param_new="<param name=\"Диаметр\" unit=\"мм\">".$paramVal."</param>";
                     }
                     if (strcmp($paramName,"Цвет")==0)
                     {
@@ -2136,11 +2136,11 @@ class testXML
                 {
                     $params_new[]="<param name=\"Тип интимной игрушки\">Массажер простаты</param>";
                 }
-                if (strripos($itemName,"маструб"))
+                if (strripos($itemName,"мастурб"))
                 {
                     $params_new[]="<param name=\"Тип интимной игрушки\">Мастурбатор</param>";
                 }
-
+                
                 if (strripos($itemName,"кукл"))
                 {
                     $params_new[]="<param name=\"Тип интимной игрушки\">Надувная кукла</param>";
@@ -2213,7 +2213,7 @@ class testXML
         $XMLnew=$xmlHead.PHP_EOL."</categories>".PHP_EOL.$items_new.PHP_EOL."</price>";
         $XMLnew=$this->delSpaces($XMLnew);
         $XMLnew=str_replace("Sunspice","Sunspice Lingerie",$XMLnew);
-        $XMLnew=str_replace("Me-Seduce","Me Seduse",$XMLnew);
+        $XMLnew=str_replace("Me-Seduce","Me Seduce",$XMLnew);
         $XMLnew=str_replace("Pink Lipstick","Pink Lipstick Lingerie",$XMLnew);
         $XMLnew=str_replace("COBECO","Cobeco Pharma",$XMLnew);
         $XMLnew=str_replace("Be Wicked","Wicked",$XMLnew);
