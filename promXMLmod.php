@@ -2226,6 +2226,7 @@ class testXML
         $XMLnew=str_replace("Tom of Finland","XR Brands",$XMLnew);
         $XMLnew=str_replace("London Coco De Mer","Lovehoney",$XMLnew);
         $XMLnew=str_replace("<vendor>Sensuva","<vendor>ON by Sensuva",$XMLnew);
+        $XMLnew=str_replace("<vendor>UPKO","<vendor>Zalo",$XMLnew);
         //var_dump($XMLnew);
         file_put_contents("new_test.xml",$XMLnew);
         echo "<b>Done</b>";
