@@ -162,11 +162,81 @@ class testXML
             $new_item=null;
             $catId=$this->getCatId($item);
             //это массив параметров айтема. Их мы как раз и будем менять, при чем как имя параметра, так и его значение
+
+            //
+            if (strripos($item,"<vendor>Le Frivole"))
+            {
+                //var_dump($item);
+                $item=str_replace("<param name=\"Страна\">Европа</param>","<param name=\"Страна\">Эстония</param>",$item);
+                $item=str_replace("<param name=\"Страна\">Европа;Китай</param>","<param name=\"Страна\">Эстония</param>",$item);
+                //var_dump($item);
+                //break;               
+            }
+            if (strripos($item,"<vendor>Blush"))
+            {
+                //var_dump($item);
+                $item=str_replace("<param name=\"Страна\">Европа</param>","<param name=\"Страна\">США</param>",$item);
+                //var_dump($item);
+                //break;               
+            }
+            if (strripos($item,"<vendor>Baile"))
+            {
+                //var_dump($item);
+                $item=str_replace("<param name=\"Страна\">Европа</param>","<param name=\"Страна\">Китай</param>",$item);
+                //var_dump($item);
+                //break;               
+            }
+            if (strripos($item,"<vendor>Toyfa"))
+            {
+                //var_dump($item);
+                $item=str_replace("<param name=\"Страна\">Европа</param>","<param name=\"Страна\">Китай</param>",$item);
+                //var_dump($item);
+                //break;               
+            }
+            if (strripos($item,"<vendor>Envy"))
+            {
+                //var_dump($item);
+                $item=str_replace("<param name=\"Страна\">Европа</param>","<param name=\"Страна\">Китай</param>",$item);
+                //var_dump($item);
+                //break;               
+            }
+            if (strripos($item,"<vendor>Be Wicked"))
+            {
+                //var_dump($item);
+                $item=str_replace("<param name=\"Страна\">Европа</param>","<param name=\"Страна\">США</param>",$item);
+                //var_dump($item);
+                //break;               
+            }
+            if (strripos($item,"<vendor>Obsessive"))
+            {
+                //var_dump($item);
+                $item=str_replace("<param name=\"Страна\">Европа</param>","<param name=\"Страна\">Польша</param>",$item);
+                //var_dump($item);
+                //break;               
+            }
+            if (strripos($item,"<vendor>Pipedream"))
+            {
+                //var_dump($item);
+                $item=str_replace("<param name=\"Страна\">Европа</param>","<param name=\"Страна\">США</param>",$item);
+                //var_dump($item);
+                //break;               
+            }
+            if (strripos($item,"<vendor>Mystim"))
+            {
+                //var_dump($item);
+                $item=str_replace("<param name=\"Страна\">Германия;Европа</param>","<param name=\"Страна\">США</param>",$item);
+                //var_dump($item);
+                //break;               
+            }
+            
+
             $params=$this->getParams($item);
             //var_dump ($params);
             //это айтем до параметров. Мы его трогать вообще никогда не будем
             $itemHead=$this->getItemHead($item);
             //пошли по доке по разделам
+            
+
             if ($catId==169)
             {
                 //echo "нашли позицию с нужным ИД<br>";
@@ -2074,6 +2144,7 @@ class testXML
                         $param_new=str_ireplace("Разные","Разные цвета",$param_new);
                         $param_new=str_ireplace("Леопардовый","Бежевый",$param_new);
                         $param_new=str_ireplace("Металлик","Серый",$param_new);
+                        $param_new=str_ireplace("Голубой, синий","Синий",$param_new);
                     }
  
                     $params_new[]=$param_new;
@@ -2188,12 +2259,12 @@ class testXML
 
                 //на всякий случай удаляем возможные дубли
                 $params_new=array_unique($params_new);
-                
+                /*
                 echo "<b>$itemName</b><br>";
                 echo "<pre>";
                 print_r($params_new);
                 echo "</pre>";
-                
+                */
                 //а теперь собираем айтем (старую шапку+новые параметры)
                 //сначала склеиваем параметры
                 foreach ($params_new as $new_param)
