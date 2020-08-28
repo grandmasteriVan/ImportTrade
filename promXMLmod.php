@@ -196,7 +196,8 @@ class testXML
                     }
                     if (strcmp($paramName,"Объем")==0)
                     {
-                        $param_new=str_ireplace("Объем","Объем (мл)",$param);
+                        //$param_new=str_ireplace("Объем","Объем (мл)",$param);
+                        $param_new="<param name=\"Объем\" unit=\"мл\">".$paramVal."</param>";
                     }
                     if (strcmp($paramName,"Тип")==0)
                     {
@@ -256,7 +257,8 @@ class testXML
                         }
                         if (strcmp($paramName,"Объем")==0)
                         {
-                            $param_new=str_ireplace("Объем","Объем (мл)",$param);
+                            //$param_new=str_ireplace("Объем","Объем (мл)",$param);
+                            $param_new="<param name=\"Объем\" unit=\"мл\">".$paramVal."</param>";
                         }
                         if (strcmp($paramName,"Пол")==0)
                         {
@@ -704,7 +706,8 @@ class testXML
                     }
                     if (strcmp($paramName,"Объем")==0)
                     {
-                        $param_new=str_ireplace("Объем","Объем (мл)",$param);
+                        //$param_new=str_ireplace("Объем","Объем (мл)",$param);
+                        $param_new="<param name=\"Объем\" unit=\"мл\">".$paramVal."</param>";
                     }
                     if (strcmp($paramName,"Назначение")==0)
                     {
@@ -930,7 +933,8 @@ class testXML
                     }
                     if (strcmp($paramName,"Объем")==0)
                     {
-                        $param_new=str_ireplace("Объем","Объем (мл)",$param);
+                        //$param_new=str_ireplace("Объем","Объем (мл)",$param);
+                        $param_new="<param name=\"Объем\" unit=\"мл\">".$paramVal."</param>";
                     }
                     /*if (strcmp($paramName,"Свойства")==0)
                     {
@@ -1132,7 +1136,8 @@ class testXML
                     }
                     if (strcmp($paramName,"Объем")==0)
                     {
-                        $param_new=str_ireplace("Объем","Объем (мл)",$param);
+                        //$param_new=str_ireplace("Объем","Объем (мл)",$param);
+                        $param_new="<param name=\"Объем\" unit=\"мл\">".$paramVal."</param>";
                         //echo "$paramName=$param_new<br>";
                     }
                     if (strcmp($paramName,"Пол")==0)
@@ -1213,7 +1218,8 @@ class testXML
                     }
                     if (strcmp($paramName,"Объем")==0)
                     {
-                        $param_new=str_ireplace("Объем","Объем (мл)",$param);
+                        //$param_new=str_ireplace("Объем","Объем (мл)",$param);
+                        $param_new="<param name=\"Объем\" unit=\"мл\">".$paramVal."</param>";
                         //echo "$paramName=$param_new<br>";
                     }
                     if (strcmp($paramName,"Свойства")==0)
@@ -1381,7 +1387,9 @@ class testXML
                     {        
                         $param_new=str_ireplace("Материал","Тип ткани",$param);
                         //$firstParamVal=$this->getFirstParamVal($param);
-                        $param_new="<param name=\"Тип ткани\">".$paramVal."</param>";
+                        $firstParamVal=$this->getFirstParamVal($param);
+                        $param_new="<param name=\"Тип ткани\">".$firstParamVal."</param>";
+                        //$param_new="<param name=\"Тип ткани\">".$paramVal."</param>";
                         $param_new=str_ireplace("Кожзаменитель","Искусственная кожа",$param_new);
                         if (strripos($param,"Кружево"))
                         {
@@ -1626,7 +1634,9 @@ class testXML
                     {        
                         $param_new=str_ireplace("Материал","Тип ткани",$param);
                         //$firstParamVal=$this->getFirstParamVal($param);
-                        $param_new="<param name=\"Тип ткани\">".$paramVal."</param>";
+                        $firstParamVal=$this->getFirstParamVal($param);
+                        $param_new="<param name=\"Тип ткани\">".$firstParamVal."</param>";
+                        //$param_new="<param name=\"Тип ткани\">".$paramVal."</param>";
                         $param_new=str_ireplace("Кожзаменитель","Искусственная кожа",$param_new);
                         
                     }
@@ -2017,6 +2027,7 @@ class testXML
                         $param_new=str_ireplace("Медицинский пластик","Пластик",$param_new);
                         $param_new=str_ireplace("Полиамид","Пластик",$param_new);
                         $param_new=str_ireplace("Эластан","Полиуретан",$param_new);
+                        $param_new=str_ireplace("Камни, стразы|","",$param_new);
                     }
                     if (strcmp($paramName,"Функции")==0)
                     {
@@ -2177,12 +2188,12 @@ class testXML
 
                 //на всякий случай удаляем возможные дубли
                 $params_new=array_unique($params_new);
-                /*
+                
                 echo "<b>$itemName</b><br>";
                 echo "<pre>";
                 print_r($params_new);
                 echo "</pre>";
-                */
+                
                 //а теперь собираем айтем (старую шапку+новые параметры)
                 //сначала склеиваем параметры
                 foreach ($params_new as $new_param)
