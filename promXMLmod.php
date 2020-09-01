@@ -39,6 +39,7 @@ class testXML
         {
             $arr1[]=$pos."</item>";
         }
+        array_pop($arr1);
         return $arr1;
     }
 
