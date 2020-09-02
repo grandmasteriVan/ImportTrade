@@ -498,6 +498,12 @@ class Hotline
                         $params_new[]="<param name=\"Запах\">Банан</param>";
                         $specialTaste=true;
                     }
+                    if (strripos($itemName,"Банан"))
+                    {
+                        $params_new[]="<param name=\"Вкус\">Банан</param>";
+                        $params_new[]="<param name=\"Запах\">Банан</param>";
+                        $specialTaste=true;
+                    }
                     if (strripos($itemName,"виш"))
                     {
                         $params_new[]="<param name=\"Вкус\">Вишня</param>";
@@ -510,6 +516,12 @@ class Hotline
                         $params_new[]="<param name=\"Запах\">Клубника</param>";
                         $specialTaste=true;
                     }
+                    if (strripos($itemName,"Клубн"))
+                    {
+                        $params_new[]="<param name=\"Вкус\">Клубника</param>";
+                        $params_new[]="<param name=\"Запах\">Клубника</param>";
+                        $specialTaste=true;
+                    }
                     if (strripos($itemName,"малин"))
                     {
                         $params_new[]="<param name=\"Вкус\">Малина</param>";
@@ -517,6 +529,18 @@ class Hotline
                         $specialTaste=true;
                     }
                     
+                    if (strripos($itemName,"Яблочн"))
+                    {
+                        $params_new[]="<param name=\"Вкус\">Фруктовый</param>";
+                        $params_new[]="<param name=\"Запах\">Фруктовый</param>";
+                        $specialTaste=true;
+                    }
+                    if (strripos($itemName,"арбуз"))
+                    {
+                        $params_new[]="<param name=\"Вкус\">Фруктовый</param>";
+                        $params_new[]="<param name=\"Запах\">Фруктовый</param>";
+                        $specialTaste=true;
+                    }
                     if (strripos($itemName,"лимон"))
                     {
                         $params_new[]="<param name=\"Вкус\">Фруктовый</param>";
@@ -547,6 +571,12 @@ class Hotline
                         $params_new[]="<param name=\"Запах\">Фруктовый</param>";
                         $specialTaste=true;
                     }
+                    if (strripos($itemName,"Фрук"))
+                    {
+                        $params_new[]="<param name=\"Вкус\">Фруктовый</param>";
+                        $params_new[]="<param name=\"Запах\">Фруктовый</param>";
+                        $specialTaste=true;
+                    }
                     if (strripos($itemName,"tropical"))
                     {
                         $params_new[]="<param name=\"Вкус\">Фруктовый</param>";
@@ -560,6 +590,12 @@ class Hotline
                         $specialTaste=true;
                     }
                     if (strripos($itemName,"шоколад"))
+                    {
+                        $params_new[]="<param name=\"Вкус\">Шоколад</param>";
+                        $params_new[]="<param name=\"Запах\">Шоколад</param>";
+                        $specialTaste=true;
+                    }
+                    if (strripos($itemName,"Шоколад"))
                     {
                         $params_new[]="<param name=\"Вкус\">Шоколад</param>";
                         $params_new[]="<param name=\"Запах\">Шоколад</param>";
