@@ -59,8 +59,6 @@ class Hotline
         //можно сделатьб так. Во многих товарах у нас есть куча лишнего в описаннию. Но тут есть ньюанс - у нас есть позиции, где модель не указана в названии. Такие позиции как раз не распознаются
         //$name_new=preg_replace("/[^,\p{Latin}\d\s\/\(\)]/ui","",$name_new);
         $name_new=str_replace("quot","",$name_new);
-        
-        
         return $name_new;
     }
 
@@ -99,6 +97,49 @@ class Hotline
             $paramName=$matches[1];
         }
         return $paramName;
+    }
+
+    private function getParamVal($param)
+    {
+        //var_dump ($param);
+        if (preg_match("#>(.+?)<#",$param,$matches))
+        {
+            $paramVal=$matches[1];
+        }
+        return $paramVal;
+    }
+
+    private function makeUniqeParams($params)
+    {
+        $params_new=null;
+        $param_names=null;
+        foreach ($params as $param)
+        {
+            $isUniq=true;
+            $paramName=$this->getParamName($param);
+            if (!is_null($param_names))
+            {
+                
+                foreach ($param_names as $param_name)
+                {
+                    if (strcmp($param_name,$paramName)==0)
+                    {
+                        $isUniq=false;
+                    }
+                }
+                if ($isUniq)
+                {
+                    $param_names[]=$paramName;
+                    $params_new[]=$param;
+                }
+            }
+            else
+            {
+                $param_names[]=$paramName;
+                $params_new[]=$param;
+            }
+        }
+        return $params_new;
     }
 
     public function parseXML()
@@ -143,7 +184,7 @@ class Hotline
                     }
                     if (strcmp($paramName,"Пульт")==0)
                     {
-                        if (strcmp($param,"Встроенный"==0)||strcmp($param,"Дистанционный"==0)||strcmp($param,"Проводной"==0))
+                        if (strcmp($param,"Встроенный")==0||strcmp($param,"Дистанционный")==0||strcmp($param,"Проводной")==0)
                         {
                             $param_new="<param name=\"Пульт ДУ\">+</param>";
                         }
@@ -162,14 +203,14 @@ class Hotline
                     }
                     if (strcmp($paramName,"Особенности")==0)
                     {
-                        if (strcmp($param,"Смарт игрушки"==0))
+                        if (strcmp($param,"Смарт игрушки")==0)
                         {
                             $param_new="<param name=\"Управление со смартфона\">+</param>";
                         }
                     }
                     if (strcmp($paramName,"Функции")==0)
                     {
-                        if (strcmp($param,"С вибрацией"==0))
+                        if (strcmp($param,"С вибрацией")==0)
                         {
                             $param_new="<param name=\"Вибрация\">+</param>";
                         }
@@ -177,9 +218,6 @@ class Hotline
                     //для каждогго прараметра добавляем его в массив параметров
                     $params_new[]=$param_new;
                 }
-                $gsoptVibr=false;
-                $clitVibr=false;
-                $analVibr=false;
                 $notSpecial=false;
                 if (strripos($itemName,"Виброяйцо"))
                 {
@@ -324,6 +362,221 @@ class Hotline
                 $params_new=array_unique($params_new);
                 $tmp[]=null;
                 $params_new=array_diff($params_new,$tmp);
+                /*echo "<b>$itemName</b><br>";
+                echo "<pre>";
+                print_r($params_new);
+                echo "</pre>";*/
+
+            }
+
+            if ($catId==3050)
+            {
+                /*echo "<pre>";
+                print_r($params);
+                echo "</pre>";*/
+                //break;
+                //лубрикант или увлажняющий, имеет специализацию. Специалитзацию я пытаюсь отловить по атрибутам. И если не указано особо считаю лкубриканит просто увлажняющим
+                $specialLube=false;
+                $edible=false;
+                foreach ($params as $param)
+                {
+                    $paramName=$this->getParamName($param);
+                    $paramVal=$this->getParamVal($param);
+                    //обнуляем список новых параметров для каждого айтема
+                    $param_new=null;
+                    if (strcmp($paramName,"Страна")==0)
+                    {
+                        $param_new=str_ireplace("Страна","Страна производства",$param);
+                    }
+                    if (strcmp($paramName,"Объем")==0)
+                    {
+                        $param_new="<param name=\"Вес, г / Объем, мл\">".$paramVal." мл</param>";
+                    }
+                    if (strcmp($paramName,"Назначение")==0)
+                    {
+                        //echo "$param<br>";
+                        if (strripos($param,"Анальная"))
+                        {
+                            $param_new="<param name=\"Тип\">Анальный лубрикант</param>";
+                        }
+                        if (strripos($param,"Вагинальная"))
+                        {
+                            $param_new="<param name=\"Тип\">Вагинальный лубрикант</param>";
+                        }
+                        if (strripos($param,"Оральная"))
+                        {
+                            $param_new="<param name=\"Тип\">Оральный лубрикант</param>";
+                        }
+                        if (strripos($param,"Очиститель для игрушек"))
+                        {
+                            $param_new="<param name=\"Тип\">Средство для ухода за секс-игрушками</param>";
+                        }
+                    }
+                    if (strcmp($paramName,"Свойства")==0||strcmp($paramName,"Особенности")==0||strcmp($paramName,"Функции")==0)
+                    {
+                        
+                        //Антибактериальный (21)
+                        if (strripos($param,"Антисептическа"))
+                        {
+                            $param_new="<param name=\"Эффект\">Антибактериальный</param>";
+                            $specialLube=true;
+                        }
+                        ///Обезболивающий (46)
+                        if (strripos($param,"Обезболивающая/Охлаждающая"))
+                        {
+                            $param_new="<param name=\"Эффект\">Обезболивающий</param>";
+                            $specialLube=true;
+                        }
+                        //Охлаждающий (91)
+                        if (strripos($param,"Охлаждающие"))
+                        {
+                            $param_new="<param name=\"Эффект\">Охлаждающий</param>";
+                            $specialLube=true;
+                        }
+                        //Согревающий (93)
+                        if (strripos($param,"Возбуждающая, согревающая")==0||strripos($param,"Согревающие")==0)
+                        {
+                            $param_new="<param name=\"Эффект\">Согревающий</param>";
+                            $specialLube=true;
+                        }
+                        if (strripos($param,"Съедобный/ C ароматом")||strripos($param,"Съедобный"))
+                        {
+                            $edible=true;
+                            echo "Нашли сьедобный $itemName - $param<br>";
+                            //break;
+                        }
+                        //Сужение влагалища (7)
+                        //Увлажняющий (732)
+                    }
+                    if (strcmp($paramName,"Основа")==0)
+                    {
+                        // Водная (843)
+                        // Силиконовая (232)
+                        // Масляная (15)
+                        $param_new=str_ireplace("На водной","Водная",$param);
+                        $param_new=str_ireplace("Водно-силиконовая","Силиконовая",$param_new);
+                        //$param_new=str_ireplace("Силиконовая","Силиконовая",$param_new);
+                        $param_new=str_ireplace("На масляной","Масляная",$param_new);
+                        $param_new=str_ireplace("Силиконовая;Силиконовая","Силиконовая",$param_new);
+                        $param_new=str_ireplace("Силиконовая;Водная","Силиконовая",$param_new);
+                        $param_new=str_ireplace("Водная;Силиконовая","Силиконовая",$param_new);
+                        $param_new=str_ireplace("Силиконовая;Силиконовая","Силиконовая",$param_new);
+                    }
+                    if (strcmp($paramName,"Тип")==0)
+                    {
+                        $param_new=str_ireplace("Тип","Консистенция",$param);
+                        $param_new=str_ireplace("Гель для массажа","Гель",$param_new);
+                        $param_new=str_ireplace("Гель, мазь","Гель",$param_new);
+                        $param_new=str_ireplace("Крема","Крем",$param_new);
+                    }
+
+
+                    //для каждогго прараметра добавляем его в массив параметров
+                    $params_new[]=$param_new;
+                }
+                //если лубрикант не специальный - он увлажняющий
+                if (!$specialLube)
+                {
+                    $params_new[]="<param name=\"Эффект\">Увлажняющий</param>";
+                }
+                // вкусы
+                // Банан (5)
+                // Вишня (17)
+                // Клубника (36)
+                // Малина (14)
+                // Мята (16)
+                // Фруктовый (29)
+                // Шоколад (14)
+                // Нейтральный (780)
+                // Другой (80)
+                if ($edible)
+                {
+                    $specialTaste=false;
+                    if (strripos($itemName,"банан"))
+                    {
+                        $params_new[]="<param name=\"Вкус\">Банан</param>";
+                        $params_new[]="<param name=\"Запах\">Банан</param>";
+                        $specialTaste=true;
+                    }
+                    if (strripos($itemName,"виш"))
+                    {
+                        $params_new[]="<param name=\"Вкус\">Вишня</param>";
+                        $params_new[]="<param name=\"Запах\">Вишня</param>";
+                        $specialTaste=true;
+                    }
+                    if (strripos($itemName,"клубн"))
+                    {
+                        $params_new[]="<param name=\"Вкус\">Клубника</param>";
+                        $params_new[]="<param name=\"Запах\">Клубника</param>";
+                        $specialTaste=true;
+                    }
+                    if (strripos($itemName,"малин"))
+                    {
+                        $params_new[]="<param name=\"Вкус\">Малина</param>";
+                        $params_new[]="<param name=\"Запах\">Малина</param>";
+                        $specialTaste=true;
+                    }
+                    
+                    if (strripos($itemName,"лимон"))
+                    {
+                        $params_new[]="<param name=\"Вкус\">Фруктовый</param>";
+                        $params_new[]="<param name=\"Запах\">Фруктовый</param>";
+                        $specialTaste=true;
+                    }
+                    if (strripos($itemName,"манго"))
+                    {
+                        $params_new[]="<param name=\"Вкус\">Фруктовый</param>";
+                        $params_new[]="<param name=\"Запах\">Фруктовый</param>";
+                        $specialTaste=true;
+                    }
+                    if (strripos($itemName,"персик"))
+                    {
+                        $params_new[]="<param name=\"Вкус\">Фруктовый</param>";
+                        $params_new[]="<param name=\"Запах\">Фруктовый</param>";
+                        $specialTaste=true;
+                    }
+                    if (strripos($itemName,"тропи"))
+                    {
+                        $params_new[]="<param name=\"Вкус\">Фруктовый</param>";
+                        $params_new[]="<param name=\"Запах\">Фруктовый</param>";
+                        $specialTaste=true;
+                    }
+                    if (strripos($itemName,"фрук"))
+                    {
+                        $params_new[]="<param name=\"Вкус\">Фруктовый</param>";
+                        $params_new[]="<param name=\"Запах\">Фруктовый</param>";
+                        $specialTaste=true;
+                    }
+                    if (strripos($itemName,"tropical"))
+                    {
+                        $params_new[]="<param name=\"Вкус\">Фруктовый</param>";
+                        $params_new[]="<param name=\"Запах\">Фруктовый</param>";
+                        $specialTaste=true;
+                    }
+                    if (strripos($itemName,"aperol"))
+                    {
+                        $params_new[]="<param name=\"Вкус\">Фруктовый</param>";
+                        $params_new[]="<param name=\"Запах\">Фруктовый</param>";
+                        $specialTaste=true;
+                    }
+                    if (strripos($itemName,"шоколад"))
+                    {
+                        $params_new[]="<param name=\"Вкус\">Шоколад</param>";
+                        $params_new[]="<param name=\"Запах\">Шоколад</param>";
+                        $specialTaste=true;
+                    }
+                    if (!$specialTaste)
+                    {
+                        $params_new[]="<param name=\"Вкус\">Другой</param>";
+                        $params_new[]="<param name=\"Запах\">Другой</param>";
+                    }
+                }
+
+
+                $params_new=array_unique($params_new);
+                $tmp[]=null;
+                $params_new=array_diff($params_new,$tmp);
+                $params_new=$this->makeUniqeParams($params_new);
                 echo "<b>$itemName</b><br>";
                 echo "<pre>";
                 print_r($params_new);
