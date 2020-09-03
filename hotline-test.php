@@ -58,7 +58,9 @@ class Hotline
         $name_new=$vendor." ".$name_new;
         //можно сделатьб так. Во многих товарах у нас есть куча лишнего в описаннию. Но тут есть ньюанс - у нас есть позиции, где модель не указана в названии. Такие позиции как раз не распознаются
         //$name_new=preg_replace("/[^,\p{Latin}\d\s\/\(\)]/ui","",$name_new);
-        $name_new=str_replace("quot","",$name_new);
+        //$name_new=str_replace("quot","",$name_new);
+        $name_new=str_replace("(, ","(",$name_new);
+        $name_new=str_replace("(, ,",",",$name_new);
         return $name_new;
     }
 
@@ -362,6 +364,7 @@ class Hotline
                 $params_new=array_unique($params_new);
                 $tmp[]=null;
                 $params_new=array_diff($params_new,$tmp);
+                $params_new=$this->makeUniqeParams($params_new);
                 /*echo "<b>$itemName</b><br>";
                 echo "<pre>";
                 print_r($params_new);
@@ -442,7 +445,7 @@ class Hotline
                         if (strripos($param,"Съедобный/ C ароматом")||strripos($param,"Съедобный"))
                         {
                             $edible=true;
-                            echo "Нашли сьедобный $itemName - $param<br>";
+                            //echo "Нашли сьедобный $itemName - $param<br>";
                             //break;
                         }
                         //Сужение влагалища (7)
@@ -613,11 +616,52 @@ class Hotline
                 $tmp[]=null;
                 $params_new=array_diff($params_new,$tmp);
                 $params_new=$this->makeUniqeParams($params_new);
+                /*echo "<b>$itemName</b><br>";
+                echo "<pre>";
+                print_r($params_new);
+                echo "</pre>";*/
+
+            }
+
+            if ($catId==3045)
+            {
+                //echo "<b>$itemName</b><br>";
+                $name_new=preg_replace("/[^,\p{Latin}\d\s\/\(\)\&]/ui","",$itemName);
+                //$name_new=str_replace("quot","",$name_new);
+                echo "$name_new<br>";
+                foreach ($params as $param)
+                {
+                    $paramName=$this->getParamName($param);
+                    $paramVal=$this->getParamVal($param);
+                    //обнуляем список новых параметров для каждого айтема
+                    $param_new=null;
+                    if (strcmp($paramName,"Страна")==0)
+                    {
+                        $param_new=str_ireplace("Страна","Страна производства",$param);
+                    }
+                    if (strcmp($paramName,"Функции")==0)
+                    {
+                        if (strripos($param,"С вибрацией"))
+                        {
+                            $param_new="<param name=\"Наличие вибрации\">+</param>";
+                            
+                        }
+                    }
+                    if (strcmp($paramName,"Диаметр")==0)
+                    {
+                        $param_new=str_ireplace("Диаметр","Диаметр, см",$param);
+                    }
+                    $params_new[]=$param_new;
+                }
+                $params_new[]="<param name=\"Тип товара\">Мастурбатор</param>";
+                $params_new=array_unique($params_new);
+                $tmp[]=null;
+                $params_new=array_diff($params_new,$tmp);
+                $params_new=$this->makeUniqeParams($params_new);
                 echo "<b>$itemName</b><br>";
                 echo "<pre>";
                 print_r($params_new);
                 echo "</pre>";
-
             }
         }
     }
