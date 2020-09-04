@@ -169,12 +169,15 @@ class Hotline
             $itemId=$this->getItemId($item);
             if ($itemId==9727)
             {
-                //Эротический костюм горничной Старательная Бекки S/M
                 $item=$this->setItemName($item,"Эротический костюм горничной Старательная Бекки S/M");
             }
             if ($itemId==900650)
             {
-                $item=setItemCat($item,"3048");
+                $item=$this->setItemCat($item,"3048");
+            }
+            if ($itemId==52423)
+            {
+                $item=$this->setItemName($item,"Fifty Shades of Grey Виброяйцо \"Неутомимые вибрации\" (FS52423)");
             }
             $vendor=$this->getVendor($item);
             $itemName=$this->getItemName($item);
