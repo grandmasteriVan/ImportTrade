@@ -111,6 +111,20 @@ class Hotline
         return $paramVal;
     }
 
+    private function setItemName($item,$name)
+    {
+        $old_name=$this->getItemName($item);
+        $new_item=str_ireplace($old_name,$name,$item);
+        return $new_item;
+    }
+
+    private function setItemCat($item,$catalog)
+    {
+        $old_cat=$this->getCatId($item);
+        $new_item=str_ireplace($old_cat,$catalog,$item);
+        return $new_item;
+    }
+
     private function makeUniqeParams($params)
     {
         $params_new=null;
@@ -152,6 +166,16 @@ class Hotline
         $items=$this->getItemsArr($xml_new);
         foreach ($items as $item)
         {
+            $itemId=$this->getItemId($item);
+            if ($itemId==9727)
+            {
+                //Эротический костюм горничной Старательная Бекки S/M
+                $item=$this->setItemName($item,"Эротический костюм горничной Старательная Бекки S/M");
+            }
+            if ($itemId==900650)
+            {
+                $item=setItemCat($item,"3048");
+            }
             $vendor=$this->getVendor($item);
             $itemName=$this->getItemName($item);
             //echo $itemName;
