@@ -860,6 +860,10 @@ class testXML
                 {
                     $params_new[]="<param name=\"Вкус\">Малина</param>";
                 }
+                if (strripos($itemName,"Мята"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Мята</param>";
+                }
                 if (strripos($itemName,"манго"))
                 {
                     $params_new[]="<param name=\"Вкус\">Манго</param>";
@@ -1076,6 +1080,10 @@ class testXML
                 if (strripos($itemName,"малин"))
                 {
                     $params_new[]="<param name=\"Вкус\">Малина</param>";
+                }
+                if (strripos($itemName,"Мята"))
+                {
+                    $params_new[]="<param name=\"Вкус\">Мята</param>";
                 }
                 if (strripos($itemName,"манго"))
                 {
