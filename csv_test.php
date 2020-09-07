@@ -49,11 +49,54 @@ class csvTest
         $name_new=str_replace($vendor,"",$name_new);
         $name_new=preg_replace("/[^,\p{Latin}\d\s\/\(\)\&\-\.]/ui","",$name_new);
         $name_new=str_replace("()","",$name_new);
+        $name_new=str_replace(" , ","",$name_new);
+        
         $propName="";
         if (strripos($name,"\""))
         {
             $propName=$this->getProperName($name);
         }
+        if(stripos($name,"40167 / 763010 /")
+        {
+            $name_new="We aim to please ".$name_new;
+        }
+        if(stripos($name,"54811 T/")
+        {
+            $name_new="Greedy girl ".$name_new;
+        }
+        if(stripos($name,"40168 / 576310 /")
+        {
+            $name_new="Insatiable Desire ".$name_new;
+        }
+        if(stripos($name,"48293 T/811940 /")
+        {
+            $name_new="Charlie tango ".$name_new;
+        }
+        if(stripos($name,"74956")
+        {
+            $name_new="Greedy girl ".$name_new;
+        }
+        if(stripos($name,"74947")
+        {
+            $name_new="Delicious tingles ".$name_new;
+        }
+        if(stripos($name,"74970")
+        {
+            $name_new="Wicked weekend tingles ".$name_new;
+        }
+        if(stripos($name,"74791 /74971")
+        {
+            $name_new="Greedy girl play box ".$name_new;
+        }
+        if(stripos($name,"59953")
+        {
+            $name_new="A perfrct O ".$name_new;
+        }
+        if(stripos($name,"40170 / 576336 Ю")
+        {
+            $name_new="Yours and mine ".$name_new;
+        }
+
         if (strripos($name,"Вибрат")||strripos($name,"вибрат"))
         {
             $name_new=$vendor." Вибратор $propName".$name_new;
@@ -74,6 +117,14 @@ class csvTest
         if (strripos($name,"Фаллоимитатор"))
         {
             $name_new=$vendor." Фаллоимитатор $propName".$name_new;
+        }
+        if (strripos($name,"Бодистокинг"))
+        {
+            $name_new=$vendor." Комбинезон $propName".$name_new;
+        } 
+        if (strripos($name,"Комбинезон"))
+        {
+            $name_new=$vendor." Комбинезон $propName".$name_new;
         }
         //$name_new=$vendor." ".$name_new;
         //можно сделатьб так. Во многих товарах у нас есть куча лишнего в описаннию. Но тут есть ньюанс - у нас есть позиции, где модель не указана в названии. Такие позиции как раз не распознаются
