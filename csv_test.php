@@ -50,6 +50,8 @@ class csvTest
         $name_new=preg_replace("/[^,\p{Latin}\d\s\/\(\)\&\-\.]/ui","",$name_new);
         $name_new=str_replace("()","",$name_new);
         $name_new=str_replace(" , ","",$name_new);
+        $name_new=str_replace("(, )","",$name_new);
+        $name_new=str_replace("( ),","",$name_new);
         
         $propName="";
         if (strripos($name,"\""))
@@ -226,7 +228,7 @@ class csvTest
             $name_new=$vendor." Набор Feather nipple clamps & butt plug $propName".$name_new;
         }
         
-        if (strripos($name,"Набор Nuru")||strripos($name,"Набор для влюбленных")||strripos($name,"Набор для интригующего вечера")||strripos($name,"Набор для чувственных ласк")||strripos($name,"Набор удовольствий")||strripos($name,"Набор Юбилейный")||strripos($name,"Органический набор")) 
+        if (strripos($name,"Набор Nuru")||strripos($name,"Набор для влюбленных")||strripos($name,"Набор для интригующего вечера")||strripos($name,"Набор для чувственных ласк")||strripos($name,"Набор удовольствий")||strripos($name,"Набор Юбилейный")||strripos($name,"Органический набор")||strripos($name,"Горячее сердце для массажа")||strripos($name,"Набор к спонтанному роману")||strripos($name,"Набор массажных масел")||strripos($name,"Подарочная открытка с набором")) 
         {
             $name_new=$vendor." Набор для эротического массажа $propName".$name_new;
         }
@@ -262,8 +264,136 @@ class csvTest
             $name_new=$vendor." Набор духов с феромонами $propName".$name_new;
         }
         
-        //(13016 /)
-
+        if (strripos($name,"Массажное масло")||strripos($name,"массажное масло")||strripos($name,"Масло для массажа")||strripos($name,"Масло для поцелуев")||strripos($name,"Массажный гель")||strripos($name,"массажная пена")||strripos($name,"пенка для массажа")||strripos($name,"Гель для массажа")) 
+        {
+            $name_new=$vendor." Массажное масло $propName".$name_new;
+        }
+        if (strripos($name,"Вибромассажер для головы"))
+        {
+            $name_new=$vendor." Вибромассажер для головы $propName".$name_new;
+        }
+        
+        if (strripos($name,"Колесо Вартенберга"))
+        {
+            $name_new=$vendor." Колесо Вартенберга $propName".$name_new;
+        }
+        if (strripos($name,"лубрикант")||strripos($name,"Лубрикант")||strripos($name,"Возбуждающая смазка")||strripos($name,"Гель Erotist для женщин")||strripos($name,"Крем-смазка")||strripos($name,"крем-смазка")||strripos($name,"Пробник смазки")||strripos($name,"Смазка пробник")||strripos($name,"Смазка на водной основе")||strripos($name,"Спрей для усиления слюноотделения"))
+        {
+            $name_new=$vendor." Лубрикант $propName".$name_new;
+        }
+          
+        if (strripos($name,"Анальная смазка")||strripos($name,"Анальная крем-смазка")||strripos($name,"Анальный гель")||strripos($name,"Гель анальный")||strripos($name,"Смазка для анального")||strripos($name,"Спрей для анального"))
+        {
+            $name_new=$vendor." Анальный лубрикант $propName".$name_new;
+        }
+        if (strripos($name,"Масло для массажа АФРОДИЗИАК"))
+        {
+            $name_new=$vendor." Массажное масло Sexy therapy APHRODISIAC $propName".$name_new;
+        }
+        if (strripos($name,"Масло для массажа ТАЙНА"))
+        {
+            $name_new=$vendor." Массажное масло Sexy therapy The Secret $propName".$name_new;
+        }
+        if (strripos($name,"Масло для чувственного массажа ЛЮБОВЬ"))
+        {
+            $name_new=$vendor." Массажное масло Sexy therapy Amor $propName".$name_new;
+        }
+        if (strripos($name,"Набор съедобное массажное масло и перо, вкус Сахарной ваты"))
+        {
+            $name_new=$vendor." Набор для эротического массажа Sexy therapy Cotton candy $propName".$name_new;
+        }
+        if (strripos($name,"Набор съедобное массажное масло с пером, Клубничка"))
+        {
+            $name_new=$vendor." Набор для эротического массажа Sexy therapy Strawberry $propName".$name_new;
+        }
+        if (strripos($name,"Набор съедобное массажное масло с пером, Яблоко"))
+        {
+            $name_new=$vendor." Набор для эротического массажа Sexy therapy Apple $propName".$name_new;
+        }
+        if (strripos($name,"Масло массажное с ароматом Жасмина"))
+        {
+            $name_new=$vendor." Массажное масло Jasmin $propName".$name_new;
+        }
+        if (strripos($name,"Для настоящего ПрофессиАНАЛА"))
+        {
+            $name_new=$vendor." Набор лубрикантов \"Для настоящего ПрофессиАНАЛА\" $propName".$name_new;
+        }
+        if (strripos($name,"Набор Для 100%-го Секс-эксперта"))
+        {
+            $name_new=$vendor." Набор лубрикантов \"Набор Для 100%-го Секс-эксперта\" $propName".$name_new;
+        }
+        if (strripos($name,"Для Секс Богинь и Обольстительниц"))
+        {
+            $name_new=$vendor." Набор лубрикантов \"Для Секс Богинь и Обольстительниц\" $propName".$name_new;
+        }
+        if (strripos($name,"Набор смазок тем, кто любит погорячее"))
+        {
+            $name_new=$vendor." Набор лубрикантов \"Тем, кто любит погорячее\" $propName".$name_new;
+        }
+        if (strripos($name,"Набор эротической косметики КОРОБОЧКА ЛЮБВИ"))
+        {
+            $name_new=$vendor." Набор лубрикантов Love box Passion night $propName".$name_new;
+        }
+        
+        if (strripos($name,"О-кей для двоих"))
+        {
+            $name_new=$vendor." О-кей для двоих $propName".$name_new;
+        }
+        if (strripos($name,"(21596)"))
+        {
+            $name_new=$vendor." Warming desserts Fresh delicious donuts lubricant $propName".$name_new;
+        }
+        if (strripos($name,"(10023 / 66875)"))
+        {
+            $name_new=$vendor." GO 50 ml. $propName".$name_new;
+        }
+        if (strripos($name,"(10030 / 66876)"))
+        {
+            $name_new=$vendor." GO 100 ml. $propName".$name_new;
+        }
+        if (strripos($name,"(623822 Ю/)"))
+        {
+            $name_new=$vendor." Relax fisting gel $propName".$name_new;
+        }
+        if (strripos($name,"(11704 Ю/)"))
+        {
+            $name_new=$vendor." AQUAglide $propName".$name_new;
+        }
+        if (strripos($name,"(11010 Ю/)"))
+        {
+            $name_new=$vendor." BIOglide anal $propName".$name_new;
+        }
+        
+        if (strripos($name,"(73022 B/20014 /)"))
+        {
+            $name_new=$vendor." О-кей anal $propName".$name_new;
+        }
+        if (strripos($name,"(20463)"))
+        {
+            $name_new=$vendor." Fan flavors Sexy strawberry warming lubricant $propName".$name_new;
+        }
+        if (strripos($name,"(20466)"))
+        {
+            $name_new=$vendor." Fan flavors Popp'n cherry lubricant $propName".$name_new;
+        }
+        
+        if (strripos($name,"(10061 / 66881)"))
+        {
+            $name_new=$vendor." YES 50 ml. $propName".$name_new;
+        }
+        if (strripos($name,"(10078 / 66882)"))
+        {
+            $name_new=$vendor." YES 100 ml. $propName".$name_new;
+        }
+        if (strripos($name,"УСЛАДА")||strripos($name,"Услада"))
+        {
+            $name_new=$vendor." Услада $propName".$name_new;
+        }
+        
+        if (strripos($name,"(86895)"))
+        {
+            $name_new=$vendor." Warming water-based lubricant $propName".$name_new;
+        }
         //$name_new=$vendor." ".$name_new;
         //можно сделатьб так. Во многих товарах у нас есть куча лишнего в описаннию. Но тут есть ньюанс - у нас есть позиции, где модель не указана в названии. Такие позиции как раз не распознаются
         //$name_new=preg_replace("/[^,\p{Latin}\d\s\/\(\)]/ui","",$name_new);
