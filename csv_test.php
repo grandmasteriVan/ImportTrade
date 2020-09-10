@@ -277,7 +277,7 @@ class csvTest
         {
             $name_new=$vendor." Колесо Вартенберга $propName".$name_new;
         }
-        if (strripos($name,"лубрикант")||strripos($name,"Лубрикант")||strripos($name,"Возбуждающая смазка")||strripos($name,"Гель Erotist для женщин")||strripos($name,"Крем-смазка")||strripos($name,"крем-смазка")||strripos($name,"Пробник смазки")||strripos($name,"Смазка пробник")||strripos($name,"Смазка на водной основе")||strripos($name,"Спрей для усиления слюноотделения"))
+        if (strripos($name,"лубрикант")||strripos($name,"Лубрикант")||strripos($name,"Возбуждающая смазка")||strripos($name,"Гель Erotist для женщин")||strripos($name,"Крем-смазка")||strripos($name,"крем-смазка")||strripos($name,"Пробник смазки")||strripos($name,"Смазка пробник")||strripos($name,"Смазка на водной основе")||strripos($name,"Спрей для усиления слюноотделения")||strripos($name,"Пролонгатор")||strripos($name,"пролонгатор")||strripos($name,"гибридный гель")||strripos($name,"масло для женщин")||strripos($name,"Возбуждающий Гель")||strripos($name,"Возбуждающий гель")||strripos($name,"Гель для сужения")||strripos($name,"Гель для усиления")||strripos($name,"Клиторальный гель")) 
         {
             $name_new=$vendor." Лубрикант $propName".$name_new;
         }
@@ -334,7 +334,139 @@ class csvTest
         {
             $name_new=$vendor." Набор лубрикантов Love box Passion night $propName".$name_new;
         }
+        if (strripos($name,"бюстгальтер"))
+        {
+            $name_new=$vendor." Бюстгальтер $propName".$name_new;
+        }
+        if (strripos($name,"боди")||strripos($name,"Боди"))
+        {
+            $name_new=$vendor." Боди $propName".$name_new;
+        }
+        if (strripos($name,"Корсет"))
+        {
+            $name_new=$vendor." Корсет $propName".$name_new;
+        }
+        if (strripos($name,"платье")||strripos($name,"Платье"))
+        {
+            $name_new=$vendor." Сексуальное платье $propName".$name_new;
+        }
+        if (strripos($name,"Пояс для чулок"))
+        {
+            $name_new=$vendor." Пояс для чулок $propName".$name_new;
+        }
+        if (strripos($name,"Трусики")||strripos($name,"Трусы")||strripos($name,"стринги")||strripos($name,"трусики"))
+        {
+            $name_new=$vendor." Трусики $propName".$name_new;
+        }
+        if (strripos($name,"Шорты")||strripos($name,"шорты"))
+        {
+            $name_new=$vendor." Шорты $propName".$name_new;
+        }
+        if (strripos($name,"Чулки"))
+        {
+            $name_new=$vendor." Чулки $propName".$name_new;
+        }
+        if (strripos($name,"Юбка"))
+        {
+            $name_new=$vendor." Юбка $propName".$name_new;
+        }
+        if (strripos($name,"Бебидолл"))
+        {
+            $name_new=$vendor." Бэби-долл $propName".$name_new;
+        }
+        if (strripos($name,"Костюм горничной")||strripos($name,"остюм сексуальной горничной")||strripos($name,"Костюм Горничной"))
+        {
+            $name_new=$vendor." Костюм горничной $propName".$name_new;
+        }
+        if (strripos($name,"сорочка")||strripos($name,"Сорочка"))
+        {
+            $name_new=$vendor." Сорочка $propName".$name_new;
+        }
+        if (strripos($name,"Халат"))
+        {
+            $name_new=$vendor." Эротический пеньюар $propName".$name_new;
+        }
+        if (strripos($name,"футболка")||strripos($name,"Футболка"))
+        {
+            $name_new=$vendor." Футболка $propName".$name_new;
+        }
+        if (strripos($name,"Штаны")||strripos($name,"штаны"))
+        {
+            $name_new=$vendor." Штаны $propName".$name_new;
+        }
+        if (strripos($name,"перчатки")||strripos($name,"Перчатки"))
+        {
+            $name_new=$vendor." Перчатки $propName".$name_new;
+        }
+        if (strripos($name,"Маска"))
+        {
+            $name_new=$vendor." Маска $propName".$name_new;
+        }
+        if (strripos($name,"пэстисы")||strripos($name,"Пестисы"))
+        {
+            $name_new=$vendor." Пэстисы $propName".$name_new;
+        }
+        if (strripos($name,"Секси-ученицы")||strripos($name,"студентки"))
+        {
+            $name_new=$vendor." Костюм школьницы $propName".$name_new;
+        }
+        if (strripos($name,"костюм стюардессы"))
+        {
+            $name_new=$vendor." Костюм стюардессы $propName".$name_new;
+        }
+        if (strripos($name,"Костюм кош"))
+        {
+            $name_new=$vendor." Костюм кошечки $propName".$name_new;
+        }
+        if (strripos($name,"учительницы"))
+        {
+            $name_new=$vendor." Костюм учительницы $propName".$name_new;
+        }
+        if (strripos($name,"бондажный набор")||strripos($name,"Набор для бондажа"))
+        {
+            $name_new=$vendor." Бондажный набор $propName".$name_new;
+        }
+        if (strripos($name,"Лента для фиксации"))
+        {
+            $name_new=$vendor." Бондажная лента $propName".$name_new;
+        }
+        if (strripos($name,"Кляп"))
+        {
+            $name_new=$vendor." Кляп $propName".$name_new;
+        }
+        if (strripos($name,"Массажная свеча")||strripos($name,"Свеча для массажа")||strripos($name,"Свеча массажная"))
+        {
+            $name_new=$vendor." Массажная свеча $propName".$name_new;
+        } 
+        if (strripos($name,"Наручники"))
+        {
+            $name_new=$vendor." Наручники $propName".$name_new;
+        }
+        if (strripos($name,"Ошейник"))
+        {
+            $name_new=$vendor." Ошейник $propName".$name_new;
+        }
+         
+        if (strripos($name,"Парик"))
+        {
+            $name_new=$vendor." Парик $propName".$name_new;
+        }
         
+        if (strripos($name,"Комплект"))
+        {
+            $name_new=$vendor." Комплект $propName".$name_new;
+        } 
+        if (strripos($name,"портупея")||strripos($name,"Портупея"))
+        {
+            $name_new=$vendor." Портупея $propName".$name_new;
+        }
+        
+        if (strripos($name,"Возбуждающие капли")||strripos($name,"Возбуждающий бальзам")||strripos($name,"Капли для возбуждения"))
+        {
+            $name_new=$vendor." Возбуждающие капли $propName".$name_new;
+        }
+
+
         if (strripos($name,"О-кей для двоих"))
         {
             $name_new=$vendor." О-кей для двоих $propName".$name_new;
@@ -363,7 +495,6 @@ class csvTest
         {
             $name_new=$vendor." BIOglide anal $propName".$name_new;
         }
-        
         if (strripos($name,"(73022 B/20014 /)"))
         {
             $name_new=$vendor." О-кей anal $propName".$name_new;
@@ -376,7 +507,6 @@ class csvTest
         {
             $name_new=$vendor." Fan flavors Popp'n cherry lubricant $propName".$name_new;
         }
-        
         if (strripos($name,"(10061 / 66881)"))
         {
             $name_new=$vendor." YES 50 ml. $propName".$name_new;
@@ -389,11 +519,57 @@ class csvTest
         {
             $name_new=$vendor." Услада $propName".$name_new;
         }
-        
         if (strripos($name,"(86895)"))
         {
             $name_new=$vendor." Warming water-based lubricant $propName".$name_new;
         }
+        if (strripos($name,"(220161)"))
+        {
+            $name_new=$vendor." Prolong man for longer pleasure $propName".$name_new;
+        }
+        if (strripos($name,"(21357)")||strripos($name,"(321357)"))
+        {
+            $name_new=$vendor." Orgasm drops clitoral arousal $propName".$name_new;
+        }
+        if (strripos($name,"(21340)"))
+        {
+            $name_new=$vendor." Electric Fellatio $propName".$name_new;
+        }
+        if (strripos($name,"ОЩУЩЕНИЯ И ТРИУМФ"))
+        {
+            $name_new=$vendor." Sensations & prowess $propName".$name_new;
+        }
+        if (strripos($name,"(21180)"))
+        {
+            $name_new=$vendor." Xtra hard power gel for him $propName".$name_new;
+        }
+        if (strripos($name,"(27479)"))
+        {
+            $name_new=$vendor." Vivify $propName".$name_new;
+        }
+        if (strripos($name,"(3101 Ю/)"))
+        {
+            $name_new=$vendor." Extasia $propName".$name_new;
+        }
+        if (strripos($name,"(15325)"))
+        {
+            $name_new=$vendor." Vibration! strawberry $propName".$name_new;
+        }
+        if (strripos($name,"(21197)"))
+        {
+            $name_new=$vendor." Sexy vibe! $propName".$name_new;
+        }
+        if (strripos($name,"(21210)"))
+        {
+            $name_new=$vendor." Sexy vibe! hot $propName".$name_new;
+        }
+        if (strripos($name,"(121265)"))
+        {
+            $name_new=$vendor." Touro $propName".$name_new;
+        }
+        
+        
+
         //$name_new=$vendor." ".$name_new;
         //можно сделатьб так. Во многих товарах у нас есть куча лишнего в описаннию. Но тут есть ньюанс - у нас есть позиции, где модель не указана в названии. Такие позиции как раз не распознаются
         //$name_new=preg_replace("/[^,\p{Latin}\d\s\/\(\)]/ui","",$name_new);
