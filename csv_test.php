@@ -47,7 +47,7 @@ class csvTest
         
         $name_new=str_replace("15 см диаметр 5","7.5",$name_new);
         $name_new=str_replace($vendor,"",$name_new);
-        $name_new=preg_replace("/[^,\p{Latin}\d\s\/\(\)\&\-\.]/ui","",$name_new);
+        $name_new=preg_replace("/[^,\p{Latin}\d\s\/\(\)\&\-\.\%]/ui","",$name_new);
         $name_new=str_replace("()","",$name_new);
         $name_new=str_replace(" , ","",$name_new);
         $name_new=str_replace("(, )","",$name_new);
@@ -277,7 +277,7 @@ class csvTest
         {
             $name_new=$vendor." Колесо Вартенберга $propName".$name_new;
         }
-        if (strripos($name,"лубрикант")||strripos($name,"Лубрикант")||strripos($name,"Возбуждающая смазка")||strripos($name,"Гель Erotist для женщин")||strripos($name,"Крем-смазка")||strripos($name,"крем-смазка")||strripos($name,"Пробник смазки")||strripos($name,"Смазка пробник")||strripos($name,"Смазка на водной основе")||strripos($name,"Спрей для усиления слюноотделения")||strripos($name,"Пролонгатор")||strripos($name,"пролонгатор")||strripos($name,"гибридный гель")||strripos($name,"масло для женщин")||strripos($name,"Возбуждающий Гель")||strripos($name,"Возбуждающий гель")||strripos($name,"Гель для сужения")||strripos($name,"Гель для усиления")||strripos($name,"Клиторальный гель")) 
+        if (strripos($name,"лубрикант")||strripos($name,"Лубрикант")||strripos($name,"Возбуждающая смазка")||strripos($name,"Гель Erotist для женщин")||strripos($name,"Крем-смазка")||strripos($name,"крем-смазка")||strripos($name,"Пробник смазки")||strripos($name,"Смазка пробник")||strripos($name,"Смазка на водной основе")||strripos($name,"Спрей для усиления слюноотделения")||strripos($name,"Пролонгатор")||strripos($name,"пролонгатор")||strripos($name,"гибридный гель")||strripos($name,"масло для женщин")||strripos($name,"Возбуждающий Гель")||strripos($name,"Возбуждающий гель")||strripos($name,"Гель для сужения")||strripos($name,"Гель для усиления")||strripos($name,"Клиторальный гель")||strripos($name,"Спрей для глубокого минета")) 
         {
             $name_new=$vendor." Лубрикант $propName".$name_new;
         }
@@ -446,12 +446,10 @@ class csvTest
         {
             $name_new=$vendor." Ошейник $propName".$name_new;
         }
-         
         if (strripos($name,"Парик"))
         {
             $name_new=$vendor." Парик $propName".$name_new;
         }
-        
         if (strripos($name,"Комплект"))
         {
             $name_new=$vendor." Комплект $propName".$name_new;
@@ -460,10 +458,25 @@ class csvTest
         {
             $name_new=$vendor." Портупея $propName".$name_new;
         }
-        
         if (strripos($name,"Возбуждающие капли")||strripos($name,"Возбуждающий бальзам")||strripos($name,"Капли для возбуждения"))
         {
             $name_new=$vendor." Возбуждающие капли $propName".$name_new;
+        }
+        if (strripos($name,"Клизма"))
+        {
+            $name_new=$vendor." Клизма $propName".$name_new;
+        }
+        if (strripos($name,"Очиститель")||strripos($name,"очиститель")||strripos($name,"Очищающее")||strripos($name,"Очищающий")||strripos($name,"Спрей для ухода за секс игрушками"))
+        {
+            $name_new=$vendor." Очиститель для игрушек $propName".$name_new;
+        }
+        if (strripos($name,"Салфетки для интимной гигиены"))
+        {
+            $name_new=$vendor." Салфетки для интимной гигиены $propName".$name_new;
+        }
+        if (strripos($name,"Салфетки для интимной гигиены"))
+        {
+            $name_new=$vendor." Салфетки для интимной гигиены $propName".$name_new;
         }
 
 
@@ -567,6 +580,29 @@ class csvTest
         {
             $name_new=$vendor." Touro $propName".$name_new;
         }
+        if (strripos($name,"(20634)"))
+        {
+            $name_new=$vendor." Бомбочка для ванн Funbulous bath bomb with pheromones ";
+        }
+        if (strripos($name,"(20627)"))
+        {
+            $name_new=$vendor." Бомбочка для ванн Spicyness bath bomb with pheromones (20627)";
+        }
+        if (strripos($name,"(54726 /)"))
+        {
+            $name_new=$vendor." Black mont $propName".$name_new;
+        }
+        if (strripos($name,"(86888)"))
+        {
+            $name_new=$vendor." Cleaning spray $propName".$name_new;
+        }
+        if (strripos($name,"(000109)"))
+        {
+            $name_new=$vendor." Соль для ванн Treasures of sea (000109)";
+        }
+
+
+
         
         
 
