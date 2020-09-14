@@ -192,7 +192,7 @@ class csvTest
         {
             $name_new=$vendor." Анальный вибратор $propName".$name_new;
         }
-        if (strripos($name,"Массажер простаты"))
+        if (strripos($name,"Массажер простаты")||strripos($name,"ассажер простаты"))
         {
             $name_new=$vendor." Массажер простаты $propName".$name_new;
         }
@@ -610,9 +610,13 @@ class csvTest
         //$test = preg_replace('~\[.*?\]~','[]',$test);
         $name_new=preg_replace('~\(.*?\)~','',$name_new);
         $color=$this->hl->getColor($name);
+        $tmp=explode(";",$color);
+        $color=$tmp[0];
         $code=$this->hl->getCode($name);
         //echo "$name_new, $code, $color<br>";
         $name_new=$name_new." $color ($code)";
+        $name_new=str_replace($vendor,"",$name_new);
+        $name_new=$vendor." $name_new";
         
 
         
@@ -638,18 +642,19 @@ class csvTest
             //echo "<pre>".print_r($item)."</pre>";
             if (array_search ("Товар не распознан",$item))
             {  
-                $name=$item[2];
+                $name_old=$item[2];
                 $vendor=$item[1];
-                $name=$this->stripName($name,$vendor);
+                $name=$this->stripName($name_old,$vendor);
                 echo "нашли товар с проблемным именем - $name<br><br>";
                 //$name_new=preg_replace("/[^,\p{Latin}\d\s\/\(\)\&]/ui","",$name);
                 //echo "$name_new<br><br>";
                 //break;
+
             }
             
         }
     }
 }
-
+set_time_limit(30000);
 $test = new csvTest(new Hotline);
 $test->test();
