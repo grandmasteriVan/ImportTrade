@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: text/html; charset=utf-8');
-
+include_once "hotline-test.php";
 class csvTest
 {
     /*public function test()
@@ -13,6 +13,12 @@ class csvTest
         echo "<pre>".print_r($csv)."</pre>";
     }*/
 
+    protected $hl;
+    public function __construct(Hotline $HL)
+    {
+        $this->hl=$HL;
+    }
+    
     private function readXML()
     {
         $csv=file_get_contents('hotline_ua-v1.csv');
@@ -601,7 +607,13 @@ class csvTest
             $name_new=$vendor." Соль для ванн Treasures of sea (000109)";
         }
 
-
+        //$test = preg_replace('~\[.*?\]~','[]',$test);
+        $name_new=preg_replace('~\(.*?\)~','',$name_new);
+        $color=$this->hl->getColor($name);
+        $code=$this->hl->getCode($name);
+        //echo "$name_new, $code, $color<br>";
+        $name_new=$name_new." $color ($code)";
+        
 
         
         
@@ -639,5 +651,5 @@ class csvTest
     }
 }
 
-$test = new csvTest();
+$test = new csvTest(new Hotline);
 $test->test();
