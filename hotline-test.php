@@ -158,6 +158,47 @@ class Hotline
         return $params_new;
     }
 
+    public function getCode($itemName)
+    {
+        $xml=$this->readFile();
+        $xml_new=$this->stripHead($xml);
+        $items=$this->getItemsArr($xml_new);
+        foreach ($items as $item)
+        {
+            $name=$this->getItemName($item);
+            if ($name==$itemName)
+            {
+                $code=$this->getItemId($item);
+                return $code;
+            }
+        }
+    }
+
+    public function getColor($itemName)
+    {
+        $xml=$this->readFile();
+        $xml_new=$this->stripHead($xml);
+        $items=$this->getItemsArr($xml_new);
+        foreach ($items as $item)
+        {
+            $name=$this->getItemName($item);
+            if ($name==$itemName)
+            {
+                $params=$this->getParams($item);
+                foreach ($params as $param)
+                {
+                    $paramName=$this->getParamName($param);
+                    if (strcmp($paramName,"Цвет")==0)
+                    {
+                        $paramVal=$this->getParamVal($param);
+                        return $paramVal;
+                    }
+                }
+            }
+        }
+
+    }
+
     public function parseXML()
     {
         $xml=$this->readFile();
@@ -694,6 +735,6 @@ class Hotline
     }
 }
 
-$test=new Hotline;
-$test->parseXML();
-echo "Done";
+//$test=new Hotline;
+//$test->parseXML();
+//echo "Done";
