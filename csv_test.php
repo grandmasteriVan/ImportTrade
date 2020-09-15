@@ -606,6 +606,10 @@ class csvTest
         {
             $name_new=$vendor." Соль для ванн Treasures of sea (000109)";
         }
+        if (strripos($name,"(117022)"))
+        {
+            $name_new=$vendor." Секс-кукла Jennifer (117022)";
+        }
 
         //$test = preg_replace('~\[.*?\]~','[]',$test);
         $name_new=preg_replace('~\(.*?\)~','',$name_new);
