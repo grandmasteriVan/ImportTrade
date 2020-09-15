@@ -1358,7 +1358,7 @@ class testXML
                 //var_dump ($new_item);
             }
 
-            if ($catId==22)
+            if ($catId==22||$catId==107)
             {
                 //echo "нашли позицию с нужным ИД<br>";
                 //обнуляем список новых параметров для каждого айтема
@@ -1418,7 +1418,7 @@ class testXML
                 //var_dump ($new_item);
             }
 
-            if ($catId==14||$catId==119||$catId==70||$catId==69||$catId==68||$catId==65||$catId==62||$catId==60||$catId==24)
+            if ($catId==14||$catId==119||$catId==70||$catId==69||$catId==68||$catId==65||$catId==62||$catId==60||$catId==24||$catId==168)
             {
                 //echo "нашли позицию с нужным ИД<br>";
                 //обнуляем список новых параметров для каждого айтема
@@ -2045,7 +2045,7 @@ class testXML
                 //var_dump ($new_item);
             }
 
-            if ($catId==147||$catId==127||$catId==106||$catId==88||$catId==53||$catId==50||$catId==48||$catId==43||$catId==21||$catId==20||$catId==18||$catId==16||$catId==10||$catId==9||$catId==8||$catId==7||$catId==6||$catId==1||$catId==10)
+            if ($catId==147||$catId==127||$catId==106||$catId==88||$catId==53||$catId==50||$catId==48||$catId==43||$catId==21||$catId==20||$catId==18||$catId==16||$catId==10||$catId==9||$catId==8||$catId==7||$catId==6||$catId==1||$catId==10||$catId==166)
             {
                 //echo "нашли позицию с нужным ИД<br>";
                 //обнуляем список новых параметров для каждого айтема
