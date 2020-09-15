@@ -734,9 +734,9 @@ class Hotline
             if ($catId==3045)
             {
                 //echo "<b>$itemName</b><br>";
-                $name_new=preg_replace("/[^,\p{Latin}\d\s\/\(\)\&]/ui","",$itemName);
+                //$name_new=preg_replace("/[^,\p{Latin}\d\s\/\(\)\&]/ui","",$itemName);
                 //$name_new=str_replace("quot","",$name_new);
-                echo "$name_new<br>";
+                //echo "$name_new<br>";
                 foreach ($params as $param)
                 {
                     $paramName=$this->getParamName($param);
@@ -784,6 +784,62 @@ class Hotline
                 //получаем новый айтем (не забываем закрывающий тег)
                 $new_item=$itemHead.$new_params."</item>";
                 //var_dump ($new_item);
+            }
+            if ($catId==3056)
+            {
+                foreach ($params as $param)
+                {
+                    $paramName=$this->getParamName($param);
+                    $paramVal=$this->getParamVal($param);
+                    //обнуляем список новых параметров для каждого айтема
+                    $param_new=null;
+                    if (strcmp($paramName,"Пол")==0)
+                    {
+                        if (strripos($param,"Для женщин"))
+                        {
+                            $param_new="<param name=\"Пол куклы\">Мужской</param>";  
+                        }
+                        if (strripos($param,"Для мужчин"))
+                        {
+                            $param_new="<param name=\"Пол куклы\">Женский</param>";  
+                        }
+                        if (strripos($param,"Другое"))
+                        {
+                            $param_new="<param name=\"Пол куклы\">Мужской</param>";  
+                        }
+                    }
+                    if (strcmp($paramName,"Материал")==0)
+                    {
+                        $param_new=str_ireplace("Материал","Материал куклы",$param);
+                        
+                        $param_new=str_ireplace("Резина","Латекс",$param);
+                    }
+                    if (strcmp($paramName,"Вид")==0)
+                    {
+                        /*$isVag=false;
+                        $isAnus=false;
+                        $isMouth=false;*/
+                        if (strripos($param,"Рот"))
+                        {
+                            echo "4555";
+                            $param_new.="<param name=\"Рот\">+</param>";
+                        }
+                        if (strripos($param,"Вагина"))
+                        {
+                            $param_new.="<param name=\"Вагина\">+</param>";
+                        }
+                        if (strripos($param,"Анус"))
+                        {
+                            $param_new.="<param name=\"Анус\">+</param>";
+                        }
+                        
+                    }
+                }
+            }
+            
+            if ($catId!=3045&&$catId!=3048&&$catId!=3050&&$catId!=3045&&$catId!=3056)
+            {
+                $new_item=$item;
             }
             //тут будем сорбирать все позиции
             $items_new.=$new_item;
