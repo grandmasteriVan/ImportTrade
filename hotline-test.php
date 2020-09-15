@@ -199,6 +199,12 @@ class Hotline
 
     }
 
+    private function getItemHead($item)
+    {
+        $itemHead=explode("<param name",$item);
+        return $itemHead[0];
+    }
+
     public function parseXML()
     {
         $xml=$this->readFile();
@@ -207,6 +213,8 @@ class Hotline
         $items=$this->getItemsArr($xml_new);
         foreach ($items as $item)
         {
+            //обнуляем новую позицию перед созданием
+            $new_item=null;
             $itemId=$this->getItemId($item);
             if ($itemId==9727)
             {
@@ -228,7 +236,10 @@ class Hotline
             $catId=$this->getCatId($item);
 
             $params=$this->getParams($item);
+            //это айтем до параметров. Мы его трогать вообще никогда не будем
+            $itemHead=$this->getItemHead($item);
             $params_new=null;
+            $new_params=null;
             if ($catId==3048)
             {
                 /*echo "<pre>";
@@ -433,10 +444,25 @@ class Hotline
                 $tmp[]=null;
                 $params_new=array_diff($params_new,$tmp);
                 $params_new=$this->makeUniqeParams($params_new);
+                foreach ($params_new as $new_param)
+                {
+                    //отсекаем страну, которая у нас пустая (NULL)
+                    if ($new_param!=null)
+                    {
+                        $new_params.=$new_param.PHP_EOL;
+                    }
+                    
+                }
                 /*echo "<b>$itemName</b><br>";
                 echo "<pre>";
                 print_r($params_new);
                 echo "</pre>";*/
+                //бывает случай, когда позиция у нас не имеет ни одного парамептра. Тогда у нее появляется лишний тег </item>. На всякий случай убираем его
+                $itemHead=str_ireplace("</item>","",$itemHead);
+                //получаем новый айтем (не забываем закрывающий тег)
+                $new_item=$itemHead.$new_params."</item>";
+                //var_dump ($new_item);
+                //break;
 
             }
 
@@ -688,6 +714,20 @@ class Hotline
                 echo "<pre>";
                 print_r($params_new);
                 echo "</pre>";*/
+                foreach ($params_new as $new_param)
+                {
+                    //отсекаем страну, которая у нас пустая (NULL)
+                    if ($new_param!=null)
+                    {
+                        $new_params.=$new_param.PHP_EOL;
+                    }
+                    
+                }
+                //бывает случай, когда позиция у нас не имеет ни одного парамептра. Тогда у нее появляется лишний тег </item>. На всякий случай убираем его
+                $itemHead=str_ireplace("</item>","",$itemHead);
+                //получаем новый айтем (не забываем закрывающий тег)
+                $new_item=$itemHead.$new_params."</item>";
+                //var_dump ($new_item);
 
             }
 
@@ -726,15 +766,38 @@ class Hotline
                 $tmp[]=null;
                 $params_new=array_diff($params_new,$tmp);
                 $params_new=$this->makeUniqeParams($params_new);
-                echo "<b>$itemName</b><br>";
+                /*echo "<b>$itemName</b><br>";
                 echo "<pre>";
                 print_r($params_new);
-                echo "</pre>";
+                echo "</pre>";*/
+                foreach ($params_new as $new_param)
+                {
+                    //отсекаем страну, которая у нас пустая (NULL)
+                    if ($new_param!=null)
+                    {
+                        $new_params.=$new_param.PHP_EOL;
+                    }
+                    
+                }
+                //бывает случай, когда позиция у нас не имеет ни одного парамептра. Тогда у нее появляется лишний тег </item>. На всякий случай убираем его
+                $itemHead=str_ireplace("</item>","",$itemHead);
+                //получаем новый айтем (не забываем закрывающий тег)
+                $new_item=$itemHead.$new_params."</item>";
+                //var_dump ($new_item);
             }
+            //тут будем сорбирать все позиции
+            $items_new.=$new_item;
+            //echo "kjuhkjhhkjhjk";
         }
+        //var_dump($items_new);
+        $items_new="<items>".$items_new.PHP_EOL."</items>";
+        //начинаем собирать финальную ХМЛку
+        $XMLnew=$xmlHead.PHP_EOL."</categories>".PHP_EOL.$items_new.PHP_EOL."</price>";
+        //var_dump($XMLnew);
+        file_put_contents("new_hotline.xml",$XMLnew);
     }
 }
 
-//$test=new Hotline;
-//$test->parseXML();
-//echo "Done";
+$test=new Hotline;
+$test->parseXML();
+echo "Done";
