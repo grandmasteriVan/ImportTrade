@@ -3,12 +3,13 @@ header('Content-Type: text/html; charset=utf-8');
 
 class testXML
 {
-    //private $baseXML;
+    private $pathOrig="prom_ua.xml";
+    private $pathMod="new_test.xml";
     
     private function readFile()
     {
         //$xml=file_get_contents('test.xml');
-        $xml=file_get_contents('prom_ua.xml');
+        $xml=file_get_contents($this->pathOrig);
         //$this->baseXML=file_get_contents('prom_ua.xml');
         //var_dump ($xml);
         return $xml;
@@ -2321,7 +2322,7 @@ class testXML
         $XMLnew=str_replace("<vendor>UPKO","<vendor>Zalo",$XMLnew);
         $XMLnew=str_replace("<vendor>Runyu","<vendor>Foshan Jiaguan Metalwork",$XMLnew);
         //var_dump($XMLnew);
-        file_put_contents("new_test.xml",$XMLnew);
+        file_put_contents($this->pathMod,$XMLnew);
         echo "<b>Done</b>";
 
     }
