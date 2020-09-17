@@ -422,6 +422,7 @@ class testXML
                             
                             $param_new=str_ireplace("Размер","Международный размер",$param);
                             $param_new=str_ireplace("One size","S/M/L",$param_new);
+                            $param_new=str_ireplace("L;XL;M;S","S/M/L",$param_new);
                             $param_new=str_ireplace("L;M;S","S/M/L",$param_new);
                             $param_new=str_ireplace("L;M;S","S/M/L",$param_new);
                             $param_new=str_ireplace("|","/",$param_new);
@@ -1496,6 +1497,7 @@ class testXML
                         
                         $param_new=str_ireplace("Размер","Международный размер",$param);
                         $param_new=str_ireplace("One size","S/M/L",$param_new);
+                        $param_new=str_ireplace("L;XL;M;S","S/M/L",$param_new);
                         $param_new=str_ireplace("L;M;S","S/M/L",$param_new);
                         $param_new=str_ireplace("|","/",$param_new);
                         $param_new=str_ireplace("Plus Size/","",$param_new);
@@ -1729,6 +1731,7 @@ class testXML
                         
                         $param_new=str_ireplace("Размер","Международный размер",$param);
                         $param_new=str_ireplace("One size","S/M/L",$param_new);
+                        $param_new=str_ireplace("L;XL;M;S","S/M/L",$param_new);
                         $param_new=str_ireplace("L;M;S","S/M/L",$param_new);
                         $param_new=str_ireplace("|","/",$param_new);
                         $param_new=str_ireplace("Plus Size/","",$param_new);
@@ -1852,6 +1855,7 @@ class testXML
                         
                         $param_new=str_ireplace("Размер","Международный размер",$param);
                         $param_new=str_ireplace("One size","S/M/L",$param_new);
+                        $param_new=str_ireplace("L;XL;M;S","S/M/L",$param_new);
                         $param_new=str_ireplace("L;M;S","S/M/L",$param_new);
                         $param_new=str_ireplace("|","/",$param_new);
                         $param_new=str_ireplace("Plus Size/","",$param_new);
