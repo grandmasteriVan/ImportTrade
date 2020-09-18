@@ -2330,6 +2330,8 @@ class testXML
         $XMLnew=str_replace("<vendor>Sensuva","<vendor>ON by Sensuva",$XMLnew);
         $XMLnew=str_replace("<vendor>UPKO","<vendor>Zalo",$XMLnew);
         $XMLnew=str_replace("<vendor>Runyu","<vendor>Foshan Jiaguan Metalwork",$XMLnew);
+        //добавляем суперналичие
+        $XMLnew=str_replace("available=\"true\"","available=\"true\" presence_sure=\"true\"",$XMLnew);
         //var_dump($XMLnew);
         file_put_contents($this->pathMod,$XMLnew);
         echo "<b>Done</b>";
