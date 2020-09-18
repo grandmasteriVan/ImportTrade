@@ -397,7 +397,7 @@ class MakeTree
         foreach ($items as $item)
         {
             $newCat=$this->FindPromCat($item);
-            $oldCat=$this->getCatId($item);
+            //$oldCat=$this->getCatId($item);
             //echo "$oldCat-$newCat<br>";
             $new_item=$this->setItemCat($item,$newCat);
             $items_new.=$new_item;
@@ -406,6 +406,7 @@ class MakeTree
         //var_dump($items_new);
         $head=$this->makeHead();
         //echo $head;
+        //собираем конечную ХЬЛку
         $xml_new=$head.self::prom_cats.PHP_EOL."<items>".$items_new.PHP_EOL."<items>".PHP_EOL."</price>";
         //echo $xml_new;
         file_put_contents("new_hotline-v2.xml",$xml_new);
