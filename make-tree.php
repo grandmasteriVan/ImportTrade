@@ -202,7 +202,7 @@ class MakeTree
     
     private function readFile()
     {
-        $xml=file_get_contents('hotline_ua-v1.xml');
+        $xml=file_get_contents('hotline_ua-v2.xml');
         return $xml;
     }
 
@@ -247,7 +247,7 @@ class MakeTree
         {
             $newCat=4;
         }
-        if ($catIdOld==30||$catIdOld==266||$catIdOld==1)
+        if ($catIdOld==30||$catIdOld==266||$catIdOld==1||$catIdOld==35)
         {
             $newCat=5;
         }
@@ -263,7 +263,7 @@ class MakeTree
         {
             $newCat=9;
         }
-        if ($catIdOld==264||$catIdOld==190||$catIdOld==10||$catIdOld==187||$catIdOld==191||$catIdOld==256||$catIdOld==240||$catIdOld==250||$catIdOld==271||$catIdOld==272||$catIdOld==273||$catIdOld==124||$catIdOld==241||$catIdOld==106||$catIdOld==50||$catIdOld==204||$catIdOld==205||$catIdOld==43||$catIdOld==225||$catIdOld==206)
+        if ($catIdOld==264||$catIdOld==190||$catIdOld==10||$catIdOld==187||$catIdOld==191||$catIdOld==256||$catIdOld==240||$catIdOld==250||$catIdOld==271||$catIdOld==272||$catIdOld==273||$catIdOld==124||$catIdOld==241||$catIdOld==106||$catIdOld==50||$catIdOld==204||$catIdOld==205||$catIdOld==43||$catIdOld==225||$catIdOld==206||$catIdOld==186||$catIdOld==209)
         {
             $newCat=10;
         }
@@ -271,7 +271,7 @@ class MakeTree
         {
             $newCat=11;
         }
-        if ($catIdOld==85||$catIdOld==86||$catIdOld==5||$catIdOld==83||$catIdOld==84||$catIdOld==232||$catIdOld==233||$catIdOld==239)
+        if ($catIdOld==85||$catIdOld==86||$catIdOld==5||$catIdOld==83||$catIdOld==84||$catIdOld==232||$catIdOld==233||$catIdOld==239||$catIdOld==19||$catIdOld==130||$catIdOld==129)
         {
             $newCat=12;
         }
@@ -287,7 +287,7 @@ class MakeTree
         {
             $newCat=15;
         }
-        if ($catIdOld==174||$catIdOld==258||$catIdOld==116||$catIdOld==261||$catIdOld==214||$catIdOld==81||$catIdOld==115||$catIdOld==79||$catIdOld==259||$catIdOld==260||$catIdOld==262||$catIdOld==215||$catIdOld==249||$catIdOld==216)
+        if ($catIdOld==174||$catIdOld==258||$catIdOld==116||$catIdOld==261||$catIdOld==214||$catIdOld==81||$catIdOld==115||$catIdOld==79||$catIdOld==259||$catIdOld==260||$catIdOld==262||$catIdOld==215||$catIdOld==249||$catIdOld==216||$catIdOld==26||$catIdOld==48)
         {
             $newCat=16;
         }
@@ -323,7 +323,7 @@ class MakeTree
         {
             $newCat=24;
         }
-        if ($catIdOld==89||$catIdOld==246)
+        if ($catIdOld==89||$catIdOld==246||$catIdOld==168)
         {
             $newCat=25;
         }
@@ -347,7 +347,7 @@ class MakeTree
         {
             $newCat=30;
         }
-        if ($catIdOld==180||$catIdOld==24||$catIdOld==25||$catIdOld==68||$catIdOld==228||$catIdOld==219||$catIdOld==72||$catIdOld==60||$catIdOld==175)
+        if ($catIdOld==180||$catIdOld==24||$catIdOld==25||$catIdOld==68||$catIdOld==228||$catIdOld==219||$catIdOld==72||$catIdOld==60||$catIdOld==175||$catIdOld==14||$catIdOld==70)
         {
             $newCat=31;
         }
@@ -359,7 +359,7 @@ class MakeTree
         {
             $newCat=33;
         }
-        if ($catIdOld==11||$catIdOld==59||$catIdOld==12||$catIdOld==251||$catIdOld==252||$catIdOld==253)
+        if ($catIdOld==11||$catIdOld==59||$catIdOld==12||$catIdOld==251||$catIdOld==252||$catIdOld==253||$catIdOld==54||$catIdOld==160||$catIdOld==28||$catIdOld==55||$catIdOld==169)
         {
             $newCat=35;
         }
@@ -407,11 +407,12 @@ class MakeTree
         $head=$this->makeHead();
         //echo $head;
         $xml_new=$head.self::prom_cats.PHP_EOL."<items>".$items_new.PHP_EOL."<items>".PHP_EOL."</price>";
-        echo $xml_new;
-        
+        //echo $xml_new;
+        file_put_contents("new_hotline-v2.xml",$xml_new);
     }
 
 }
 
 $test = new MakeTree();
 $test->catReplace();
+echo "Done";
