@@ -1,6 +1,10 @@
 <?php
 header('Content-Type: text/html; charset=utf-8');
-include_once "hotline-test.php";
+//include_once "hotline-test.php";
+
+/**
+ * csvTest
+ */
 class csvTest
 {
     /*public function test()
@@ -13,18 +17,36 @@ class csvTest
         echo "<pre>".print_r($csv)."</pre>";
     }*/
 
-    protected $hl;
-    public function __construct(Hotline $HL)
+    public $XML;
+
+    //protected $hl;    
+    /**
+     * __construct
+     *
+     * @param  mixed $HL
+     * @return void
+     */
+    /*public function __construct(Hotline $HL)
     {
         $this->hl=$HL;
-    }
-    
+    }*/
+        
+    /**
+     * readXML
+     *
+     * @return void
+     */
     private function readXML()
     {
         $csv=file_get_contents('hotline_ua-v1.csv');
         return $csv;
     }
-
+    
+    /**
+     * readCsv
+     *
+     * @return void
+     */
     private function readCsv()
     {
         $file=fopen("price.csv","r");
@@ -37,6 +59,29 @@ class csvTest
         return $csv;
     }
 
+    /**
+     * stripHead
+     *
+     * @param  mixed $txt
+     * @return void
+     */
+    private function stripHead($txt)
+    {
+        //var_dump ($txt);
+        $pos=strpos($txt,"<items>");
+        //var_dump ($pos);
+        $new_txt=substr($txt,$pos);
+        $new_txt=str_ireplace("<items>","",$new_txt);
+        $new_txt=str_ireplace("</items>","",$new_txt);
+        return $new_txt;
+    }
+    
+    /**
+     * getProperName
+     *
+     * @param  mixed $name
+     * @return void
+     */
     private function getProperName($name)
     {
         if (preg_match("#\"(.+?)\"#",$name,$matches))
@@ -45,19 +90,42 @@ class csvTest
         }
         return "\"".$propName."\" ";
     }
-
+    
+    /**
+     * stripName
+     *
+     * @param  mixed $name
+     * @param  mixed $vendor
+     * @return void
+     */
     private function stripName ($name, $vendor)
     {
         echo $name."<br>";
         $name_new=str_replace("50 оттенков серого","",$name);
         
         $name_new=str_replace("15 см диаметр 5","7.5",$name_new);
+        $name_new=str_replace("мл","ml",$name_new);
+        $name_new=str_replace("грамм","gr",$name_new);
         $name_new=str_replace($vendor,"",$name_new);
         $name_new=preg_replace("/[^,\p{Latin}\d\s\/\(\)\&\-\.\%]/ui","",$name_new);
         $name_new=str_replace("()","",$name_new);
         $name_new=str_replace(" , ","",$name_new);
         $name_new=str_replace("(, )","",$name_new);
         $name_new=str_replace("( ),","",$name_new);
+
+        
+        $name_new=str_replace("L/XL L/XL","L/XL",$name_new);
+        $name_new=str_replace("XL XL","XL",$name_new);
+        $name_new=str_replace("XXL XXL","XXL",$name_new);
+        $name_new=str_replace("S/M S/M","S/M",$name_new);
+        $name_new=str_replace("M M","M",$name_new);
+        $name_new=str_replace("S S","S",$name_new);
+        $name_new=str_replace("L L","L",$name_new);
+        $name_new=str_replace("XL/XXL XL/XXL","XL/XXL",$name_new);
+        $name_new=str_replace("O/S One size","One size",$name_new);
+        $name_new=str_replace("One Size One size","One size",$name_new);
+        $name_new=str_replace("XL/2XL XL/XXL","XL/XXL",$name_new);
+        $name_new=str_replace("S/L One size","One size",$name_new);
         
         $propName="";
         if (strripos($name,"\""))
@@ -198,7 +266,7 @@ class csvTest
         }
         if (strripos($name,"Вагинальные шарики")||strripos($name,"вагинальные шарики"))
         {
-            $name_new=$vendor." Анальные шарики $propName".$name_new;
+            $name_new=$vendor." Вагинальные шарики $propName".$name_new;
         }
         if (strripos($name,"мастурбатор")||strripos($name,"Мастурбатор"))
         {
@@ -283,10 +351,15 @@ class csvTest
         {
             $name_new=$vendor." Колесо Вартенберга $propName".$name_new;
         }
-        if (strripos($name,"лубрикант")||strripos($name,"Лубрикант")||strripos($name,"Возбуждающая смазка")||strripos($name,"Гель Erotist для женщин")||strripos($name,"Крем-смазка")||strripos($name,"крем-смазка")||strripos($name,"Пробник смазки")||strripos($name,"Смазка пробник")||strripos($name,"Смазка на водной основе")||strripos($name,"Спрей для усиления слюноотделения")||strripos($name,"Пролонгатор")||strripos($name,"пролонгатор")||strripos($name,"гибридный гель")||strripos($name,"масло для женщин")||strripos($name,"Возбуждающий Гель")||strripos($name,"Возбуждающий гель")||strripos($name,"Гель для сужения")||strripos($name,"Гель для усиления")||strripos($name,"Клиторальный гель")||strripos($name,"Спрей для глубокого минета")) 
+        if (strripos($name,"лубрикант")||strripos($name,"Лубрикант")||strripos($name,"Возбуждающая смазка")||strripos($name,"Гель Erotist для женщин")||strripos($name,"Крем-смазка")||strripos($name,"крем-смазка")||strripos($name,"Пробник смазки")||strripos($name,"Смазка пробник")||strripos($name,"Смазка на водной основе")||strripos($name,"Спрей для усиления слюноотделения")||strripos($name,"Пролонгатор")||strripos($name,"пролонгатор")||strripos($name,"гибридный гель")||strripos($name,"масло для женщин")||strripos($name,"Возбуждающий Гель")||strripos($name,"Возбуждающий гель")||strripos($name,"Гель для сужения")||strripos($name,"Гель для усиления")||strripos($name,"Клиторальный гель")||strripos($name,"Спрей для глубокого минета")||strripos($name,"Усилитель оргазма")) 
         {
             $name_new=$vendor." Лубрикант $propName".$name_new;
         }
+        if (strripos($name,"Стимулирующий крем")||strripos($name,"Согревающий стимулирующий гель")||strripos($name,"Крем для клитора")||strripos($name,"Крем возбуждающий")||strripos($name,"Женский стимулирующий гель")||strripos($name,"Гель для стимуляции сосков"))
+        {
+            $name_new=$vendor." Возбуждающий крем $propName".$name_new;
+        }
+
           
         if (strripos($name,"Анальная смазка")||strripos($name,"Анальная крем-смазка")||strripos($name,"Анальный гель")||strripos($name,"Гель анальный")||strripos($name,"Смазка для анального")||strripos($name,"Спрей для анального"))
         {
@@ -363,6 +436,10 @@ class csvTest
         if (strripos($name,"Трусики")||strripos($name,"Трусы")||strripos($name,"стринги")||strripos($name,"трусики"))
         {
             $name_new=$vendor." Трусики $propName".$name_new;
+        }
+        if (strripos($name,"Мужские виниловые трусы"))
+        {
+            $name_new=$vendor." Мужские виниловые трусы $propName".$name_new;
         }
         if (strripos($name,"Шорты")||strripos($name,"шорты"))
         {
@@ -464,11 +541,11 @@ class csvTest
         {
             $name_new=$vendor." Портупея $propName".$name_new;
         }
-        if (strripos($name,"Возбуждающие капли")||strripos($name,"Возбуждающий бальзам")||strripos($name,"Капли для возбуждения"))
+        if (strripos($name,"Возбуждающие капли")||strripos($name,"Возбуждающий бальзам")||strripos($name,"Капли для возбуждения")||strripos($name,"Капли возбуждающие"))
         {
             $name_new=$vendor." Возбуждающие капли $propName".$name_new;
         }
-        if (strripos($name,"Клизма"))
+        if (strripos($name,"Клизма")||strripos($name,"Анальный душ"))
         {
             $name_new=$vendor." Клизма $propName".$name_new;
         }
@@ -480,12 +557,16 @@ class csvTest
         {
             $name_new=$vendor." Салфетки для интимной гигиены $propName".$name_new;
         }
-        if (strripos($name,"Салфетки для интимной гигиены"))
+        if (strripos($name,"Антибактериальное средство"))
         {
-            $name_new=$vendor." Салфетки для интимной гигиены $propName".$name_new;
+            $name_new=$vendor." Антибактериальное средство для интимных игрушек $propName".$name_new;
+        }
+        if (strripos($name,"Эротическая майка"))
+        {
+            $name_new=$vendor." Майка эротическая $propName".$name_new;
         }
 
-
+        
         if (strripos($name,"О-кей для двоих"))
         {
             $name_new=$vendor." О-кей для двоих $propName".$name_new;
@@ -610,13 +691,18 @@ class csvTest
         {
             $name_new=$vendor." Секс-кукла Jennifer (117022)";
         }
+        
+        if (strripos($name,"(20503 Ю/)"))
+        {
+            $name_new=$vendor." Возбуждающий крем  Casanova cream (20503 Ю/)";
+        }
 
         //$test = preg_replace('~\[.*?\]~','[]',$test);
         $name_new=preg_replace('~\(.*?\)~','',$name_new);
-        $color=$this->hl->getColor($name);
+        $color=$this->getColor($name);
         $tmp=explode(";",$color);
         $color=$tmp[0];
-        $code=$this->hl->getCode($name);
+        $code=$this->getCode($name);
         //echo "$name_new, $code, $color<br>";
         $name_new=$name_new." $color ($code)";
         $name_new=str_replace($vendor,"",$name_new);
@@ -635,14 +721,182 @@ class csvTest
         return $name_new;
     }
 
+    /**
+     * getItemsArr
+     *
+     * @param  mixed $txt
+     * @return void
+     */
+    private function getItemsArr ($txt)
+    {
+        $arr=explode("</item>",$txt);
+        foreach ($arr as $pos)
+        {
+            $arr1[]=$pos."</item>";
+        }
+        array_pop($arr1);
+        return $arr1;
+    }
+
+    /**
+     * getItemName
+     *
+     * @param  mixed $item
+     * @return void
+     */
+    private function getItemName($item)
+    {
+        preg_match("#<name>(.*?)<\/name>#",$item,$matches);
+        $name=$matches[1];
+        return $name;
+    }
+
+    /**
+     * getItemId
+     *
+     * @param  mixed $item
+     * @return void
+     */
+    private function getItemId($item)
+    {
+        preg_match("#<code>(.*?)<\/code>#",$item,$matches);
+        $name=$matches[1];
+        return $name;
+    }
+
+    /**
+     * getParams
+     *
+     * @param  mixed $item
+     * @return void
+     */
+    private function getParams($item)
+    {
+        if (preg_match_all("#<param name(.*?)<\/param>#",$item,$matches))
+        {
+            $params=$matches[0];
+        }
+        else
+        {
+            $id=$this->getItemId($item);
+            echo "No params found for $id<br>";
+        }
+        return $params;
+    }
+
+    /**
+     * getParamName
+     *
+     * @param  mixed $param
+     * @return void
+     */
+    private function getParamName($param)
+    {
+        if (preg_match("#\"(.+?)\"#",$param,$matches))
+        {
+            $paramName=$matches[1];
+        }
+        return $paramName;
+    }
+
+    /**
+     * getParamVal
+     *
+     * @param  mixed $param
+     * @return void
+     */
+    private function getParamVal($param)
+    {
+        //var_dump ($param);
+        if (preg_match("#>(.+?)<#",$param,$matches))
+        {
+            $paramVal=$matches[1];
+        }
+        return $paramVal;
+    }
+
+    /**
+     * getColor
+     *
+     * @param  mixed $itemName
+     * @return void
+     */
+    public function getColor($itemName)
+    {
+        $xml=$this->XML;
+        $xml_new=$this->stripHead($xml);
+        $items=$this->getItemsArr($xml_new);
+        foreach ($items as $item)
+        {
+            $name=$this->getItemName($item);
+            if ($name==$itemName)
+            {
+                $params=$this->getParams($item);
+                foreach ($params as $param)
+                {
+                    $paramName=$this->getParamName($param);
+                    if (strcmp($paramName,"Доступные цвета")==0||strcmp($paramName,"Цвет")==0)
+                    {
+                        $paramVal=$this->getParamVal($param);
+                        return $paramVal;
+                    }
+                }
+            }
+        }
+
+    }
+
+    /**
+     * getCode
+     *
+     * @param  mixed $itemName
+     * @return void
+     */
+    public function getCode($itemName)
+    {
+        $xml=$this->XML;
+        $xml_new=$this->stripHead($xml);
+        $items=$this->getItemsArr($xml_new);
+        foreach ($items as $item)
+        {
+            $name=$this->getItemName($item);
+            if ($name==$itemName)
+            {
+                $code=$this->getItemId($item);
+                return $code;
+            }
+        }
+    }
+    
+    /**
+     * changeName
+     *
+     * @param  mixed $oldName
+     * @param  mixed $newName
+     * @return void
+     */
+    /*private function changeName($oldName, $newName)
+    {
+        $XML=file_get_contents('new_hotline-v3.xml');
+        $XML=str_replace($oldName,$newName,$XML);
+        file_put_contents("new_hotline-v4.xml",$XML);
+    }*/
+    
+    /**
+     * test
+     *
+     * @return void
+     */
     public function test ()
     {
         $csv=$this->readCsv();
+        copy ("new_hotline-v3.xml","new_hotline-v4.xml");
+        $this->XML=file_get_contents('new_hotline-v4.xml');
+
         //не распознан
         //не размещается
         foreach ($csv as $item)
         {
-            
             //echo "<pre>".print_r($item)."</pre>";
             if (array_search ("Товар не распознан",$item))
             {  
@@ -653,12 +907,15 @@ class csvTest
                 //$name_new=preg_replace("/[^,\p{Latin}\d\s\/\(\)\&]/ui","",$name);
                 //echo "$name_new<br><br>";
                 //break;
-
+                //$this->changeName($name_old,$name);
+                $this->XML=str_ireplace($name_old,$name,$this->XML);
+                //break;
             }
-            
         }
+        file_put_contents("new_hotline-v4.xml",$this->XML);
     }
 }
 set_time_limit(30000);
-$test = new csvTest(new Hotline);
+$test = new csvTest();
 $test->test();
+echo "Names Done<br>";
