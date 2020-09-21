@@ -1,6 +1,13 @@
 <?php
 header('Content-Type: text/html; charset=utf-8');
+//v2 - заменили наш каталог на хотлайновсктий
+//v3 - проставили хотлайновские параметры, где это возможно
+//v4 - заменили имена нераспознанных товаров на основе списка нераспознанных от хотлайна
 
+
+/**
+ * MakeTree
+ */
 class MakeTree
 {
     
@@ -199,13 +206,24 @@ class MakeTree
         <name>Масло для массажа</name>
     </category>
 </categories>";
-    
+        
+    /**
+     * readFile
+     *
+     * @return void
+     */
     private function readFile()
     {
         $xml=file_get_contents('hotline_ua-v2.xml');
         return $xml;
     }
-
+    
+    /**
+     * stripHead
+     *
+     * @param  mixed $txt
+     * @return void
+     */
     private function stripHead($txt)
     {
         //var_dump ($txt);
@@ -216,7 +234,13 @@ class MakeTree
         $new_txt=str_ireplace("</items>","",$new_txt);
         return $new_txt;
     }
-
+    
+    /**
+     * getItemsArr
+     *
+     * @param  mixed $txt
+     * @return void
+     */
     private function getItemsArr ($txt)
     {
         $arr=explode("</item>",$txt);
@@ -227,14 +251,26 @@ class MakeTree
         array_pop($arr1);
         return $arr1;
     }
-
+    
+    /**
+     * getCatId
+     *
+     * @param  mixed $item
+     * @return void
+     */
     private function getCatId($item)
     {
         preg_match("#<categoryId>(.*?)<\/categoryId>#",$item,$matches);
         $id=$matches[1];
         return $id;
     }
-
+    
+    /**
+     * FindPromCat
+     *
+     * @param  mixed $item
+     * @return void
+     */
     private function FindPromCat($item)
     {
         $newCat=null;
@@ -369,14 +405,26 @@ class MakeTree
         }
         return $newCat;
     }
-
+    
+    /**
+     * setItemCat
+     *
+     * @param  mixed $item
+     * @param  mixed $catalog
+     * @return void
+     */
     private function setItemCat($item,$catalog)
     {
         $old_cat=$this->getCatId($item);
         $new_item=str_ireplace($old_cat,$catalog,$item);
         return $new_item;
     }
-
+    
+    /**
+     * makeHead
+     *
+     * @return void
+     */
     private function makeHead()
     {
         $date=date("Y-m-d H:i");
@@ -388,7 +436,12 @@ class MakeTree
         <firmId>Идентификатор магазина</firmId>".PHP_EOL;
         return $head;
     }
-
+    
+    /**
+     * catReplace
+     *
+     * @return void
+     */
     public function catReplace()
     {
         $oldXML=$this->readFile();
@@ -414,14 +467,28 @@ class MakeTree
 
 }
 
+/**
+ * Hotline
+ */
 class Hotline
-{
+{    
+    /**
+     * readFile
+     *
+     * @return void
+     */
     private function readFile()
     {
-        $xml=file_get_contents('hotline_ua-v2.xml');
+        $xml=file_get_contents('new_hotline-v2.xml');
         return $xml;
     }
-
+    
+    /**
+     * stripHead
+     *
+     * @param  mixed $txt
+     * @return void
+     */
     private function stripHead($txt)
     {
         //var_dump ($txt);
@@ -432,7 +499,13 @@ class Hotline
         $new_txt=str_ireplace("</items>","",$new_txt);
         return $new_txt;
     }
-
+    
+    /**
+     * getItemsArr
+     *
+     * @param  mixed $txt
+     * @return void
+     */
     private function getItemsArr ($txt)
     {
         $arr=explode("</item>",$txt);
@@ -443,28 +516,53 @@ class Hotline
         array_pop($arr1);
         return $arr1;
     }
-
+    
+    /**
+     * getCatId
+     *
+     * @param  mixed $item
+     * @return void
+     */
     private function getCatId($item)
     {
         preg_match("#<categoryId>(.*?)<\/categoryId>#",$item,$matches);
         $id=$matches[1];
         return $id;
     }
-
+    
+    /**
+     * getItemName
+     *
+     * @param  mixed $item
+     * @return void
+     */
     private function getItemName($item)
     {
         preg_match("#<name>(.*?)<\/name>#",$item,$matches);
         $name=$matches[1];
         return $name;
     }
-
+    
+    /**
+     * getVendor
+     *
+     * @param  mixed $item
+     * @return void
+     */
     private function getVendor($item)
     {
         preg_match("#<vendor>(.*?)<\/vendor>#",$item,$matches);
         $name=$matches[1];
         return $name;
     }
-
+    
+    /**
+     * stripName
+     *
+     * @param  mixed $name
+     * @param  mixed $vendor
+     * @return void
+     */
     private function stripName ($name, $vendor)
     {
         $name_new=str_ireplace($vendor,"",$name);
@@ -476,21 +574,39 @@ class Hotline
         $name_new=str_replace("(, ,",",",$name_new);
         return $name_new;
     }
-
+    
+    /**
+     * getXMLhead
+     *
+     * @param  mixed $txt
+     * @return void
+     */
     private function getXMLhead($txt)
     {
         $pos=strpos($txt,"</categories>");
         $xmlhead=substr($txt,0,$pos);
         return $xmlhead;
     }
-
+    
+    /**
+     * getItemId
+     *
+     * @param  mixed $item
+     * @return void
+     */
     private function getItemId($item)
     {
         preg_match("#<code>(.*?)<\/code>#",$item,$matches);
         $name=$matches[1];
         return $name;
     }
-
+    
+    /**
+     * getParams
+     *
+     * @param  mixed $item
+     * @return void
+     */
     private function getParams($item)
     {
         if (preg_match_all("#<param name(.*?)<\/param>#",$item,$matches))
@@ -504,7 +620,13 @@ class Hotline
         }
         return $params;
     }
-
+    
+    /**
+     * getParamName
+     *
+     * @param  mixed $param
+     * @return void
+     */
     private function getParamName($param)
     {
         if (preg_match("#\"(.+?)\"#",$param,$matches))
@@ -513,7 +635,13 @@ class Hotline
         }
         return $paramName;
     }
-
+    
+    /**
+     * getParamVal
+     *
+     * @param  mixed $param
+     * @return void
+     */
     private function getParamVal($param)
     {
         //var_dump ($param);
@@ -523,21 +651,41 @@ class Hotline
         }
         return $paramVal;
     }
-
+    
+    /**
+     * setItemName
+     *
+     * @param  mixed $item
+     * @param  mixed $name
+     * @return void
+     */
     private function setItemName($item,$name)
     {
         $old_name=$this->getItemName($item);
         $new_item=str_ireplace($old_name,$name,$item);
         return $new_item;
     }
-
+    
+    /**
+     * setItemCat
+     *
+     * @param  mixed $item
+     * @param  mixed $catalog
+     * @return void
+     */
     private function setItemCat($item,$catalog)
     {
         $old_cat=$this->getCatId($item);
         $new_item=str_ireplace($old_cat,$catalog,$item);
         return $new_item;
     }
-
+    
+    /**
+     * makeUniqeParams
+     *
+     * @param  mixed $params
+     * @return void
+     */
     private function makeUniqeParams($params)
     {
         $params_new=null;
@@ -570,7 +718,13 @@ class Hotline
         }
         return $params_new;
     }
-
+    
+    /**
+     * getCode
+     *
+     * @param  mixed $itemName
+     * @return void
+     */
     public function getCode($itemName)
     {
         $xml=$this->readFile();
@@ -586,7 +740,13 @@ class Hotline
             }
         }
     }
-
+    
+    /**
+     * getColor
+     *
+     * @param  mixed $itemName
+     * @return void
+     */
     public function getColor($itemName)
     {
         $xml=$this->readFile();
@@ -611,13 +771,24 @@ class Hotline
         }
 
     }
-
+    
+    /**
+     * getItemHead
+     *
+     * @param  mixed $item
+     * @return void
+     */
     private function getItemHead($item)
     {
         $itemHead=explode("<param name",$item);
         return $itemHead[0];
     }
-
+    
+    /**
+     * parseXML
+     *
+     * @return void
+     */
     public function parseXML()
     {
         $xml=$this->readFile();
@@ -653,9 +824,11 @@ class Hotline
             $itemHead=$this->getItemHead($item);
             $params_new=null;
             $new_params=null;
+            $specialCat=false;
             //if ($catId==3048)
             if ($catId==264||$catId==190||$catId==10||$catId==191||$catId==265||$catId==240||$catId==250||$catId==271||$catId==272||$catId==273||$catId==124||$catId==106||$catId==50||$catId==204||$catId==43||$catId==225||$catId==206||$catId==186||$catId==209)
             {
+                $specialCat=true;
                 /*echo "<pre>";
                 print_r($params);
                 echo "</pre>";*/
@@ -883,6 +1056,7 @@ class Hotline
             //if ($catId==3050)
             if ($catId==85||$catId==86||$catId==5||$catId==83||$catId==847||$catId==232||$catId==233||$catId==239||$catId==19||$catId==130||$catId==129)
             {
+                $specialCat=true;
                 /*echo "<pre>";
                 print_r($params);
                 echo "</pre>";*/
@@ -1149,6 +1323,7 @@ class Hotline
             //if ($catId==3045)
             if ($catId==8)
             {
+                $specialCat=true;
                 //echo "<b>$itemName</b><br>";
                 //$name_new=preg_replace("/[^,\p{Latin}\d\s\/\(\)\&]/ui","",$itemName);
                 //$name_new=str_replace("quot","",$name_new);
@@ -1204,6 +1379,7 @@ class Hotline
             //if ($catId==3056)
             if ($catId==20)
             {
+                $specialCat=true;
                 foreach ($params as $param)
                 {
                     $paramName=$this->getParamName($param);
@@ -1254,7 +1430,7 @@ class Hotline
                 }
             }
             
-            if ($catId!=3045&&$catId!=3048&&$catId!=3050&&$catId!=3045&&$catId!=3056)
+            if (!$specialCat)
             {
                 $new_item=$item;
             }
@@ -1267,12 +1443,14 @@ class Hotline
         //начинаем собирать финальную ХМЛку
         $XMLnew=$xmlHead.PHP_EOL."</categories>".PHP_EOL.$items_new.PHP_EOL."</price>";
         //var_dump($XMLnew);
-        file_put_contents("new_hotline.xml",$XMLnew);
+        file_put_contents("new_hotline-v3.xml",$XMLnew);
     }
 }
 
+$test = new MakeTree();
+$test->catReplace();
+echo "<b>Done tree</b><br>";
+
 $test=new Hotline;
 $test->parseXML();
-
-
-echo "Done";
+echo "<b>Parse Done</b>";
