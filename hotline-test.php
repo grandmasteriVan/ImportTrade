@@ -279,11 +279,11 @@ class MakeTree
         {
             $newCat=3;
         }
-        if ($catIdOld==7)
+        if ($catIdOld==7||$catIdOld==1)
         {
             $newCat=4;
         }
-        if ($catIdOld==30||$catIdOld==266||$catIdOld==1||$catIdOld==35)
+        if ($catIdOld==30||$catIdOld==266||$catIdOld==35)
         {
             $newCat=5;
         }
@@ -416,7 +416,7 @@ class MakeTree
     private function setItemCat($item,$catalog)
     {
         $old_cat=$this->getCatId($item);
-        $new_item=str_ireplace($old_cat,$catalog,$item);
+        $new_item=str_ireplace("<categoryId>$old_cat<\/categoryId>","<categoryId>$catalog<\/categoryId>",$item);
         return $new_item;
     }
     
@@ -429,7 +429,7 @@ class MakeTree
     {
         $date=date("Y-m-d H:i");
         //print_r ($date);
-        $head="<?xml version\"1.0\" encoding=\"UTF-8\"?>
+        $head="<?xml version=\"1.0\" encoding=\"UTF-8\"?>
         <price>
         <date>$date</date>
         <firmName>Мой магазин</firmName>
@@ -1434,6 +1434,8 @@ class Hotline
             {
                 $new_item=$item;
             }
+            //чистим описание\
+            $new_item=$this->delDescription($new_item);
             //тут будем сорбирать все позиции
             $items_new.=$new_item;
             //echo "kjuhkjhhkjhjk";
@@ -1443,8 +1445,18 @@ class Hotline
         //начинаем собирать финальную ХМЛку
         $XMLnew=$xmlHead.PHP_EOL."</categories>".PHP_EOL.$items_new.PHP_EOL."</price>";
         //var_dump($XMLnew);
+
         file_put_contents("new_hotline-v3.xml",$XMLnew);
     }
+
+    private function delDescription($item)
+    {
+        $item=preg_replace("#<description>(.*?)<\/description>#","<description></description>",$item);
+        //удяляем лишние пробелы
+        $item = preg_replace('/\s+/', ' ', $item);
+        return $item;
+    }
+
 }
 
 $test = new MakeTree();
