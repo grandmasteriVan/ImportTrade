@@ -126,6 +126,7 @@ class csvTest
         $name_new=str_replace("One Size One size","One size",$name_new);
         $name_new=str_replace("XL/2XL XL/XXL","XL/XXL",$name_new);
         $name_new=str_replace("S/L One size","One size",$name_new);
+        $name_new=str_replace("&","and",$name_new);
         
         $propName="";
         if (strripos($name,"\""))
@@ -912,6 +913,7 @@ class csvTest
                 //break;
             }
         }
+        $this->XML=str_ireplace("&quot;","\"",$this->XML);
         file_put_contents("new_hotline-v4.xml",$this->XML);
     }
 }
