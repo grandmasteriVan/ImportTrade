@@ -1621,7 +1621,7 @@ class testXML
                 }
 
                 //трусики в комплекте - по названию "комплект"
-                if (strripos($itemName,"комплект"))
+                if (strripos($itemName,"комплект")||strripos($itemName,"со стрингами")||strripos($itemName,"с трусиками"))
                 {
                     $params_new[]="<param name=\"Трусики в комплекте\">Да</param>";
                 }
