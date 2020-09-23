@@ -211,7 +211,6 @@ class csvTest
         {
             $name_new=$vendor." Cтрапон $propName".$name_new;
         }
-        
         if (strripos($name,"Вакуумный стимулятор")||strripos($name,"клиторальный стимулятор"))
         {
             $name_new=$vendor." Стимулятор клитора $propName".$name_new;
@@ -228,7 +227,6 @@ class csvTest
         {
             $name_new=$vendor." Комбинезон $propName".$name_new;
         }
-        
         if (strripos($name,"Эротический костюм-сетка"))
         {
             $name_new=$vendor." Комбинезон $propName".$name_new;
@@ -277,7 +275,6 @@ class csvTest
         {
             $name_new=$vendor." Вагина-мастурбатор $propName".$name_new;
         }
-        
         if (strripos($name,"Эрекционное")||strripos($name,"Вибро-кольцо")||strripos($name,"эрекционное")||strripos($name,"лассо")||strripos($name,"Лассо")||strripos($name,"эрекционных колец")) 
         {
             $name_new=$vendor." Эрекционное кольцо $propName".$name_new;
@@ -302,7 +299,6 @@ class csvTest
         {
             $name_new=$vendor." Набор Feather nipple clamps & butt plug $propName".$name_new;
         }
-        
         if (strripos($name,"Набор Nuru")||strripos($name,"Набор для влюбленных")||strripos($name,"Набор для интригующего вечера")||strripos($name,"Набор для чувственных ласк")||strripos($name,"Набор удовольствий")||strripos($name,"Набор Юбилейный")||strripos($name,"Органический набор")||strripos($name,"Горячее сердце для массажа")||strripos($name,"Набор к спонтанному роману")||strripos($name,"Набор массажных масел")||strripos($name,"Подарочная открытка с набором")) 
         {
             $name_new=$vendor." Набор для эротического массажа $propName".$name_new;
@@ -315,12 +311,10 @@ class csvTest
         {
             $name_new=$vendor." Набор для секс игр $propName".$name_new;
         }
-        
         if (strripos($name,"Набор Очки + браслет"))
         {
             $name_new=$vendor." VR набор $propName".$name_new;
         }
-        
         if (strripos($name,"Набор чувственной косметики для тела"))
         {
             $name_new=$vendor." Набор чувственной косметики для тела Gateway Kit $propName".$name_new;
@@ -329,7 +323,6 @@ class csvTest
         {
             $name_new=$vendor." Духи с феромонами $propName".$name_new;
         }
-
         if (strripos($name,"Бомбочка для ванны с феромонами Sexy"))
         {
             $name_new=$vendor." Бомбочка для ванны с феромонами Sexylicius $propName".$name_new;
@@ -338,7 +331,6 @@ class csvTest
         {
             $name_new=$vendor." Набор духов с феромонами $propName".$name_new;
         }
-        
         if (strripos($name,"Массажное масло")||strripos($name,"массажное масло")||strripos($name,"Масло для массажа")||strripos($name,"Масло для поцелуев")||strripos($name,"Массажный гель")||strripos($name,"массажная пена")||strripos($name,"пенка для массажа")||strripos($name,"Гель для массажа")) 
         {
             $name_new=$vendor." Массажное масло $propName".$name_new;
@@ -347,7 +339,6 @@ class csvTest
         {
             $name_new=$vendor." Вибромассажер для головы $propName".$name_new;
         }
-        
         if (strripos($name,"Колесо Вартенберга"))
         {
             $name_new=$vendor." Колесо Вартенберга $propName".$name_new;
@@ -360,8 +351,6 @@ class csvTest
         {
             $name_new=$vendor." Возбуждающий крем $propName".$name_new;
         }
-
-          
         if (strripos($name,"Анальная смазка")||strripos($name,"Анальная крем-смазка")||strripos($name,"Анальный гель")||strripos($name,"Гель анальный")||strripos($name,"Смазка для анального")||strripos($name,"Спрей для анального"))
         {
             $name_new=$vendor." Анальный лубрикант $propName".$name_new;
@@ -692,7 +681,6 @@ class csvTest
         {
             $name_new=$vendor." Секс-кукла Jennifer (117022)";
         }
-        
         if (strripos($name,"(20503 Ю/)"))
         {
             $name_new=$vendor." Возбуждающий крем  Casanova cream (20503 Ю/)";
@@ -700,19 +688,17 @@ class csvTest
 
         //$test = preg_replace('~\[.*?\]~','[]',$test);
         $name_new=preg_replace('~\(.*?\)~','',$name_new);
-        $color=$this->getColor($name);
-        $tmp=explode(";",$color);
+        $color=$this->getColorAndCode($name);
+        //echo "<pre>".print_r($color)."</pre>";
+        $tmp=explode(";",$color[1]);
+        $code=$color[0];
         $color=$tmp[0];
-        $code=$this->getCode($name);
+        //$code=$this->getCode($name);
         //echo "$name_new, $code, $color<br>";
         $name_new=$name_new." $color ($code)";
         $name_new=str_replace($vendor,"",$name_new);
         $name_new=$vendor." $name_new";
         
-
-        
-        
-
         //$name_new=$vendor." ".$name_new;
         //можно сделатьб так. Во многих товарах у нас есть куча лишнего в описаннию. Но тут есть ньюанс - у нас есть позиции, где модель не указана в названии. Такие позиции как раз не распознаются
         //$name_new=preg_replace("/[^,\p{Latin}\d\s\/\(\)]/ui","",$name_new);
@@ -817,21 +803,30 @@ class csvTest
     }
 
     /**
-     * getColor
+     * getColorAndCode
      *
      * @param  mixed $itemName
      * @return void
      */
-    public function getColor($itemName)
+    public function getColorAndCode($itemName)
     {
         $xml=$this->XML;
         $xml_new=$this->stripHead($xml);
         $items=$this->getItemsArr($xml_new);
+        //echo "<b>$itemName</b><br>";
         foreach ($items as $item)
         {
             $name=$this->getItemName($item);
-            if ($name==$itemName)
+            //echo "$name<br>";
+            $name = preg_replace('/\s+/', '', $name);
+            $itemName = preg_replace('/\s+/', '', $itemName);
+            //echo "res=".strcasecmp($name,$itemName)." - $name<br>";
+
+            if (strcasecmp($name,$itemName)==0)
             {
+                //echo "lkjhkj<br>";
+                $code=$this->getItemId($item);
+                //echo "$code<br>";
                 $params=$this->getParams($item);
                 foreach ($params as $param)
                 {
@@ -839,12 +834,15 @@ class csvTest
                     if (strcmp($paramName,"Доступные цвета")==0||strcmp($paramName,"Цвет")==0)
                     {
                         $paramVal=$this->getParamVal($param);
-                        return $paramVal;
+                        //echo $paramVal."<br>";
+                        $arr[0]=$code;
+                        $arr[1]=$paramVal;
+                        //var_dump($arr);
+                        return $arr;
                     }
                 }
             }
         }
-
     }
 
     /**
@@ -868,20 +866,6 @@ class csvTest
             }
         }
     }
-    
-    /**
-     * changeName
-     *
-     * @param  mixed $oldName
-     * @param  mixed $newName
-     * @return void
-     */
-    /*private function changeName($oldName, $newName)
-    {
-        $XML=file_get_contents('new_hotline-v3.xml');
-        $XML=str_replace($oldName,$newName,$XML);
-        file_put_contents("new_hotline-v4.xml",$XML);
-    }*/
     
     /**
      * test
