@@ -2,6 +2,139 @@
 header('Content-Type: text/html; charset=utf-8');
 //include_once "hotline-test.php";
 
+class CleanName
+{
+    private function stripName($item)
+    {
+        $name=$this->getItemName($item);
+        $id=$this->getItemId($item);
+        $name=str_ireplace($id,"",$name);
+        return $name;
+    }
+
+    private function cleanUpper($name)
+    {
+        $name = preg_replace('/\s+/', ' ', $name);
+        $words=explode(" ",$name);
+        //echo "<pre>".print_r($words)."</pre>";
+        foreach ($words as $word)
+        {
+            //echo "$word<br>";
+            if (ctype_upper($word))
+            {
+                //echo "find upper - $word<br>";
+                $word=strtolower($word);
+                $word=ucwords($word);
+            }
+            $new_name.=" $word";
+        }
+        $new_name=trim($new_name);
+        return $new_name;
+    }
+
+    private function readFile()
+    {
+        $xml=file_get_contents('new_hotline-v3.xml');
+        return $xml;
+    }
+
+    private function setItemName($item,$name)
+    {
+        $old_name=$this->getItemName($item);
+        $new_item=str_ireplace($old_name,$name,$item);
+        return $new_item;
+    }
+
+    private function getItemName($item)
+    {
+        preg_match("#<name>(.*?)<\/name>#",$item,$matches);
+        $name=$matches[1];
+        return $name;
+    }
+
+    private function getItemId($item)
+    {
+        preg_match("#<code>(.*?)<\/code>#",$item,$matches);
+        $name=$matches[1];
+        return $name;
+    }
+
+    private function getItemsArr ($txt)
+    {
+        $arr=explode("</item>",$txt);
+        foreach ($arr as $pos)
+        {
+            $arr1[]=$pos."</item>";
+        }
+        array_pop($arr1);
+        return $arr1;
+    }
+
+    private function stripHead($txt)
+    {
+        //var_dump ($txt);
+        $pos=strpos($txt,"<items>");
+        //var_dump ($pos);
+        $new_txt=substr($txt,$pos);
+        $new_txt=str_ireplace("<items>","",$new_txt);
+        $new_txt=str_ireplace("</items>","",$new_txt);
+        return $new_txt;
+    }
+
+    private function getXMLhead($txt)
+    {
+        $pos=strpos($txt,"</categories>");
+        $xmlhead=substr($txt,0,$pos);
+        return $xmlhead;
+    }
+
+    private function getColor($item)
+    {
+        preg_match("#<param name=\"Цвет\">(.*?)</param>#",$item,$matches);
+        $color=$matches[1];
+        return $color;
+    }
+
+    public function test ()
+    {
+        $oldXML=$this->readFile();
+        $xml_new=$this->stripHead($oldXML);
+        $items=$this->getItemsArr($xml_new);
+        foreach($items as $item)
+        {
+            $name_old=$this->getItemName($item);
+            $item=str_ireplace("ВИТ","",$item);
+            $name=$this->stripName($item);
+            
+            $name=$this->cleanUpper($name);
+            if (strcmp($name_old,$name)==0)
+            {
+                $item=str_ireplace($name_old,$name,$item);
+                $old_name=$name;
+            }
+            $color=$this->getColor($item);
+            $name=$name." ($color)";
+            $name=str_ireplace(" ()","",$name);
+            $item=str_ireplace($name_old,$name,$item);
+            $items_new.=$item;
+
+            echo "$name_old - $name<br>";
+            //break;
+        }
+        $xmlHead=$this->getXMLhead($oldXML);
+        $XML_new=$xmlHead.PHP_EOL."</categories>".PHP_EOL.'<items>'.PHP_EOL.$items_new.PHP_EOL.'</items>'.PHP_EOL."</price>";
+        $XML_new=str_ireplace("<categoryId>53</categoryId>","<categoryId>20</categoryId>",$XML_new);
+        $XML_new=str_ireplace("<categoryId>168</categoryId>","<categoryId>25</categoryId>",$XML_new);
+        $XML_new=str_ireplace("<categoryId>166</categoryId>","<categoryId>10</categoryId>",$XML_new);
+        file_put_contents("new_hotline-v4.xml",$XML_new);
+
+    }
+
+
+    
+}
+
+
 /**
  * csvTest
  */
@@ -902,6 +1035,11 @@ class csvTest
     }
 }
 set_time_limit(30000);
-$test = new csvTest();
+//$test = new csvTest();
+//$test->test();
+//echo "Names Done<br>";
+
+
+$test = new CleanName();
 $test->test();
-echo "Names Done<br>";
+echo "Names v2 Done<br>";
