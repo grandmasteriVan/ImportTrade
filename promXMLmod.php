@@ -1619,6 +1619,10 @@ class testXML
                 {
                     $params_new[]="<param name=\"Вид изделия\">Юбка</param>";
                 }
+                if (strripos($itemName,"Бюстгальтер"))
+                {
+                    $params_new[]="<param name=\"Бюстгальтер\">Юбка</param>";
+                }
 
                 //трусики в комплекте - по названию "комплект"
                 if (strripos($itemName,"комплект")||strripos($itemName,"со стрингами")||strripos($itemName,"с трусиками"))
