@@ -299,7 +299,7 @@ class MakeTree
         {
             $newCat=9;
         }
-        if ($catIdOld==264||$catIdOld==190||$catIdOld==10||$catIdOld==187||$catIdOld==191||$catIdOld==256||$catIdOld==240||$catIdOld==250||$catIdOld==271||$catIdOld==272||$catIdOld==273||$catIdOld==124||$catIdOld==241||$catIdOld==106||$catIdOld==50||$catIdOld==204||$catIdOld==205||$catIdOld==43||$catIdOld==225||$catIdOld==206||$catIdOld==186||$catIdOld==209)
+        if ($catIdOld==264||$catIdOld==190||$catIdOld==10||$catIdOld==187||$catIdOld==191||$catIdOld==256||$catIdOld==240||$catIdOld==250||$catIdOld==271||$catIdOld==272||$catIdOld==273||$catIdOld==124||$catIdOld==241||$catIdOld==106||$catIdOld==50||$catIdOld==204||$catIdOld==205||$catIdOld==43||$catIdOld==225||$catIdOld==206||$catIdOld==186||$catIdOld==209||$catIdOld==166)
         {
             $newCat=10;
         }
@@ -462,6 +462,7 @@ class MakeTree
         //собираем конечную ХЬЛку
         $xml_new=$head.self::prom_cats.PHP_EOL."<items>".$items_new.PHP_EOL."<items>".PHP_EOL."</price>";
         //echo $xml_new;
+       
         file_put_contents("new_hotline-v2.xml",$xml_new);
     }
 
@@ -797,6 +798,8 @@ class Hotline
         $items=$this->getItemsArr($xml_new);
         foreach ($items as $item)
         {
+            //чистим описание
+            $item=$this->delDescription($item);
             //обнуляем новую позицию перед созданием
             $new_item=null;
             $itemId=$this->getItemId($item);
@@ -1435,7 +1438,7 @@ class Hotline
                 $new_item=$item;
             }
             //чистим описание\
-            $new_item=$this->delDescription($new_item);
+            //$new_item=$this->delDescription($new_item);
             //тут будем сорбирать все позиции
             $items_new.=$new_item;
             //echo "kjuhkjhhkjhjk";
