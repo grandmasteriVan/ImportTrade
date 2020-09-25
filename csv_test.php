@@ -107,6 +107,28 @@ class CleanName
             $name=$this->stripName($item);
             
             $name=$this->cleanUpper($name);
+
+            $name=str_ireplace("самоуд ","",$name); 
+            $name=str_ireplace("круж ","",$name);
+            $name=str_ireplace("туб.пласт ","",$name);
+            
+            $name=str_ireplace("туб пластик ","",$name);
+            $name=str_ireplace("Sml ","S/M/L",$name);
+            $name=str_ireplace("Массаж ","Массажное",$name);
+            $name=str_ireplace("эр. кольцом","эрекционным кольцом",$name);
+            
+            $name=str_ireplace("Эрекц ","Эрекционное",$name);
+            $name=str_ireplace(" кибркоже ребристый гнущийся "," ",$name);
+            $name=str_ireplace(" ж. "," ",$name);
+            $name=str_ireplace(" беж."," ",$name);
+            $name=str_ireplace(" усиленная стимуляция возбуждения","",$name);
+            $name=str_ireplace("любрикант","лубрикант",$name);
+            $name=str_ireplace("ppy","Трусы латекс Happy",$name);
+            $name=str_ireplace("вагин лело","вагинальные",$name);
+            Анал.
+            $name=str_ireplace("Анал.","Анальная ",$name);
+            $name=str_ireplace("Насадка очень длинная обрезать ножницами","Насадка на половой член",$name);
+
             if (strcmp($name_old,$name)==0)
             {
                 $item=str_ireplace($name_old,$name,$item);
@@ -123,9 +145,10 @@ class CleanName
         }
         $xmlHead=$this->getXMLhead($oldXML);
         $XML_new=$xmlHead.PHP_EOL."</categories>".PHP_EOL.'<items>'.PHP_EOL.$items_new.PHP_EOL.'</items>'.PHP_EOL."</price>";
-        $XML_new=str_ireplace("<categoryId>53</categoryId>","<categoryId>20</categoryId>",$XML_new);
+        /*$XML_new=str_ireplace("<categoryId>53</categoryId>","<categoryId>20</categoryId>",$XML_new);
         $XML_new=str_ireplace("<categoryId>168</categoryId>","<categoryId>25</categoryId>",$XML_new);
         $XML_new=str_ireplace("<categoryId>166</categoryId>","<categoryId>10</categoryId>",$XML_new);
+        $XML_new=str_ireplace("<categoryId>169</categoryId>","<categoryId>35</categoryId>",$XML_new);*/
         file_put_contents("new_hotline-v4.xml",$XML_new);
 
     }
