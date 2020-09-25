@@ -416,7 +416,8 @@ class MakeTree
     private function setItemCat($item,$catalog)
     {
         $old_cat=$this->getCatId($item);
-        $new_item=str_ireplace("<categoryId>$old_cat<\/categoryId>","<categoryId>$catalog<\/categoryId>",$item);
+        //$new_item=str_ireplace("<categoryId>$old_cat</categoryId>","<categoryId>$catalog</categoryId>",$item);
+        $new_item=preg_replace("#<categoryId>(.*?)<\/categoryId>","<categoryId>$catalog</categoryId>",$item)
         return $new_item;
     }
     
@@ -450,7 +451,7 @@ class MakeTree
         foreach ($items as $item)
         {
             $newCat=$this->FindPromCat($item);
-            //$oldCat=$this->getCatId($item);
+            $oldCat=$this->getCatId($item);
             //echo "$oldCat-$newCat<br>";
             $new_item=$this->setItemCat($item,$newCat);
             $items_new.=$new_item;
@@ -677,7 +678,7 @@ class Hotline
     private function setItemCat($item,$catalog)
     {
         $old_cat=$this->getCatId($item);
-        $new_item=str_ireplace($old_cat,$catalog,$item);
+        $new_item=str_ireplace("<categoryId>$old_cat</categoryId>","<categoryId>$catalog</categoryId>",$item);
         return $new_item;
     }
     
@@ -803,9 +804,33 @@ class Hotline
             //обнуляем новую позицию перед созданием
             $new_item=null;
             $itemId=$this->getItemId($item);
-            if ($itemId==9727)
+            $item=str_ireplace("<name></name>","<name>blank_name</name>",$item);
+            if (strcmp($itemId,"9727")==0)
             {
                 $item=$this->setItemName($item,"Эротический костюм горничной Старательная Бекки S/M");
+            }
+            if (strcmp($itemId,"514659")==0)
+            {
+                $item=$this->setItemName($item,"Эрекционное кольцо Cock Loop");
+            }
+            
+            if (strcmp($itemId,"514888 Э/")==0)
+            {
+                $item=$this->setItemName($item,"Анальная пробка Key to your Butt");
+            } 
+            if (strcmp($itemId,"757083")==0)
+            {
+                //echo "Нашли!<br>";
+                $item=$this->setItemName($item,"Платье Rene Rofe Open Season S/M");
+            }
+            
+            if (strcmp($itemId,"00206 F/")==0)
+            {
+                $item=$this->setItemName($item,"Вибратор ZALO Rosalie");
+            }
+            if (strcmp($itemId,"645256 /LVTOY056")==0)
+            {
+                $item=$this->setItemName($item,"Насадка на пенис Pleasure Extender Sleeve Vibro Flesh");
             }
             /*if ($itemId==900650)
             {
@@ -815,10 +840,10 @@ class Hotline
             {
                 $item=$this->setItemName($item,"Fifty Shades of Grey Виброяйцо \"Неутомимые вибрации\" (FS52423)");
             }
-            $vendor=$this->getVendor($item);
+            //$vendor=$this->getVendor($item);
             $itemName=$this->getItemName($item);
             //echo $itemName;
-            $itemName=$this->stripName($itemName,$vendor);
+            //$itemName=$this->stripName($itemName,$vendor);
             //echo " <b>-</b> $itemName<br>";
             $catId=$this->getCatId($item);
 
@@ -1430,17 +1455,44 @@ class Hotline
                         }
                         
                     }
+                    
+
                 }
+                $params_new=array_unique($params_new);
+                $tmp[]=null;
+                $params_new=array_diff($params_new,$tmp);
+                $params_new=$this->makeUniqeParams($params_new);
+                /*echo "<b>$itemName</b><br>";
+                echo "<pre>";
+                print_r($params_new);
+                echo "</pre>";*/
+                foreach ($params_new as $new_param)
+                {
+                    //отсекаем страну, которая у нас пустая (NULL)
+                    if ($new_param!=null)
+                    {
+                        $new_params.=$new_param.PHP_EOL;
+                    }
+                    
+                }
+                //бывает случай, когда позиция у нас не имеет ни одного парамептра. Тогда у нее появляется лишний тег </item>. На всякий случай убираем его
+                $itemHead=str_ireplace("</item>","",$itemHead);
+                //получаем новый айтем (не забываем закрывающий тег)
+                $new_item=$itemHead.$new_params."</item>";
+                //var_dump ($new_item);
             }
             
             if (!$specialCat)
             {
                 $new_item=$item;
+                echo htmlspecialchars($item);
+                echo "<br>";
+
             }
             //чистим описание\
             //$new_item=$this->delDescription($new_item);
             //тут будем сорбирать все позиции
-            $items_new.=$new_item;
+            $items_new.=$new_item.PHP_EOL;
             //echo "kjuhkjhhkjhjk";
         }
         //var_dump($items_new);
@@ -1448,6 +1500,7 @@ class Hotline
         //начинаем собирать финальную ХМЛку
         $XMLnew=$xmlHead.PHP_EOL."</categories>".PHP_EOL.$items_new.PHP_EOL."</price>";
         //var_dump($XMLnew);
+        //$XMLnew=str_ireplace(">",">".PHP_EOL,$XMLnew);
 
         file_put_contents("new_hotline-v3.xml",$XMLnew);
     }
