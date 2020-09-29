@@ -2106,6 +2106,10 @@ class testXML
                         $param_new=str_ireplace("Клиторальный","Клиторальный",$param_new);
                         $param_new=str_ireplace("Компьютерные","Компьютерный",$param_new);
                         $param_new=str_ireplace("Для точки G","G-точки",$param_new);
+                        if (strripos($param,"|"))
+                        {
+                            $param_new="<param name=\"Тип вибратора\">Комбинированный</param>";
+                        }
                     }
 
                     if (strcmp($paramName,"Материал")==0)
