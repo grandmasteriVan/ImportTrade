@@ -1053,21 +1053,26 @@ class Hotline
                     $params_new[]="<param name=\"Тип\">Вибратор классический</param>";
                 }               
                 
-
-
-                $params_new=array_unique($params_new);
-                $tmp[]=null;
-                $params_new=array_diff($params_new,$tmp);
-                $params_new=$this->makeUniqeParams($params_new);
-                foreach ($params_new as $new_param)
+                if (is_array($params_new))
                 {
-                    //отсекаем страну, которая у нас пустая (NULL)
-                    if ($new_param!=null)
+                    $params_new=array_unique($params_new);
+                    $tmp[]=null;
+                    $params_new=array_diff($params_new,$tmp);
+                    $params_new=$this->makeUniqeParams($params_new);
+                    foreach ($params_new as $new_param)
                     {
-                        $new_params.=$new_param.PHP_EOL;
+                        //отсекаем страну, которая у нас пустая (NULL)
+                        if ($new_param!=null)
+                        {
+                            $new_params.=$new_param.PHP_EOL;
+                        }
                     }
-                    
                 }
+                else
+                {
+                    echo "No new params for $itemId<br>";
+                }
+                
                 /*echo "<b>$itemName</b><br>";
                 echo "<pre>";
                 print_r($params_new);
@@ -1323,23 +1328,31 @@ class Hotline
                 }
 
 
-                $params_new=array_unique($params_new);
-                $tmp[]=null;
-                $params_new=array_diff($params_new,$tmp);
-                $params_new=$this->makeUniqeParams($params_new);
+                if (is_array($params_new))
+                {
+                    $params_new=array_unique($params_new);
+                    $tmp[]=null;
+                    $params_new=array_diff($params_new,$tmp);
+                    $params_new=$this->makeUniqeParams($params_new);
+
+                    foreach ($params_new as $new_param)
+                    {
+                        //отсекаем страну, которая у нас пустая (NULL)
+                        if ($new_param!=null)
+                        {
+                            $new_params.=$new_param.PHP_EOL;
+                        }
+                    }
+                }
+                else
+                {
+                    echo "No new params for $itemId<br>";
+                }
                 /*echo "<b>$itemName</b><br>";
                 echo "<pre>";
                 print_r($params_new);
                 echo "</pre>";*/
-                foreach ($params_new as $new_param)
-                {
-                    //отсекаем страну, которая у нас пустая (NULL)
-                    if ($new_param!=null)
-                    {
-                        $new_params.=$new_param.PHP_EOL;
-                    }
-                    
-                }
+                
                 //бывает случай, когда позиция у нас не имеет ни одного парамептра. Тогда у нее появляется лишний тег </item>. На всякий случай убираем его
                 $itemHead=str_ireplace("</item>","",$itemHead);
                 //получаем новый айтем (не забываем закрывающий тег)
@@ -1371,33 +1384,61 @@ class Hotline
                         if (strripos($param,"С вибрацией"))
                         {
                             $param_new="<param name=\"Наличие вибрации\">+</param>";
-                            
+                        }
+                        else
+                        {
+                            $param_new="<param name=\"Наличие вибрации\">-</param>";
                         }
                     }
+                    if (strcmp($paramName,"Вид")==0)
+                    {
+                        if (strripos($param,"Реалистичные"))
+                        {
+                            $param_new="<param name=\"Текстура\">Реалистик</param>";
+                        }
+                    }
+                    if (strcmp($paramName,"Материал")==0)
+                    {
+                        $param_new=$param;
+                    }
+                    
                     if (strcmp($paramName,"Диаметр")==0)
                     {
                         $param_new=str_ireplace("Диаметр","Диаметр, см",$param);
                     }
+                    if (strcmp($paramName,"Длина")==0)
+                    {
+                        $param_new=str_ireplace("Длина","Глубина, см",$param);
+                    }
+
                     $params_new[]=$param_new;
                 }
                 $params_new[]="<param name=\"Тип товара\">Мастурбатор</param>";
-                $params_new=array_unique($params_new);
-                $tmp[]=null;
-                $params_new=array_diff($params_new,$tmp);
-                $params_new=$this->makeUniqeParams($params_new);
+                if (is_array($params_new))
+                {
+                    $params_new=array_unique($params_new);
+                    $tmp[]=null;
+                    $params_new=array_diff($params_new,$tmp);
+                    $params_new=$this->makeUniqeParams($params_new);
+                    foreach ($params_new as $new_param)
+                    {
+                        //отсекаем страну, которая у нас пустая (NULL)
+                        if ($new_param!=null)
+                        {
+                            $new_params.=$new_param.PHP_EOL;
+                        }
+                    }
+                }
+                else
+                {
+                    echo "No new params for $itemId<br>";
+                }
+               
                 /*echo "<b>$itemName</b><br>";
                 echo "<pre>";
                 print_r($params_new);
                 echo "</pre>";*/
-                foreach ($params_new as $new_param)
-                {
-                    //отсекаем страну, которая у нас пустая (NULL)
-                    if ($new_param!=null)
-                    {
-                        $new_params.=$new_param.PHP_EOL;
-                    }
-                    
-                }
+                
                 //бывает случай, когда позиция у нас не имеет ни одного парамептра. Тогда у нее появляется лишний тег </item>. На всякий случай убираем его
                 $itemHead=str_ireplace("</item>","",$itemHead);
                 //получаем новый айтем (не забываем закрывающий тег)
@@ -1455,26 +1496,34 @@ class Hotline
                         }
                         
                     }
+                    $params_new[]=$param_new;
                     
 
                 }
-                $params_new=array_unique($params_new);
-                $tmp[]=null;
-                $params_new=array_diff($params_new,$tmp);
-                $params_new=$this->makeUniqeParams($params_new);
+                if (is_array($params_new))
+                {
+                    $params_new=array_unique($params_new);
+                    $tmp[]=null;
+                    $params_new=array_diff($params_new,$tmp);
+                    $params_new=$this->makeUniqeParams($params_new);
+                    foreach ($params_new as $new_param)
+                    {
+                        //отсекаем страну, которая у нас пустая (NULL)
+                        if ($new_param!=null)
+                        {
+                            $new_params.=$new_param.PHP_EOL;
+                        }
+                    }
+                }
+                else
+                {
+                    echo "No new params for $itemId<br>";
+                }
                 /*echo "<b>$itemName</b><br>";
                 echo "<pre>";
                 print_r($params_new);
                 echo "</pre>";*/
-                foreach ($params_new as $new_param)
-                {
-                    //отсекаем страну, которая у нас пустая (NULL)
-                    if ($new_param!=null)
-                    {
-                        $new_params.=$new_param.PHP_EOL;
-                    }
-                    
-                }
+                
                 //бывает случай, когда позиция у нас не имеет ни одного парамептра. Тогда у нее появляется лишний тег </item>. На всякий случай убираем его
                 $itemHead=str_ireplace("</item>","",$itemHead);
                 //получаем новый айтем (не забываем закрывающий тег)
