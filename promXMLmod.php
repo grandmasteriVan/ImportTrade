@@ -2122,6 +2122,10 @@ class testXML
                         $param_new=str_ireplace("Полиамид","Пластик",$param_new);
                         $param_new=str_ireplace("Эластан","Полиуретан",$param_new);
                         $param_new=str_ireplace("Камни, стразы|","",$param_new);
+                        if (strripos($param,"Силикон"))
+                        {
+                            $param_new="<param name=\"Материал\">Силикон</param>";
+                        }
                     }
                     if (strcmp($paramName,"Функции")==0)
                     {
