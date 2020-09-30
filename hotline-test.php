@@ -1721,15 +1721,10 @@ class CleanName
         $XML_new=str_ireplace("&amp,","and",$XML_new);
         $XML_new=str_ireplace("&apos,","'",$XML_new);
         $XML_new=str_ireplace("&lt,","-",$XML_new);
+        $XML_new=str_ireplace("<vendor>Fifty Shades of Grey</vendor>","<vendor>Lovehoney</vendor>",$XML_new);
         file_put_contents("new_hotline-v4.xml",$XML_new);
-
     }
-
-
-    
 }
-
-
 
 $test = new MakeTree();
 $test->catReplace();
