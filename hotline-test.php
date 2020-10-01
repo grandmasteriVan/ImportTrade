@@ -560,8 +560,8 @@ class Hotline
     
     /**
      * stripName
-     *
-     * @param  mixed $name
+     * 
+     * @param  mixed $name - 
      * @param  mixed $vendor
      * @return void
      */
@@ -1553,7 +1553,14 @@ class Hotline
 
         file_put_contents("new_hotline-v3.xml",$XMLnew);
     }
-
+    
+    /**
+     * delDescription
+     * удаляем поисания для конкретного айтема
+     * заодно чистим лишние пробелы
+     * @param  mixed $item - айтем с описанием
+     * @return void - тото же айтем, но без описания.
+     */
     private function delDescription($item)
     {
         $item=preg_replace("#<description>(.*?)<\/description>#","<description></description>",$item);
@@ -1565,8 +1572,17 @@ class Hotline
 }
 
 
+/**
+ * CleanName
+ */
 class CleanName
-{
+{    
+    /**
+     * stripName
+     * удаляем код (айди) из имени
+     * @param  mixed $item - имя, полученное из фида
+     * @return void - имя, без кода
+     */
     private function stripName($item)
     {
         $name=$this->getItemName($item);
@@ -1574,7 +1590,14 @@ class CleanName
         $name=str_ireplace($id,"",$name);
         return $name;
     }
-
+    
+    /**
+     * cleanUpper
+     * Приводим имя в порядок
+     * (удаляем лишние пробелы, меняем капс в имени на первую заглавную букву)
+     * @param  mixed $name - имя из фида (то, что мы получаем из 1С)
+     * @return string - приведенное в порядок имя
+     */
     private function cleanUpper($name)
     {
         $name = preg_replace('/\s+/', ' ', $name);
@@ -1594,34 +1617,65 @@ class CleanName
         $new_name=trim($new_name);
         return $new_name;
     }
-
+    
+    /**
+     * readFile
+     * Просто читаем ХМЛ файл с диска 
+     * @return void - ХМЛ файл
+     */
     private function readFile()
     {
         $xml=file_get_contents('new_hotline-v3.xml');
         return $xml;
     }
-
+    
+    /**
+     * setItemName
+     * Записывавем новое имя в айтем 
+     * (по сути формируем новый айтем, который отличается от старого только тем, что имеет новое имя)
+     * @param  mixed $item - айтем
+     * @param  mixed $name - новое имя, которое надо записать
+     * @return void - айтем с новым именем
+     */
     private function setItemName($item,$name)
     {
         $old_name=$this->getItemName($item);
         $new_item=str_ireplace($old_name,$name,$item);
         return $new_item;
     }
-
+    
+    /**
+     * getItemName
+     * Получаем имя айтема (позиции)
+     * @param  mixed $item - айтем
+     * @return string - имя позиции (айтема)
+     */
     private function getItemName($item)
     {
         preg_match("#<name>(.*?)<\/name>#",$item,$matches);
         $name=$matches[1];
         return $name;
     }
-
+    
+    /**
+     * getItemId
+     * полкучаем АйДишку (код поставщика) айтема 
+     * @param  mixed $item - айтем
+     * @return void - айди айтема
+     */
     private function getItemId($item)
     {
         preg_match("#<code>(.*?)<\/code>#",$item,$matches);
         $name=$matches[1];
         return $name;
     }
-
+    
+    /**
+     * getItemsArr
+     * разбиваем список айтемов на массив, шде каджый елемент - отдельный айтем
+     * @param  mixed $txt - часть ХМЛ, список айтемов
+     * @return array - массив айтемов
+     */
     private function getItemsArr ($txt)
     {
         $arr=explode("</item>",$txt);
@@ -1629,10 +1683,17 @@ class CleanName
         {
             $arr1[]=$pos."</item>";
         }
+        //последний элемент сммассива всегда пустой, удаляем его
         array_pop($arr1);
         return $arr1;
     }
-
+    
+    /**
+     * stripHead
+     * получаем часть ХМЛки, которая состоит из айтемов
+     * @param  mixed $txt - ХМЛка
+     * @return string - список айтемов
+     */
     private function stripHead($txt)
     {
         //var_dump ($txt);
@@ -1643,21 +1704,41 @@ class CleanName
         $new_txt=str_ireplace("</items>","",$new_txt);
         return $new_txt;
     }
-
+    
+    /**
+     * getXMLhead
+     * Получаем голову ХМЛки (все, что до окончания дерева каталогов).
+     * По сути эту часть фида мы не меняем
+     * @param  mixed $txt - полная ХМЛка
+     * @return string - часть статическая чатсь ХМЛки (все, что до окончания дерева каталогов)
+     */
     private function getXMLhead($txt)
     {
         $pos=strpos($txt,"</categories>");
         $xmlhead=substr($txt,0,$pos);
         return $xmlhead;
     }
-
+    
+    /**
+     * getColor
+     * получаем цвет конкретногго айтеема
+     * @param  mixed $item - айтем
+     * @return string - цвет айтема
+     */
     private function getColor($item)
     {
         preg_match("#<param name=\"Цвет\">(.*?)</param>#",$item,$matches);
         $color=$matches[1];
         return $color;
     }
-
+    
+    /**
+     * test
+     * Заменяем имена из фида на более подходящие для площадки
+     * (принимаем фид v2 и записываем окончательный фид v3)
+     *
+     * @return void
+     */
     public function test ()
     {
         $oldXML=$this->readFile();
@@ -1728,12 +1809,12 @@ class CleanName
 
 $test = new MakeTree();
 $test->catReplace();
-echo "<b>Done tree</b><br>";
+echo "<b>Done tree</b> ".date("Y-m-d H:i:s")."<br>";
 
 $test=new Hotline;
 $test->parseXML();
-echo "<b>Parse Done</b><br>";
+echo "<b>Parse Done</b> ".date("Y-m-d H:i:s")."<br>";
 
 $test = new CleanName();
 $test->test();
-echo "<b>Names v2 Done</b><br>";
+echo "<b>Names v2 Done</b> ".date("Y-m-d H:i:s")."<br>";
