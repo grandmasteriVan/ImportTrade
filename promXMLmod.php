@@ -2328,11 +2328,17 @@ class testXML
                             {
                                 //$param_new="<param name=\"Функция вибрации\">Нет</param>";
                                 $hasVibro=false;
+                                
                             }
                             if (strripos($param,"Водонепроницаемые"))
                             {
                                 //echo "$param<br>";
                                 //$param_new="<param name=\"Функция вибрации\">Да</param>";
+                                $hasWaterRes=true;
+                            }
+                            //все фалоимитаторы без вибрации - водостойкие
+                            if (strripos($param,"Без вибрации"))
+                            {
                                 $hasWaterRes=true;
                             }
                         }
