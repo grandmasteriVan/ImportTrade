@@ -1563,7 +1563,7 @@ class Hotline
      */
     private function delDescription($item)
     {
-        $item=preg_replace("#<description>(.*?)<\/description>#","<description></description>",$item);
+        $item=preg_replace("#<description>(.*?)<\/description>#s","<description></description>",$item);
         //удяляем лишние пробелы
         $item = preg_replace('/\s+/', ' ', $item);
         return $item;
@@ -1818,3 +1818,10 @@ echo "<b>Parse Done</b> ".date("Y-m-d H:i:s")."<br>";
 $test = new CleanName();
 $test->test();
 echo "<b>Names v2 Done</b> ".date("Y-m-d H:i:s")."<br>";
+/*
+$xml=file_get_contents('new_hotline-v4.xml');
+$xml=str_ireplace(">",">".PHP_EOL,$xml);
+$xml = trim(preg_replace('/[\r\n]+/m',"\n",$xml));
+file_put_contents("test.xml",$xml);
+echo "<b>Done</b> ".date("Y-m-d H:i:s")."<br>";
+*/
