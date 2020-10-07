@@ -13,7 +13,8 @@ class Gufo
      */
     private function readFile()
     {
-        $xml=file_get_contents('index.xml');
+        //$xml=file_get_contents('index.xml');
+        $xml=file_get_contents('test.xml');
         return $xml;
     }
 
@@ -184,39 +185,117 @@ class Gufo
             $paramName=$this->getParamName($param);
             $paramNames[]=$paramName;
         }
-        echo "<pre>".print_r($paramNames)."</pre>";
+        //echo "<pre>".print_r($paramNames)."</pre>";
         $countParams=array_count_values($paramNames);
-        echo "<pre>".print_r($countParams)."</pre>";
+        //echo "<pre>".print_r($countParams)."</pre>";
 
         foreach ($countParams as $key => $value)
         {
             if ($value>1)
             {
                 $s[$key]=$value;
-                echo "$key - $value<br>";
+                //echo "$key - $value<br>";
             }
         }
         echo "<pre>".print_r($s)."</pre>";
         return $s;
     }
-
+    
+    /**
+     * find1
+     *
+     * @param  mixed $s
+     * @param  mixed $item
+     * @return void
+     */
     private function find1($s,$item)
     {
+        //все параметры айтема
         $params=$this->getParams($item);
-        foreach($s as $key=>$value)
+        //отсекаем ненужные параметры
+        foreach ($s as $key=>$value)
         {
-            //$count
+            if ((strcmp($key,"Цвет")==0)||(strcmp($key,"Размер")==0))
+            {
+                $new_s[$key]=$value;
+            }
+        }
+        //echo "<pre>".print_r($new_s)."</pre>";
+        if (count($new_s)==1)
+        {
+            //echo "Связь по одному параметру<br>";
+            foreach($new_s as $key=>$value)
+            {
+                foreach ($params as $param)
+                {
+                    $paramName=$this->getParamName($param);
+                    $paramVal=$this->getParamVal($param);
+                    //для каждого параметра в айтеме сроавниваем его имя с тем, по которому будем делать связь. Если находим такой параметр - то получаем новый айтем, у которого остается только одна пара Параметр-Значение, которая соответствует текущему найденному параметру
+                    //
+                    if ($key==$paramName)
+                    {
+                        $newItems.=$this->makeNewItem($paramName,$paramVal,$item);
+                    }
+                }
+            }
+        }
+        if (count($new_s)==2)
+        {
+            //echo "Связь по двум параметрам<br>";
+            //for ($i=1;$i<=$new_s['Цвет'];$i++)
+            //{
             foreach ($params as $param)
             {
                 $paramName=$this->getParamName($param);
                 $paramVal=$this->getParamVal($param);
-                if ($key==$paramName)
+                if (strcmp('Цвет',$paramName)==0)
                 {
                     $newItems.=$this->makeNewItem($paramName,$paramVal,$item);
                 }
             }
+                
+            //}
+            //var_dump($newItems);
+            $newItemsArr=$this->getItemsArr($newItems);
+
+            $mas['Размер']=$new_s['Размер'];
+            foreach ($newItemsArr as $item1)
+            {
+                $newItems1.=$this->find1($mas,$item1);
+
+            }
+
         }
-        var_dump ($newItems);
+        //var_dump($newItems1);
+        /*
+        foreach($s as $key=>$value)
+        {
+            //$count
+            if ((strcmp($key,"Цвет")==0)||(strcmp($key,"Размер")==0))
+            {
+                foreach ($params as $param)
+                {
+                    $paramName=$this->getParamName($param);
+                    $paramVal=$this->getParamVal($param);
+                    if ($key==$paramName)
+                    {
+                        $newItems.=$this->makeNewItem($paramName,$paramVal,$item);
+                    }
+                }
+            }
+            
+        }
+        */
+        //var_dump ($newItems);
+        if (!is_null($newItems1))
+        {
+            return $newItems1;
+        }
+        else
+        {
+            return $newItems;
+        }
+        
     }    
     
         
@@ -225,7 +304,7 @@ class Gufo
     /**
      * makeNewItem
      * получаем айтем и Параметр и его значение которое нужно оставить
-     * На выходе получаем айтем, в котором остается только однин Параметр с выьранным именем и значенмием
+     * На выходе получаем айтем, в котором остается только однин Параметр с выбранным именем и значенмием
      * при этом параметры с другим именем не трогаем
      * @param  mixed $paramName
      * @param  mixed $paramVal
@@ -259,13 +338,14 @@ class Gufo
         {
             foreach ($items as $item)
             {
-                var_dump($item);
+                //var_dump($item);
                 $params=$this->getParams($item);
-                echo "<pre>".print_r($params)."</pre>";
+                //echo "<pre>".print_r($params)."</pre>";
                 $list=$this->getParamsList($params);
-                $this->find1($list,$item);
+                $newItems=$this->find1($list,$item);
+                var_dump($newItems);
                 $id=$this->getItemId($item);
-                echo "id=$id<br>";
+                //echo "id=$id<br>";
                 break;
             }
         }
