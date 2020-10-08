@@ -13,9 +13,22 @@ class Gufo
      */
     private function readFile()
     {
-        //$xml=file_get_contents('index.xml');
-        $xml=file_get_contents('test.xml');
+        $xml=file_get_contents('index.xml');
+        //$xml=file_get_contents('test.xml');
         return $xml;
+    }
+
+    /**
+     * getCatId
+     * пролучаем АйДи категории для конкретного айтема
+     * @param  mixed $item - айтем
+     * @return void - айди категории 
+     */
+    private function getCatId($item)
+    {
+        preg_match("#<categoryId>(.*?)<\/categoryId>#",$item,$matches);
+        $id=$matches[1];
+        return $id;
     }
 
     /**
@@ -171,6 +184,19 @@ class Gufo
         }
         return $paramVal;
     }
+
+    /**
+     * getXMLhead
+     * Получаем часть ХМЛ, которая идет до списка айтемов
+     * @param  mixed $txt - ХМЛ
+     * @return void - часть ХМЛ, которая идет до списка айтемов
+     */
+    private function getXMLhead($txt)
+    {
+        $pos=strpos($txt,"</categories>");
+        $xmlhead=substr($txt,0,$pos);
+        return $xmlhead;
+    }
     
     /**
      * getParamsList
@@ -197,7 +223,7 @@ class Gufo
                 //echo "$key - $value<br>";
             }
         }
-        echo "<pre>".print_r($s)."</pre>";
+        //echo "<pre>".print_r($s)."</pre>";
         return $s;
     }
     
@@ -298,8 +324,6 @@ class Gufo
         
     }    
     
-        
-    
     
     /**
      * makeNewItem
@@ -327,6 +351,29 @@ class Gufo
         }
         return $item;
     }
+    
+    /**
+     * addGroupToItems
+     * Меняем ай ди группы айтеом на правильный и добавляем айди группы
+     * (старый айди айтема делаем айди группы, айди айтема формируем следующим образом: старый айди+номер по порядку)
+     * @param  mixed $items
+     * @return void
+     */
+    private function addGroupToItems($items)
+    {
+        $id=$this->getItemId($items);
+        //echo "<br>addGroupToItems = $id<br>";
+        $ItemsArr=$this->getItemsArr($items);
+        $n=1;
+        foreach ($ItemsArr as $item)
+        {
+            $newItem=str_ireplace("<item id=\"$id\"","<item id=\"$id-$n\" group_id=\"$id\"",$item);
+            $n++;
+            //echo "$newItem<br>";
+            $newItems.=$newItem;
+        }
+        return $newItems;
+    }
 
     public function test()
     {
@@ -334,30 +381,56 @@ class Gufo
         $XMLnew=$this->delDescription($xml);
         $XMLnew=$this->stripHead($XMLnew);
         $items=$this->getItemsArr($XMLnew);
+        $XMLHead=$this->getXMLhead($xml);
         if (is_array($items))
         {
             foreach ($items as $item)
             {
                 //var_dump($item);
+                $catId=$this->getCatId($item);
                 $params=$this->getParams($item);
                 //echo "<pre>".print_r($params)."</pre>";
-                $list=$this->getParamsList($params);
-                $newItems=$this->find1($list,$item);
-                var_dump($newItems);
-                $id=$this->getItemId($item);
+                //$id=$this->getItemId($item);
+                if ($catId==2060||$catId==2068||$catId==2069||$catId==2070||$catId==2071||$catId==2072||$catId==2084||$catId==2092||$catId==2115||$catId==2118||$catId==2122||$catId==2124||$catId==2125||$catId==2169||$catId==2172||$catId==2173||$catId==2176||$catId==2180)
+                {
+                    $list=$this->getParamsList($params);
+                    if (is_array($list))
+                    {
+                        $newItems=$this->find1($list,$item);
+                        //var_dump($newItems);
+                        $newItems=$this->addGroupToItems($newItems);
+                    }
+                    else
+                    {
+                        $newItems=$item;
+                    }
+                }
+                else
+                {
+                    $newItems=$item;
+                }
+                
+                //$id=$this->getItemId($item);
                 //echo "id=$id<br>";
-                break;
+                //break;
+                //echo gettype($newItems);
+                $XMLBodyNew.=$newItems;
+                
             }
         }
         else
         {
             echo "No items find in XML<br>";
         }
-        //file_put_contents("gufo_new.xml",$XMLnew);
+
+        //удаляем пустые строки
+        $XMLBodyNew=preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $XMLBodyNew);
+        $newXml=$XMLHead.PHP_EOL."</categories>".PHP_EOL."<items>".PHP_EOL.$XMLBodyNew.PHP_EOL."</items>".PHP_EOL."</price>";
+        file_put_contents("gufo_new.xml",$newXml);
     }
 
 }
-
+echo "Start ".date("Y-m-d H:i:s")."<br>";
 $test=new Gufo();
 $test->test();
 echo "<b>Done</b> ".date("Y-m-d H:i:s");
