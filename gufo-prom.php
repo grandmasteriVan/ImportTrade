@@ -375,6 +375,15 @@ class Gufo
         return $newItems;
     }
 
+    public function BaseClean()
+    {
+        $xml=$this->readFile();
+        $XMLnew=$this->delDescription($xml);
+        $XMLnew=preg_replace("# в стиле(.*?)<\/name>#","</name>",$XMLnew);
+        file_put_contents("gufo_new-clean.xml",$XMLnew);
+        
+    }
+
     public function test()
     {
         $xml=$this->readFile();
@@ -390,7 +399,7 @@ class Gufo
                 $catId=$this->getCatId($item);
                 $params=$this->getParams($item);
                 //echo "<pre>".print_r($params)."</pre>";
-                //$id=$this->getItemId($item);
+                $id=$this->getItemId($item);
                 if ($catId==2060||$catId==2068||$catId==2069||$catId==2070||$catId==2071||$catId==2072||$catId==2084||$catId==2092||$catId==2115||$catId==2118||$catId==2122||$catId==2124||$catId==2125||$catId==2169||$catId==2172||$catId==2173||$catId==2176||$catId==2180)
                 {
                     $list=$this->getParamsList($params);
@@ -427,10 +436,12 @@ class Gufo
         $XMLBodyNew=preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $XMLBodyNew);
         $newXml=$XMLHead.PHP_EOL."</categories>".PHP_EOL."<items>".PHP_EOL.$XMLBodyNew.PHP_EOL."</items>".PHP_EOL."</price>";
         file_put_contents("gufo_new.xml",$newXml);
+        //file_put_contents("gufo_new.xml",$XMLnew);
     }
 
 }
 echo "Start ".date("Y-m-d H:i:s")."<br>";
 $test=new Gufo();
 $test->test();
+$test->BaseClean();
 echo "<b>Done</b> ".date("Y-m-d H:i:s");
