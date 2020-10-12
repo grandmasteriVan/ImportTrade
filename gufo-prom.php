@@ -368,6 +368,11 @@ class Gufo
         foreach ($ItemsArr as $item)
         {
             $newItem=str_ireplace("<item id=\"$id\"","<item id=\"$id-$n\" group_id=\"$id\"",$item);
+            //у айтемов, которые идут за первым не должно быть никаких параметров кроме тех, по которым идет связь
+            if ($n>1)
+            {
+                $newItem=$this->delParamsForSubItems($newItem);
+            }
             $n++;
             //echo "$newItem<br>";
             $newItems.=$newItem;
@@ -375,6 +380,50 @@ class Gufo
         return $newItems;
     }
 
+    /**
+     * getItemHead
+     * получаем статическую часть айтема (все, что до параметров, то, что мы не меняем)
+     * @param  mixed $item - айтем
+     * @return void - часть айтема до параметров
+     */
+    private function getItemHead($item)
+    {
+        $itemHead=explode("<param name",$item);
+        return $itemHead[0];
+    }
+    
+    /**
+     * delParamsForSubItems
+     *
+     * @param  mixed $item
+     * @return void
+     */
+    private function delParamsForSubItems($item)
+    {
+        $itemHead=$this->getItemHead($item);
+        $params=$this->getParams($item);
+        //var_dump ($item);
+        //var_dump($params);
+        if (is_array($params))
+        {
+            foreach ($params as $param)
+            {
+                $paramName=$this->getParamName($param);
+                if ((strcmp($paramName,"Цвет")==0)||(strcmp($paramName,"Размер")==0))
+                {
+                    $newParams.=$param.PHP_EOL;
+                }
+            }
+        }
+        $newItem=$itemHead.$newParams."</item>";
+        return $newItem;
+    }
+    
+    /**
+     * BaseClean
+     *
+     * @return void
+     */
     public function BaseClean()
     {
         $xml=$this->readFile();
@@ -383,7 +432,12 @@ class Gufo
         file_put_contents("gufo_new-clean.xml",$XMLnew);
         
     }
-
+    
+    /**
+     * test
+     *
+     * @return void
+     */
     public function test()
     {
         $xml=$this->readFile();
