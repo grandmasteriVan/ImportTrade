@@ -428,9 +428,9 @@ class Gufo
     {
         $xml=$this->readFile();
         $XMLnew=$this->delDescription($xml);
+        //убираем названия брендов из имени
         $XMLnew=preg_replace("# в стиле(.*?)<\/name>#","</name>",$XMLnew);
         file_put_contents("gufo_new-clean.xml",$XMLnew);
-        
     }
     
     /**
