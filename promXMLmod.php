@@ -2431,6 +2431,10 @@ class testXML
                 {
                     $params_new[]="<param name=\"Тип интимной игрушки\">Вибратор</param>";
                 }
+                if (strripos($itemName,"Клиторальный стимулятор"))
+                {
+                    $params_new[]="<param name=\"Тип интимной игрушки\">Вибратор</param>";
+                }
                 if (strripos($itemName,"яйцо"))
                 {
                     $params_new[]="<param name=\"Тип интимной игрушки\">Вибро яйцо</param>";
@@ -2479,6 +2483,12 @@ class testXML
                 if (strripos($itemName,"tight puss"))
                 {
                     $params_new[]="<param name=\"Тип интимной игрушки\">Вагина</param>";
+                }
+
+                //реалистик
+                if (strripos($itemName,"реалист")||strripos($itemName,"Реалист"))
+                {
+                    $params_new[]="<param name=\"Тип фаллоимитатора\">Реалистик</param>";
                 }
 
 
