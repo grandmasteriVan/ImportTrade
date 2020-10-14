@@ -419,6 +419,57 @@ class Gufo
         return $newItem;
     }
     
+        
+    /**
+     * getSeason
+     *
+     * @param  mixed $paramVal
+     * @return void
+     */
+    private function getSeason($paramVal)
+    {
+        echo $paramVal."<br>";
+        $value=str_ireplace("/"," ",$paramVal);
+        $value=str_ireplace("-"," ",$value);
+        $value=str_ireplace("Все сезоны","",$value);
+        $value=str_ireplace("< param>","",$value);
+        $value=trim(preg_replace('/\s+/', ' ', $value));
+        //$value=str_ireplace(" ","}",$value);
+        //$value=ucwords($value);
+        //Ставим первую букву сезона всегда заглавной
+        $value=mb_convert_case($value, MB_CASE_TITLE, "UTF-8");
+        //echo $value."<br>";
+        $valueArr=explode(" ",$value);
+        $countVal=array_count_values($valueArr);
+        //var_dump($countVal);
+        //echo "<pre>".print_r($countVal),"</pre>";
+        $maxVal=0;
+        foreach ($countVal as $key=>$value)
+        {
+            if($value>$maxVal)
+            {
+                $maxVal=$value;
+            }
+        }
+        //echo "max=$maxVal<br>";
+        $season=array_search($maxVal,$countVal);
+        echo "$season<br>";
+        return $season;
+    }
+    
+    /**
+     * getType
+     * В обуви (возможно и с другими товарами) пкевым
+     * @param  mixed $item
+     * @return void
+     */
+    private function getType($item)
+    {
+        $name=$this->getItemName($item);
+        $type=explode(' ',trim($my_value))[0];
+        return $type;
+    }
+    
     /**
      * BaseClean
      *
@@ -445,6 +496,7 @@ class Gufo
         $XMLnew=$this->stripHead($XMLnew);
         $items=$this->getItemsArr($XMLnew);
         $XMLHead=$this->getXMLhead($xml);
+        
         if (is_array($items))
         {
             foreach ($items as $item)
@@ -452,6 +504,20 @@ class Gufo
                 //var_dump($item);
                 $catId=$this->getCatId($item);
                 $params=$this->getParams($item);
+                //это айтем до параметров. Мы его трогать вообще никогда не будем
+                $itemHead=$this->getItemHead($item);
+                $itemHead=str_ireplace("</item>","",$itemHead);
+
+                foreach($params as $param)
+                {
+                    $paramName=$this->getParamName($param);
+                    if (strcmp($paramName,"Сезон")==0)
+                    {
+                        $val=$this->getParamVal($param);
+                        $season=$this->getSeason($val);
+                        $newParam="<param name=\"Сезон\">$season</param>";
+                    }
+                }
                 //echo "<pre>".print_r($params)."</pre>";
                 $id=$this->getItemId($item);
                 if ($catId==2060||$catId==2068||$catId==2069||$catId==2070||$catId==2071||$catId==2072||$catId==2084||$catId==2092||$catId==2115||$catId==2118||$catId==2122||$catId==2124||$catId==2125||$catId==2169||$catId==2172||$catId==2173||$catId==2176||$catId==2180)
@@ -471,6 +537,24 @@ class Gufo
                 else
                 {
                     $newItems=$item;
+                }
+                //обувь
+                if ($catId==2022||$catId==2047||$catId==2048||$catId==2049||$catId==2050||$catId==2051||$catId==2179)
+                {
+                    $country="Китай";
+                    $param_new=null;
+                    if (is_array($params))
+                    {
+                        foreach ($params as $param)
+                        {
+                            $paramName=$this->getParamName($param);
+                            $paramVal=$this->getParamVal($param);
+                            if(strcmp($paramName,"Пол")==0)
+                            {
+
+                            }
+                        }
+                    }
                 }
                 
                 //$id=$this->getItemId($item);
@@ -492,6 +576,8 @@ class Gufo
         file_put_contents("gufo_new.xml",$newXml);
         //file_put_contents("gufo_new.xml",$XMLnew);
     }
+
+    public function ()
 
 }
 echo "Start ".date("Y-m-d H:i:s")."<br>";
