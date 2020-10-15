@@ -2524,6 +2524,26 @@ class testXML
                 //break;
                 //var_dump ($new_item);
             }
+            //девичник
+            if ($catId==179)
+            {
+                $itemId=$this->getItemId($item);
+                $params_new=null;
+                //билет на toy party
+                if ($itemId==37100)
+                {
+                    
+                    $country="Украина";
+                    $country="<country>".$country."</country>".PHP_EOL;
+                    $itemHead=str_ireplace("<vendor></vendor>","<vendor>Собственное производство</vendor>",$itemHead);
+                    $new_params="<param name=\"Назначение\">Универсальный</param>";
+                    //бывает случай, когда позиция у нас не имеет ни одного парамептра. Тогда у нее появляется лишний тег </item>. На всякий случай убираем его
+                    $itemHead=str_ireplace("</item>","",$itemHead);
+                    //получаем новый айтем (не забываем закрывающий тег)
+                    $new_item=$itemHead.$country.$new_params."</item>";
+
+                }
+            }
 
             //тут будем сорбирать все позиции
             $items_new.=$new_item;
