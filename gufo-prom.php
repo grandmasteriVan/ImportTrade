@@ -394,7 +394,8 @@ class Gufo
     
     /**
      * delParamsForSubItems
-     *
+     * Во всех связанных товаров, кроме первого, надо оставлять только те параметры, по которым идет связь
+     * 
      * @param  mixed $item
      * @return void
      */
@@ -422,7 +423,7 @@ class Gufo
         
     /**
      * getSeason
-     *
+     * 
      * @param  mixed $paramVal
      * @return void
      */
@@ -577,7 +578,61 @@ class Gufo
         //file_put_contents("gufo_new.xml",$XMLnew);
     }
 
-    public function ()
+    public function test2()
+    {
+        $xml=$this->readFile();
+        $XMLnew=$this->delDescription($xml);
+        $XMLnew=$this->stripHead($XMLnew);
+        $items=$this->getItemsArr($XMLnew);
+        $XMLHead=$this->getXMLhead($xml);
+        if (is_array($items))
+        {
+            foreach ($items as $item)
+            {
+                $catId=$this->getCatId($item);
+                $params=$this->getParams($item);
+                //это айтем до параметров. Мы его трогать вообще никогда не будем
+                $itemHead=$this->getItemHead($item);
+                $itemHead=str_ireplace("</item>","",$itemHead);
+                if ($catId==2022||$catId==2047||$catId==2048||$catId==2049||$catId==2050||$catId==2051||$catId==2179)
+                {
+                    $country="Китай";
+                    $param_new=null;
+                    foreach($params as $param)
+                    {
+                        $paramName=$this->getParamName($param);
+                        if (strcmp($paramName,"Сезон")==0)
+                        {
+                            $val=$this->getParamVal($param);
+                            $season=$this->getSeason($val);
+                            $newParam="<param name=\"Сезон\">$season</param>";
+                        }
+                        if (strcmp($paramName,"Пол")==0)
+                        {
+                            $param_new=str_ireplace("Девочкам","Для девочек",$param);
+                            $param_new=str_ireplace("Мальчикам","Для мальчиков",$param_new);
+                        }
+                        
+                        if (strcmp($paramName,"Размер")==0)
+                        {
+                            $param_new=str_ireplace("Размер","Размер детской обуви",$param);
+                        }
+                        
+                        if (strcmp($paramName,"Материал верха")==0)
+                        {
+                            $param_new=str_ireplace("Экокожа","Искусственная кожа",$param);
+                            $param_new=str_ireplace("ПУ кожа","Искусственная кожа",$param_new);
+                            $param_new=str_ireplace("Комбинированные материалы","Комбинированный",$param_new);
+                            $param_new=str_ireplace("Микрофибра","Комбинированный",$param_new);
+                            $param_new=str_ireplace("Стрейч","Комбинированный",$param_new);
+                            $param_new=str_ireplace("Джинс","Хлопок",$param_new);
+                        }
+                    }
+                    
+                }
+            }
+        }
+    }
 
 }
 echo "Start ".date("Y-m-d H:i:s")."<br>";
