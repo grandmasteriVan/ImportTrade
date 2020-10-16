@@ -415,7 +415,7 @@ class MakeTree
      */
     private function setItemCat($item,$catalog)
     {
-        $old_cat=$this->getCatId($item);
+        //$old_cat=$this->getCatId($item);
         //$new_item=str_ireplace("<categoryId>$old_cat</categoryId>","<categoryId>$catalog</categoryId>",$item);
         $new_item=preg_replace("#<categoryId>(.*?)<\/categoryId>#","<categoryId>$catalog</categoryId>",$item);
         return $new_item;
