@@ -627,6 +627,18 @@ class Gufo
                             $param_new=str_ireplace("Стрейч","Комбинированный",$param_new);
                             $param_new=str_ireplace("Джинс","Хлопок",$param_new);
                         }
+                        if (strcmp($paramName,"Материал подкладки")==0)
+                        {
+                            $param_new=str_ireplace("Натуральная кожа","Кожа",$param);
+                        }
+                        
+                        if (strcmp($paramName,"Особенности обуви")==0)
+                        {
+                            $param_new=str_ireplace("Особенности обуви","Застежка",$param);
+                            $param_new=str_ireplace("Шнурки","Шнуровка",$param_new);
+                            $param_new=str_ireplace("шнурки-резинка","Шнуровка",$param_new);
+                        }
+
                     }
                     
                 }
