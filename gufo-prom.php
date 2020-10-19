@@ -601,6 +601,7 @@ class Gufo
                     foreach($params as $param)
                     {
                         $paramName=$this->getParamName($param);
+                        $paramVal=$this->getParamVal($param);
                         if (strcmp($paramName,"Сезон")==0)
                         {
                             $val=$this->getParamVal($param);
@@ -638,8 +639,61 @@ class Gufo
                             $param_new=str_ireplace("Шнурки","Шнуровка",$param_new);
                             $param_new=str_ireplace("шнурки-резинка","Шнуровка",$param_new);
                         }
+                        if (strcmp($paramName,"Особенности обуви")==0)
+                        {
+                            if (strripos($paramVal,"С бисером"))
+                            {
+                                $param_new="<param name=\"Отделка и украшения\">Бисер</param>";
+                            }
+                            if (strripos($paramVal,"с мехом"))
+                            {
+                                $param_new="<param name=\"Отделка и украшения\">Мех</param>";
+                            }
+                            if (strripos($paramVal,"Кристаллы"))
+                            {
+                                $param_new="<param name=\"Отделка и украшения\">Стеклярус</param>";
+                            }
+                            if (strripos($paramVal,"С пайетками"))
+                            {
+                                $param_new="<param name=\"Отделка и украшения\">Пайетки</param>";
+                            }
+                        }
+                        if (strcmp($paramName,"Цвет")==0)
+                        {
+                            $param_new=str_ireplace("черный","Черный",$param);
+                            $param_new=str_ireplace("бежевый","Бежевый",$param_new);
+                            $param_new=str_ireplace("белый","Белый",$param_new);
+                            $param_new=str_ireplace("бордовый","Бордовый",$param_new);
+                            $param_new=str_ireplace("бронзовый","Бронзовый",$param_new);
+                            $param_new=str_ireplace("желтый","Желтый",$param_new);
+                            $param_new=str_ireplace("зеленый","Зелёный",$param_new);
+                            $param_new=str_ireplace("золотой","Золотистый",$param_new);
+                            $param_new=str_ireplace("коралловый","Коралловый",$param_new);
+                            $param_new=str_ireplace("коричневый","Коричневый",$param_new);
+                            $param_new=str_ireplace("молочный","Кофе с молоком",$param_new);
+                            $param_new=str_ireplace("красный","Красный",$param_new);
+                            $param_new=str_ireplace("малиновый","Малиновый",$param_new);
+                            $param_new=str_ireplace("оливковый","Оливковый",$param_new);
+                            $param_new=str_ireplace("оранжевый","Оранжевый",$param_new);
+                            $param_new=str_ireplace("розовый","Розовый",$param_new);
+                            $param_new=str_ireplace("салатовый","Салатовый",$param_new);
+                            $param_new=str_ireplace("серый","Серый",$param_new);
+                            $param_new=str_ireplace("серебро","Серебристый",$param_new);
+                            $param_new=str_ireplace("серебристый","Серебристый",$param_new);
+                            $param_new=str_ireplace("синий","Синий",$param_new);
+                            $param_new=str_ireplace("сиреневый","Сиреневый",$param_new);
+                            $param_new=str_ireplace("фиолетовый","Фиолетовый",$param_new);
+                            $param_new=str_ireplace("хаки","Хаки",$param_new);
+                            if(strripos($paramVal,"-"))
+                            {
+                                $param_new="<param name=\"Цвет\">Разные цвета</param>";
+                            }
 
+                        }
+                        $params_new[]=$param_new;
                     }
+                    //а тут мы будем прописывать захардкодженные параметры
+                    $params_new[]="<param name=\"Состояние\">Новое</param>";
                     
                 }
             }
