@@ -351,7 +351,9 @@ class GufoRozetka
         $XMLnew=preg_replace("#<param name=\"Возраст\">(.*?)\/(.*?)<\/param>#","",$XMLnew);
         $XMLnew=preg_replace("#<param name=\"Рост\">(.*?)\/(.*?)<\/param>#","",$XMLnew);
         $XMLnew=preg_replace("# в стиле(.*?)<\/name>#","</name>",$XMLnew);
-
+        $XMLnew=str_ireplace("<param name=\"Коллекция\"></param>","",$XMLnew);
+        $XMLnew=str_ireplace("<param name=\"Сезон\"></param>","",$XMLnew);
+        
         $xmlhead=$this->getXMLhead($xml);
         $XMLnew=$this->stripHead($XMLnew);
         //var_dump($XMLnew);
