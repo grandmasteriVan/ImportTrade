@@ -43,7 +43,27 @@ class Gufo
         $name=$matches[1];
         return $name;
     }
-
+    
+    /**
+     * getItemVendor
+     *
+     * @param  mixed $item
+     * @return void
+     */
+    private function getItemVendor($item)
+    {
+        preg_match("#<vendor>(.*?)<\/vendor>#",$item,$matches);
+        $vendor=$matches[1];
+        return $vendor;
+    }
+    
+        
+    /**
+     * getItemId
+     *
+     * @param  mixed $item
+     * @return void
+     */
     private function getItemId($item)
     {
         preg_match("#<item id=\"(.*?)\"#",$item,$matches);
@@ -88,6 +108,13 @@ class Gufo
     private function getItemName($item)
     {
         preg_match("#<name>(.*?)<\/name>#",$item,$matches);
+        $name=$matches[1];
+        return $name;
+    }
+
+    private function getItemSeason($item)
+    {
+        preg_match("#<param name=\"Сезон\">(.*?)<\/param>#",$item,$matches);
         $name=$matches[1];
         return $name;
     }
@@ -429,7 +456,7 @@ class Gufo
      */
     private function getSeason($paramVal)
     {
-        echo $paramVal."<br>";
+        //echo $paramVal."<br>";
         $value=str_ireplace("/"," ",$paramVal);
         $value=str_ireplace("-"," ",$value);
         $value=str_ireplace("Все сезоны","",$value);
@@ -454,7 +481,7 @@ class Gufo
         }
         //echo "max=$maxVal<br>";
         $season=array_search($maxVal,$countVal);
-        echo "$season<br>";
+        //echo "$season<br>";
         return $season;
     }
     
@@ -469,6 +496,41 @@ class Gufo
         $name=$this->getItemName($item);
         $type=explode(' ',trim($my_value))[0];
         return $type;
+    }
+    
+    /**
+     * findColors
+     * Поскольку поменялась логика работы с цветами
+     * то будем делать так - берем все прараметры
+     * находим среди них цвета. Отсекаем цвета через дефис
+     * в оставшихся цветах выбераем первое слово - это и будет цвет модели
+     * формируем новые параметры и возвращаем их
+     * @param  mixed $params
+     * @return void
+     */
+    private function findColors($params)
+    {
+        foreach ($params as $param)
+        {
+            $name=$this->getParamName($param);
+            if (strcmp($name,"Цвет")==0)
+            {
+                if (!strripos($param,"-"))
+                {
+                    $val=$this->getParamVal($param);
+                    //если цвет через слеш, то разбиваем его и в качестве цвета используем последнее значение
+                    $val=explode("/",$val);
+                    $n=count($val)-1;
+                    $val=$val[$n];
+                    $new_params[]="<param name=\"Цвет\">$val</param>";
+                }
+            }
+            else
+            {
+                $new_params[]=$param;
+            }
+        }
+        return $new_params;
     }
     
     /**
@@ -508,7 +570,12 @@ class Gufo
                 //это айтем до параметров. Мы его трогать вообще никогда не будем
                 $itemHead=$this->getItemHead($item);
                 $itemHead=str_ireplace("</item>","",$itemHead);
-
+                $id=$this->getItemId($item);
+                //переделываем параметры цвета
+                $params=$this->findColors($params);
+                echo "id=$id<br>";
+                //var_dump($params);
+                echo "<br>";
                 foreach($params as $param)
                 {
                     $paramName=$this->getParamName($param);
@@ -520,26 +587,43 @@ class Gufo
                     }
                 }
                 //echo "<pre>".print_r($params)."</pre>";
-                $id=$this->getItemId($item);
+                
                 if ($catId==2060||$catId==2068||$catId==2069||$catId==2070||$catId==2071||$catId==2072||$catId==2084||$catId==2092||$catId==2115||$catId==2118||$catId==2122||$catId==2124||$catId==2125||$catId==2169||$catId==2172||$catId==2173||$catId==2176||$catId==2180)
                 {
-                    $list=$this->getParamsList($params);
-                    if (is_array($list))
+                    $vendor=$this->getItemVendor($item);
+                    //echo "$vendor<br>";
+                    if ((strcmp($vendor,"Manan")==0)||(strcmp($vendor,"Jo Jo")==0)||(strcmp($vendor,"Fashion Dog")==0))
                     {
-                        $newItems=$this->find1($list,$item);
-                        //var_dump($newItems);
-                        $newItems=$this->addGroupToItems($newItems);
+                        //Надо разбить только те товары, которые имеют сезон Зима
+                        $season=$this->getItemSeason($item);
+                        if (strcmp($season,"Зима")==0))
+                        {
+                            //echo "$id<br>";
+                            $list=$this->getParamsList($params);
+                            if (is_array($list))
+                            {
+                                
+                                $newItems=$this->find1($list,$item);
+                                //var_dump($newItems);
+                                $newItems=$this->addGroupToItems($newItems);
+
+
+                            }
+                            else
+                            {
+                                $newItems=$item;
+                            }
+                        }
+                        
                     }
-                    else
-                    {
-                        $newItems=$item;
-                    }
+                    
                 }
-                else
-                {
-                    $newItems=$item;
-                }
+                //else
+                //{
+                //    $newItems=$item;
+                //}
                 //обувь
+                /*
                 if ($catId==2022||$catId==2047||$catId==2048||$catId==2049||$catId==2050||$catId==2051||$catId==2179)
                 {
                     $country="Китай";
@@ -557,6 +641,7 @@ class Gufo
                         }
                     }
                 }
+                */
                 
                 //$id=$this->getItemId($item);
                 //echo "id=$id<br>";
