@@ -238,6 +238,36 @@ class testXML
         $xmlhead=substr($txt,0,$pos);
         return $xmlhead;
     }
+
+    private function getDescription($item)
+    {
+        preg_match("#<description>(.*?)<\/description>#",$item,$matches);
+        $descr=$matches[1];
+        return $descr;
+    }
+    
+    private function setDescr($item)
+    {
+        $descr=$this->getDescription($item);
+        if (empty($descr))
+        {
+            $name=$this->getItemName($item);
+            $params=$this->getParams($item);
+            if (is_array($params))
+            {
+                foreach($params as $param)
+                {
+                    $parName=$this->getParamName($param);
+                    $paramVal=$this->getParamVal($param);
+                    $desc=$name." ".$parName." ".$paramVal.".";
+                    break;
+                }
+            }
+            $item=str_ireplace("<description></description>","<description>$desc</description>",$item);
+            //echo "$desc<br>";
+        }
+        return $item;
+    }
     
     /**
      * parseXML
@@ -259,6 +289,7 @@ class testXML
         //return null;
         foreach($items as $item)
         {
+            $item=$this->setDescr($item);
             //обнуляем новую позицию перед созданием
             $new_item=null;
             $catId=$this->getCatId($item);
