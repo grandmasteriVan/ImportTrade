@@ -147,7 +147,7 @@ class GufoRozetka
         //отсекаем ненужные параметры
         foreach ($s as $key=>$value)
         {
-            if ((strcmp($key,"Цвет")==0)||(strcmp($key,"Размер")==0))
+            if ((strcmp($key,"Цвет")==0)||(strcmp($key,"Рост")==0))
             {
                 $new_s[$key]=$value;
             }
@@ -190,7 +190,7 @@ class GufoRozetka
             //var_dump($newItems);
             $newItemsArr=$this->getItemsArr($newItems);
 
-            $mas['Размер']=$new_s['Размер'];
+            $mas['Рост']=$new_s['Рост'];
             foreach ($newItemsArr as $item1)
             {
                 $newItems1.=$this->find1($mas,$item1);
@@ -264,7 +264,7 @@ class GufoRozetka
     private function cleanParams($params)
     {
         $new_params=preg_replace("#<param name=\"Возраст\">(.*?)\/(.*?)<\/param>#","",$params);
-        $new_params=preg_replace("#<param name=\"Рост\">(.*?)\/(.*?)<\/param>#","",$params);
+        //$new_params=preg_replace("#<param name=\"Рост\">(.*?)\/(.*?)<\/param>#","",$params);
         return $new_params;
     }
 
@@ -284,7 +284,7 @@ class GufoRozetka
 
     private function getItemSize($item)
     {
-        preg_match("#<param name=\"Размер\">(.*?)<\/param>#",$item,$matches);
+        preg_match("#<param name=\"Рост\">(.*?)<\/param>#",$item,$matches);
         $name=$matches[1];
         return $name;
     }
@@ -302,8 +302,17 @@ class GufoRozetka
         //к имени добавляем цвет, размер, артикул
         $color=$this->getItemColour($item);
         $size=$this->getItemSize($item);
+        //echo "$size<br>";
         $article=$this->getItemArticle($item);
-        $nameNew=$name." $color размер $size ($article)";
+        if (!empty($size))
+        {
+            $nameNew=$name." $color рост $size см. ($article)";
+        }
+        else
+        {
+            $nameNew=$name." $color ($article)";
+        }
+        
         //echo "$name-$nameNew<br>";
         $item=str_ireplace("<name>$name</name>","<name>$nameNew</name>",$item);
         return $item;
@@ -338,6 +347,7 @@ class GufoRozetka
         //echo "max=$maxVal<br>";
         $season=array_search($maxVal,$countVal);
         //echo "$season<br>";
+        $season=str_ireplace("Лето","Летний",$season);
         return $season;
     }
 
@@ -349,10 +359,12 @@ class GufoRozetka
         $xml=str_ireplace("<param name=\"Размер\">one size</param>","",$xml);
         $XMLnew=preg_replace("#<description>(.*?)<\/description>#s","<description></description>",$xml);
         $XMLnew=preg_replace("#<param name=\"Возраст\">(.*?)\/(.*?)<\/param>#","",$XMLnew);
+        $XMLnew=preg_replace("#<param name=\"Размер\">(.*?)\/(.*?)<\/param>#","",$XMLnew);
         $XMLnew=preg_replace("#<param name=\"Рост\">(.*?)\/(.*?)<\/param>#","",$XMLnew);
         $XMLnew=preg_replace("# в стиле(.*?)<\/name>#","</name>",$XMLnew);
         $XMLnew=str_ireplace("<param name=\"Коллекция\"></param>","",$XMLnew);
         $XMLnew=str_ireplace("<param name=\"Сезон\"></param>","",$XMLnew);
+        $XMLnew=str_ireplace("Casual","Повседневный (casual)",$XMLnew);
         
         $xmlhead=$this->getXMLhead($xml);
         $XMLnew=$this->stripHead($XMLnew);
@@ -389,7 +401,7 @@ class GufoRozetka
                 $XMLBodyNew.=$newItems;
             }
             $XMLBodyNew=preg_replace("#<param name=\"Возраст\">(.*?)<\/param>#","",$XMLBodyNew);
-            $XMLBodyNew=preg_replace("#<param name=\"Рост\">(.*?)<\/param>#","",$XMLBodyNew);
+            $XMLBodyNew=preg_replace("#<param name=\"Размер\">(.*?)<\/param>#","",$XMLBodyNew);
             $XMLBodyNew=preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $XMLBodyNew);
             //на данный мормент у нас есть разбитые оферы
             //надо подчистить параметры
@@ -411,6 +423,9 @@ class GufoRozetka
                     {
                         $val=$this->getParamVal($param);
                         $season=$this->getSeason($val);
+                        $season=str_ireplace("Зима","Зимний",$season);
+                        $season=str_ireplace("Осень","Осенний",$season);
+                        $season=str_ireplace("Весна","Весенний",$season);
                         $newParam="<param name=\"Сезон\">$season</param>";
                         $item=str_ireplace("<param name=\"Сезон\">$val</param>","<param name=\"Сезон\">$season</param>",$item);
                     }
@@ -427,11 +442,14 @@ class GufoRozetka
                         $paramVal=$this->getParamVal($param);
                         $val=explode("/",$paramVal);
                         $val=$val[0];
+                        $val=str_ireplace("Спорт","Спортивный (sport)",$val);
+                        $val=str_ireplace("Школа","Классический",$val);
                         $item=str_ireplace("<param name=\"Стиль\">$paramVal</param>","<param name=\"Стиль\">$val</param>",$item);
                     }
                 }
                 $newItems.=$item;
             }
+            $newItems=str_ireplace("param name=\"Рост\"","param name=\"Рост\" unit=\"см\"",$newItems);
             $newXml=$xmlhead.PHP_EOL."</categories>".PHP_EOL."<offers>".PHP_EOL.$newItems.PHP_EOL."</offers>".PHP_EOL."</shop>".PHP_EOL."</yml_catalog>";
             file_put_contents("gufo_rozetka.xml",$newXml);
         }
