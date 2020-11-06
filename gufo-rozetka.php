@@ -24,6 +24,12 @@ class GufoRozetka
         $name=$matches[1];
         return $name;
     }
+    private function getItemCategory($item)
+    {
+        preg_match("#<categoryId>(.*?)<\/categoryId>#",$item,$matches);
+        $cat=$matches[1];
+        return $cat;
+    }
 
     private function stripHead($txt)
     {
@@ -140,14 +146,14 @@ class GufoRozetka
         return $s;
     }
 
-    private function find1($s,$item)
+    private function find1($s,$item,$secondParam='Рост')
     {
         //все параметры айтема
         $params=$this->getParams($item);
         //отсекаем ненужные параметры
         foreach ($s as $key=>$value)
         {
-            if ((strcmp($key,"Цвет")==0)||(strcmp($key,"Рост")==0))
+            if ((strcmp($key,"Цвет")==0)||(strcmp($key,"$secondParam")==0))
             {
                 $new_s[$key]=$value;
             }
@@ -190,7 +196,7 @@ class GufoRozetka
             //var_dump($newItems);
             $newItemsArr=$this->getItemsArr($newItems);
 
-            $mas['Рост']=$new_s['Рост'];
+            $mas["$secondParam"]=$new_s["$secondParam"];
             foreach ($newItemsArr as $item1)
             {
                 $newItems1.=$this->find1($mas,$item1);
@@ -284,6 +290,13 @@ class GufoRozetka
 
     private function getItemSize($item)
     {
+        preg_match("#<param name=\"Размер\">(.*?)<\/param>#",$item,$matches);
+        $name=$matches[1];
+        return $name;
+    }
+
+    private function getItemHeight($item)
+    {
         preg_match("#<param name=\"Рост\">(.*?)<\/param>#",$item,$matches);
         $name=$matches[1];
         return $name;
@@ -302,15 +315,16 @@ class GufoRozetka
         //к имени добавляем цвет, размер, артикул
         $color=$this->getItemColour($item);
         $size=$this->getItemSize($item);
+        $height=$this->getItemHeight($item);
         //echo "$size<br>";
         $article=$this->getItemArticle($item);
-        if (!empty($size))
+        if (!empty($height))
         {
-            $nameNew=$name." $color рост $size см. ($article)";
+            $nameNew=$name." $color рост $height см. ($article)";
         }
         else
         {
-            $nameNew=$name." $color ($article)";
+            $nameNew=$name." $color размер $size ($article)";
         }
         
         //echo "$name-$nameNew<br>";
@@ -362,6 +376,7 @@ class GufoRozetka
         $XMLnew=preg_replace("#<param name=\"Размер\">(.*?)\/(.*?)<\/param>#","",$XMLnew);
         $XMLnew=preg_replace("#<param name=\"Рост\">(.*?)\/(.*?)<\/param>#","",$XMLnew);
         $XMLnew=preg_replace("# в стиле(.*?)<\/name>#","</name>",$XMLnew);
+        $XMLnew=preg_replace("# реплика(.*?)<\/name>#","</name>",$XMLnew);
         $XMLnew=str_ireplace("<param name=\"Коллекция\"></param>","",$XMLnew);
         $XMLnew=str_ireplace("<param name=\"Сезон\"></param>","",$XMLnew);
         $XMLnew=str_ireplace("Casual","Повседневный (casual)",$XMLnew);
@@ -383,25 +398,55 @@ class GufoRozetka
                 //удалить параметрв возраст, рост где есть "/"
                 //$params=$this->cleanParams($params);
 
-                $list=$this->getParamsList($params);
-                //echo "<pre>".print_r($list)."</pre>";
-                if (is_array($list))
+                //вот тут будем отдельно обрабатывать обувь (у которй есть размер) и остальную одежду (где эту функцию выполняет рост)
+                $category=$this->getItemCategory($item);
+                if ($category==2022||$category==2047||$category==2048||$category==2049||$category==2050||$category==2051||$category==2183||$category==2184||$category==2185)
                 {
-                    $newItems=$this->find1($list,$item);
-                    //var_dump($newItems);
-                    $newItems=$this->addGroupToItems($newItems);
-                    //$XMLBodyNew.=$newItems;    
-                    //break;
+                    $list=$this->getParamsList($params);
+                    //echo "<pre>".print_r($list)."</pre>";
+                    if (is_array($list))
+                    {
+                        $newItems=$this->find1($list,$item,"Размер");
+                        //var_dump($newItems);
+                        $newItems=$this->addGroupToItems($newItems);
+                        //$XMLBodyNew.=$newItems;    
+                        //break;
+                    }
+                    else
+                    {
+                        $newItems=$item;
+                    }
+                    $newItems=preg_replace("#<param name=\"Рост\">(.*?)<\/param>#","",$newItems);
+                    $XMLBodyNew.=$newItems;
                 }
                 else
                 {
-                    $newItems=$item;
+                    $list=$this->getParamsList($params);
+                    //echo "<pre>".print_r($list)."</pre>";
+                    if (is_array($list))
+                    {
+                        $newItems=$this->find1($list,$item);
+                        //var_dump($newItems);
+                        $newItems=$this->addGroupToItems($newItems);
+                        //$XMLBodyNew.=$newItems;    
+                        //break;
+                    }
+                    else
+                    {
+                        $newItems=$item;
+                    }
+                    $newItems=preg_replace("#<param name=\"Размер\">(.*?)<\/param>#","",$newItems);
+                    //вот тут не понятно. 
+                    $newItems=preg_replace("#<picture>(.*?)<\/picture>#","",$newItems);
+                    //$newItems=str_ireplace("&gt;175 см.","175+ см.",$newItems);
+                    $XMLBodyNew.=$newItems;
                 }
                 
-                $XMLBodyNew.=$newItems;
+
+                
             }
             $XMLBodyNew=preg_replace("#<param name=\"Возраст\">(.*?)<\/param>#","",$XMLBodyNew);
-            $XMLBodyNew=preg_replace("#<param name=\"Размер\">(.*?)<\/param>#","",$XMLBodyNew);
+            //$XMLBodyNew=preg_replace("#<param name=\"Размер\">(.*?)<\/param>#","",$XMLBodyNew);
             $XMLBodyNew=preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $XMLBodyNew);
             //на данный мормент у нас есть разбитые оферы
             //надо подчистить параметры
@@ -442,14 +487,14 @@ class GufoRozetka
                         $paramVal=$this->getParamVal($param);
                         $val=explode("/",$paramVal);
                         $val=$val[0];
-                        $val=str_ireplace("Спорт","Спортивный (sport)",$val);
+                        $val=str_ireplace("Спорт","Спортивный",$val);
                         $val=str_ireplace("Школа","Классический",$val);
                         $item=str_ireplace("<param name=\"Стиль\">$paramVal</param>","<param name=\"Стиль\">$val</param>",$item);
                     }
                 }
                 $newItems.=$item;
             }
-            $newItems=str_ireplace("param name=\"Рост\"","param name=\"Рост\" unit=\"см\"",$newItems);
+            $newItems=str_ireplace("param name=\"Рост\"","param name=\"Рост\" unit=\"см.\"",$newItems);
             $newXml=$xmlhead.PHP_EOL."</categories>".PHP_EOL."<offers>".PHP_EOL.$newItems.PHP_EOL."</offers>".PHP_EOL."</shop>".PHP_EOL."</yml_catalog>";
             file_put_contents("gufo_rozetka.xml",$newXml);
         }
@@ -457,7 +502,38 @@ class GufoRozetka
         {
             echo "No items";
         }
-    } 
+    }
+    
+    private function getFootwear($items)
+    {
+        if (is_array($items))
+        {
+            foreach ($items as $item)
+            {
+                $category=$this->getItemCategory($item);
+                if ($category==2022||$category==2047||$category==2048||$category==2049||$category==2050||$category==2051)
+                {
+                    $itemsFootwear[]=$item;
+                }
+                else
+                {
+                    $itemsOther[]=$item;
+                } 
+            }
+        }
+    }
+
+    private function processFootwear($items)
+    {
+        if (is_array($items))
+        {
+            foreach ($items as $item)
+            {
+
+            }
+        }
+    }
+
 }
 
 echo "Start ".date("Y-m-d H:i:s")."<br>";
