@@ -256,13 +256,14 @@ class Gufo
     
     /**
      * find1
-     *
+     * 
      * @param  mixed $s
      * @param  mixed $item
      * @return void
      */
     private function find1($s,$item)
     {
+        //var_dump ($item);
         //все параметры айтема
         $params=$this->getParams($item);
         //отсекаем ненужные параметры
@@ -342,10 +343,13 @@ class Gufo
         //var_dump ($newItems);
         if (!is_null($newItems1))
         {
+            //var_dump($newItems1);
             return $newItems1;
+
         }
         else
         {
+            //var_dump($newItems);
             return $newItems;
         }
         
@@ -557,6 +561,12 @@ class Gufo
         $xml=$this->readFile();
         $XMLnew=$this->delDescription($xml);
         $XMLnew=$this->stripHead($XMLnew);
+        //$XMLnew=preg_replace("#<description>(.*?)<\/description>#s","<description></description>",$xml);
+        $XMLnew=preg_replace("#<param name=\"Возраст\">(.*?)<\/param>#","",$XMLnew);
+        $XMLnew=preg_replace("#<param name=\"Размер\">(.*?)\/(.*?)<\/param>#","",$XMLnew);
+        $XMLnew=preg_replace("#<param name=\"Рост\">(.*?)<\/param>#","",$XMLnew);
+        $XMLnew=preg_replace("# в стиле(.*?)<\/name>#","</name>",$XMLnew);
+        $XMLnew=preg_replace("# реплика(.*?)<\/name>#","</name>",$XMLnew);
         $items=$this->getItemsArr($XMLnew);
         $XMLHead=$this->getXMLhead($xml);
         
@@ -573,9 +583,9 @@ class Gufo
                 $id=$this->getItemId($item);
                 //переделываем параметры цвета
                 $params=$this->findColors($params);
-                echo "id=$id<br>";
+                //echo "id=$id<br>";
                 //var_dump($params);
-                echo "<br>";
+                //echo "<br>";
                 foreach($params as $param)
                 {
                     $paramName=$this->getParamName($param);
@@ -584,21 +594,24 @@ class Gufo
                         $val=$this->getParamVal($param);
                         $season=$this->getSeason($val);
                         $newParam="<param name=\"Сезон\">$season</param>";
+
                     }
                 }
                 //echo "<pre>".print_r($params)."</pre>";
                 
-                if ($catId==2060||$catId==2068||$catId==2069||$catId==2070||$catId==2071||$catId==2072||$catId==2084||$catId==2092||$catId==2115||$catId==2118||$catId==2122||$catId==2124||$catId==2125||$catId==2169||$catId==2172||$catId==2173||$catId==2176||$catId==2180)
-                {
+                //if ($catId==2060||$catId==2068||$catId==2069||$catId==2070||$catId==2071||$catId==2072||$catId==2084||$catId==2092||$catId==2115||$catId==2118||$catId==2122||$catId==2124||$catId==2125||$catId==2169||$catId==2172||$catId==2173||$catId==2176||$catId==2180)
+                //{
+                    //echo "find cat id=$id<br>";
                     $vendor=$this->getItemVendor($item);
                     //echo "$vendor<br>";
-                    if ((strcmp($vendor,"Manan")==0)||(strcmp($vendor,"Jo Jo")==0)||(strcmp($vendor,"Fashion Dog")==0))
-                    {
+                    //if ((strcmp($vendor,"Manan")==0)||(strcmp($vendor,"Jo Jo")==0)||(strcmp($vendor,"Fashion Dog")==0))
+                    //{
+                        //echo "find vendor id=$id<br>";
                         //Надо разбить только те товары, которые имеют сезон Зима
-                        $season=$this->getItemSeason($item);
-                        if (strcmp($season,"Зима")==0))
-                        {
-                            //echo "$id<br>";
+                        //$season=$this->getItemSeason($item);
+                        //if (strcmp($season,"Зима")==0)
+                        //{
+                            //echo "zima $id<br>";
                             $list=$this->getParamsList($params);
                             if (is_array($list))
                             {
@@ -613,11 +626,11 @@ class Gufo
                             {
                                 $newItems=$item;
                             }
-                        }
+                        //}
                         
-                    }
+                    //}
                     
-                }
+                //}
                 //else
                 //{
                 //    $newItems=$item;
@@ -657,10 +670,34 @@ class Gufo
         }
 
         //удаляем пустые строки
+        //$XMLBodyNew=preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $XMLBodyNew);
+        $XMLBodyNew=$this->delRepeats($XMLBodyNew);
         $XMLBodyNew=preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $XMLBodyNew);
         $newXml=$XMLHead.PHP_EOL."</categories>".PHP_EOL."<items>".PHP_EOL.$XMLBodyNew.PHP_EOL."</items>".PHP_EOL."</price>";
         file_put_contents("gufo_new.xml",$newXml);
         //file_put_contents("gufo_new.xml",$XMLnew);
+    }
+
+    private function delRepeats($xmlBody)
+    {
+        $items=$this->getItemsArr($xmlBody);
+        if (is_array($items))
+        {
+            foreach ($items as $item)
+            {
+                $ids[]=$this->getItemId($item);
+            }
+            $uniqIds=array_unique($ids);
+            echo count($ids)."-".count($uniqIds)."<br>";
+            $itemsNew=array_unique($items);
+            echo count($items)."-".count($itemsNew)."<br>";
+            foreach ($itemsNew as $item)
+            {
+                $XMLBodyNew.=$item.PHP_EOL;
+            }
+            return $XMLBodyNew;
+        }
+
     }
 
     public function test2()
