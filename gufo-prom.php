@@ -536,6 +536,36 @@ class Gufo
         }
         return $new_params;
     }
+
+    private function getDescription($item)
+    {
+        preg_match("#<description>(.*?)<\/description>#",$item,$matches);
+        $descr=$matches[1];
+        return $descr;
+    }
+    
+    private function setDescr($item)
+    {
+        $descr=$this->getDescription($item);
+        if (empty($descr))
+        {
+            $name=$this->getItemName($item);
+            $params=$this->getParams($item);
+            if (is_array($params))
+            {
+                foreach($params as $param)
+                {
+                    $parName=$this->getParamName($param);
+                    $paramVal=$this->getParamVal($param);
+                    $desc=$name." ".$parName." ".$paramVal.".";
+                    break;
+                }
+            }
+            $item=str_ireplace("<description></description>","<description>$desc</description>",$item);
+            //echo "$desc<br>";
+        }
+        return $item;
+    }
     
     /**
      * BaseClean
@@ -673,11 +703,51 @@ class Gufo
         //$XMLBodyNew=preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $XMLBodyNew);
         $XMLBodyNew=$this->delRepeats($XMLBodyNew);
         $XMLBodyNew=preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $XMLBodyNew);
+        //вот тут у нас есть полностьтю готовый, разбитый на позиции товарный фид. Теперь можно обрабатыват его параметры
+        //для начала вставим страну и описания
+        $items=$this->getItemsArr($XMLBodyNew);
+        $newItems1=null;
+        if (is_array($items))
+        {
+            foreach ($items as $item)
+            {
+                $item=$this->setDescr($item);
+                $params=$this->getParams($item);
+                $itemHead=$this->getItemHead($item);
+                $country="<country>Китай</country>".PHP_EOL;
+                $itemHead=str_ireplace("</item>","",$itemHead);
+                //echo gettype ($params)."<br>";
+                $new_params=null;
+                foreach ($params as $param)
+                {
+                    $paramName=$this->getParamName($param);
+                    //echo "$paramName<br>";
+                    if (strcmp($paramName,"Сезон")==0)
+                    {
+                        $val=$this->getParamVal($param);
+                        $season=$this->getSeason($val);
+                        $param="<param name=\"Сезон\">$season</param>";
+                    }
+                    $new_params.=$param.PHP_EOL;
+                    
+                    
+                }
+                //echo $new_params."<br>";
+                
+                $new_item=$itemHead.$country.$new_params."</item>";
+                //echo "$new_item<br>";
+                //break;
+                $newItems1.=$new_item;
+            }
+        }
+        $XMLBodyNew=$newItems1;
         $newXml=$XMLHead.PHP_EOL."</categories>".PHP_EOL."<items>".PHP_EOL.$XMLBodyNew.PHP_EOL."</items>".PHP_EOL."</price>";
         file_put_contents("gufo_new.xml",$newXml);
         //file_put_contents("gufo_new.xml",$XMLnew);
     }
 
+    
+    
     private function delRepeats($xmlBody)
     {
         $items=$this->getItemsArr($xmlBody);
@@ -823,6 +893,7 @@ class Gufo
     }
 
 }
+set_time_limit (30000);
 echo "Start ".date("Y-m-d H:i:s")."<br>";
 $test=new Gufo();
 $test->test();
