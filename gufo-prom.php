@@ -737,6 +737,7 @@ class Gufo
                 $new_item=$itemHead.$country.$new_params."</item>";
                 //echo "$new_item<br>";
                 //break;
+                $new_item=$this->addKeyWords($new_item);
                 $newItems1.=$new_item;
             }
         }
@@ -744,6 +745,16 @@ class Gufo
         $newXml=$XMLHead.PHP_EOL."</categories>".PHP_EOL."<items>".PHP_EOL.$XMLBodyNew.PHP_EOL."</items>".PHP_EOL."</price>";
         file_put_contents("gufo_new.xml",$newXml);
         //file_put_contents("gufo_new.xml",$XMLnew);
+    }
+
+    private function addKeyWords($item)
+    {
+        $key1="Детская_одежда";
+        $key2="Модная_детская_одежда";
+        $cat=$this->getCatId($item);
+        $keywords="<keywords>$key1, $key2</keywords>";
+        $item=str_ireplace("</item>",$keywords.PHP_EOL."</item>",$item);
+        return $item;
     }
 
     
