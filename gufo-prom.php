@@ -498,7 +498,7 @@ class Gufo
     private function getType($item)
     {
         $name=$this->getItemName($item);
-        $type=explode(' ',trim($my_value))[0];
+        $type=explode(' ',trim($name))[0];
         return $type;
     }
     
@@ -749,11 +749,16 @@ class Gufo
 
     private function addKeyWords($item)
     {
-        $key1="Детская_одежда";
-        $key2="Модная_детская_одежда";
         $cat=$this->getCatId($item);
-        $keywords="<keywords>$key1, $key2</keywords>";
-        $item=str_ireplace("</item>",$keywords.PHP_EOL."</item>",$item);
+        if ($cat!=2179&&$cat!=2180)
+        {
+            $key1="Детская одежда";
+            $key2="Модная детская одежда";
+            $key3="Стильные ".$this->getType($item);
+            $cat=$this->getCatId($item);
+            $keywords="<keywords>$key1, $key2, $key3</keywords>";
+            $item=str_ireplace("</item>",$keywords.PHP_EOL."</item>",$item);
+        }    
         return $item;
     }
 
@@ -797,6 +802,7 @@ class Gufo
                 //это айтем до параметров. Мы его трогать вообще никогда не будем
                 $itemHead=$this->getItemHead($item);
                 $itemHead=str_ireplace("</item>","",$itemHead);
+                //o,edm
                 if ($catId==2022||$catId==2047||$catId==2048||$catId==2049||$catId==2050||$catId==2051||$catId==2179)
                 {
                     $country="Китай";
@@ -908,5 +914,5 @@ set_time_limit (30000);
 echo "Start ".date("Y-m-d H:i:s")."<br>";
 $test=new Gufo();
 $test->test();
-$test->BaseClean();
+//$test->BaseClean();
 echo "<b>Done</b> ".date("Y-m-d H:i:s");
