@@ -11,14 +11,14 @@ class testXML
      * путь к оригинальному файлу выгрузки
      * @var string - путь к оригинальной ХМЛ
      */
-    private $pathOrig="prom_ua.xml";    
+    private $pathOrig="/home/yc395735/aaaa.in.ua/www/system/storage/download/prom_ua.xml";    
     /**
      * pathMod
      * путь к модифицированной выгрузке
      *
      * @var string - путь к модифицированному ХМЛ
      */
-    private $pathMod="new_test.xml";
+    private $pathMod="/home/yc395735/aaaa.in.ua/www/system/storage/download/prom_ua1.xml";
         
     /**
      * readFile
@@ -2579,14 +2579,21 @@ class testXML
                 }
             }
 
+            //https://aaaa.in.ua/image/catalog/products/inet-magaz/Ira/2020/october/05-10-20/330435-128.jpg
+            //https://aaaa.in.ua/image/catalog/promspecial/
+
             //тут будем сорбирать все позиции
             $items_new.=$new_item;
         }
         //обрамляем айтемсы нужным тегом
+        //$items_new="<items>".$items_new."</items>";
+        $tmp=$this->getItemsArr($items_new);
+        $items_new=$this->addDiscounts($tmp);
         $items_new="<items>".$items_new."</items>";
         //начинаем собирать финальную ХМЛку
         $XMLnew=$xmlHead.PHP_EOL."</categories>".PHP_EOL.$items_new.PHP_EOL."</price>";
         $XMLnew=$this->delSpaces($XMLnew);
+        $XMLnew=str_replace("image/catalog/products","image/catalog/promspecial/products",$XMLnew);
         $XMLnew=str_replace("Sunspice","Sunspice Lingerie",$XMLnew);
         $XMLnew=str_replace("Me-Seduce","Me Seduce",$XMLnew);
         $XMLnew=str_replace("Pink Lipstick","Pink Lipstick Lingerie",$XMLnew);
@@ -2608,6 +2615,100 @@ class testXML
         //var_dump($XMLnew);
         file_put_contents($this->pathMod,$XMLnew);
         
+    }
+
+    private function getVendor($item)
+    {
+        preg_match("#<vendor>(.*?)<\/vendor>#",$item,$matches);
+        $name=$matches[1];
+        return $name;
+    }
+
+    private function getPrice($item)
+    {
+        preg_match("#<price>(.*?)<\/price>#",$item,$matches);
+        $name=$matches[1];
+        return $name;
+    }
+
+    private function getOldPrice ($item)
+    {
+        preg_match("#<oldprice>(.*?)<\/oldprice>#",$item,$matches);
+        $name=$matches[1];
+        return $name;
+    }
+
+    private function setPrice($item, $price, $oldPrice)
+    {
+        $item=preg_replace("#<price>(.*?)<\/price>#s","<price>$price</price>",$item);
+        $item=preg_replace("#<oldprice>(.*?)<\/oldprice>#s","<oldprice>$oldPrice</oldprice>",$item);
+        if (strripos($item,"<oldprice>")===false)
+        {
+            $item=str_ireplace("</price>","</price>".PHP_EOL."<oldprice>$oldPrice</oldprice>",$item);
+        }
+        return $item;
+    }
+
+    private function addDiscounts($items)
+    {
+        if (is_array ($items))
+        {
+            foreach ($items as $item)
+            {
+                $price=null;
+                $oldPrice=null;
+                $vendor=$this->getVendor($item);
+                if ((strcmp($vendor, "We-Vibe")!=0)&&(strcmp($vendor, "Womanizer")!=0)&&(strcmp($vendor, "Svakom")!=0))
+                {
+                    $price=$this->getPrice($item);
+                    $oldPrice=$this->getOldPrice($item);
+                    if ((strcmp($vendor, "Fifty Shades of Grey")==0)||(strcmp($vendor, "Orgie")==0)||(strcmp($vendor, "Bijoux Indiscrets")==0))
+                    {
+                        if (!empty($oldPrice))
+                        {
+                            $price_tmp=round($oldPrice*0.7);
+                            if ($price_tmp>=$price)
+                            {
+                                $price=$price_tmp;
+                            }
+                        }
+                        else
+                        {
+                            $oldPrice=$price;
+                            $price=round($price*0.7);
+                        }
+                    }
+                    else
+                    {
+                        if (!empty($oldPrice))
+                        {
+                            $price_tmp=round($oldPrice*0.8);
+                            if ($price_tmp>=$price)
+                            {
+                                $price=$price_tmp;
+                            }
+                        }
+                        else
+                        {
+                            $oldPrice=$price;
+                            $price=round($price*0.8);
+                        }
+                    }
+                }
+                $name=$this->getItemName($item);
+                //echo "$vendor: $name $price-$oldPrice<br>";
+                if (!empty($price))
+                {
+                    $item=$this->setPrice($item,$price,$oldPrice);
+
+                    //echo $item;
+                }
+                //break;
+                $items_new.=$item.PHP_EOL;
+
+            }
+        }
+        return $items_new;
     }
     
 }
