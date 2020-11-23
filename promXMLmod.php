@@ -11,6 +11,7 @@ class testXML
      * путь к оригинальному файлу выгрузки
      * @var string - путь к оригинальной ХМЛ
      */
+    //private $pathOrig="prom_ua.xml";
     private $pathOrig="/home/yc395735/aaaa.in.ua/www/system/storage/download/prom_ua.xml";    
     /**
      * pathMod
@@ -18,6 +19,7 @@ class testXML
      *
      * @var string - путь к модифицированному ХМЛ
      */
+    //private $pathMod="new_test.xml";
     private $pathMod="/home/yc395735/aaaa.in.ua/www/system/storage/download/prom_ua1.xml";
         
     /**
@@ -2593,7 +2595,12 @@ class testXML
         //начинаем собирать финальную ХМЛку
         $XMLnew=$xmlHead.PHP_EOL."</categories>".PHP_EOL.$items_new.PHP_EOL."</price>";
         $XMLnew=$this->delSpaces($XMLnew);
+        //подменяем путь к фото (на черную пятницу добавили на все фото стикер, и положили их в отделшьную папку)
         $XMLnew=str_replace("image/catalog/products","image/catalog/promspecial/products",$XMLnew);
+
+        $XMLnew=str_replace("<description>","<description><![CDATA[",$XMLnew);
+        $XMLnew=str_replace("</description>","]]></description>",$XMLnew);
+        //меняем имя производителей на верное
         $XMLnew=str_replace("Sunspice","Sunspice Lingerie",$XMLnew);
         $XMLnew=str_replace("Me-Seduce","Me Seduce",$XMLnew);
         $XMLnew=str_replace("Pink Lipstick","Pink Lipstick Lingerie",$XMLnew);
