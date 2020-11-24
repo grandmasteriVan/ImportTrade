@@ -11,16 +11,16 @@ class testXML
      * путь к оригинальному файлу выгрузки
      * @var string - путь к оригинальной ХМЛ
      */
-    //private $pathOrig="prom_ua.xml";
-    private $pathOrig="/home/yc395735/aaaa.in.ua/www/system/storage/download/prom_ua.xml";    
+    private $pathOrig="prom_ua.xml";
+    //private $pathOrig="/home/yc395735/aaaa.in.ua/www/system/storage/download/prom_ua.xml";    
     /**
      * pathMod
      * путь к модифицированной выгрузке
      *
      * @var string - путь к модифицированному ХМЛ
      */
-    //private $pathMod="new_test.xml";
-    private $pathMod="/home/yc395735/aaaa.in.ua/www/system/storage/download/prom_ua1.xml";
+    private $pathMod="new_test.xml";
+    //private $pathMod="/home/yc395735/aaaa.in.ua/www/system/storage/download/prom_ua1.xml";
         
     /**
      * readFile
@@ -250,8 +250,13 @@ class testXML
     
     private function setDescr($item)
     {
-        $descr=$this->getDescription($item);
-        if (empty($descr))
+        $desc=trim($this->getDescription($item));
+        
+        $desc=str_replace('<p><br></p>',"",$desc);
+        $desc=str_replace('&lt;p&gt;&lt;br&gt;&lt;/p&gt;',"",$desc);
+        $desc=strip_tags($desc);
+        //echo $desc."<br>";
+        if (empty($desc))
         {
             $name=$this->getItemName($item);
             $params=$this->getParams($item);
@@ -265,8 +270,13 @@ class testXML
                     break;
                 }
             }
-            $item=str_ireplace("<description></description>","<description>$desc</description>",$item);
+            $item=preg_replace("#<description>(.*?)</description>#s","<description>$desc</description>",$item);
             //echo "$desc<br>";
+        }
+        else
+        {
+            $desc=htmlspecialchars_decode($desc);
+            $item=preg_replace("#<description>(.*?)</description>#s","<description>$desc</description>",$item);
         }
         return $item;
     }
@@ -2600,6 +2610,7 @@ class testXML
 
         $XMLnew=str_replace("<description>","<description><![CDATA[",$XMLnew);
         $XMLnew=str_replace("</description>","]]></description>",$XMLnew);
+        $XMLnew=str_replace("(на удаление) ","",$XMLnew);
         //меняем имя производителей на верное
         $XMLnew=str_replace("Sunspice","Sunspice Lingerie",$XMLnew);
         $XMLnew=str_replace("Me-Seduce","Me Seduce",$XMLnew);
