@@ -2599,6 +2599,7 @@ class testXML
         }
         //обрамляем айтемсы нужным тегом
         //$items_new="<items>".$items_new."</items>";
+        //скидка на черную пятниу
         $tmp=$this->getItemsArr($items_new);
         $items_new=$this->addDiscounts($tmp);
         $items_new="<items>".$items_new."</items>";
