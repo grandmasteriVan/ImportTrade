@@ -495,6 +495,8 @@ class GufoRozetka
                 $newItems.=$item;
             }
             $newItems=str_ireplace("param name=\"Рост\"","param name=\"Рост\" unit=\"см.\"",$newItems);
+            $tmp=$this->getItemsArr($newItems);
+            $newItems=$this->addDisc($tmp);
             $newXml=$xmlhead.PHP_EOL."</categories>".PHP_EOL."<offers>".PHP_EOL.$newItems.PHP_EOL."</offers>".PHP_EOL."</shop>".PHP_EOL."</yml_catalog>";
             file_put_contents("gufo_rozetka.xml",$newXml);
         }
@@ -502,6 +504,75 @@ class GufoRozetka
         {
             echo "No items";
         }
+    }
+
+    private function addDisc($items,$markup=1.1,$discount=1.1)
+    {
+        if (is_array($items))
+        {
+            foreach ($items as $item)
+            {
+                $price=null;
+                $oldPrice=null;
+                $price=$this->getPrice($item);
+                $oldPrice=$this->getOldPrice($item);
+                $price_new=round($price*$markup);
+                $oldPriceNew=round($price_new*$discount, -1);
+                if (!empty($oldPrice))
+                {
+                    if ($oldPrice>$oldPriceNew)
+                    {
+                        $oldPriceNew=$oldPrice;
+                    }
+                }
+                if (!empty($price))
+                {
+                    $item=$this->setPrice($item,$price,$oldPriceNew);
+
+                    //echo $item;
+                }
+                //break;
+                $items_new.=$item.PHP_EOL;
+            }
+            
+        }
+        return $items_new;
+    }
+
+    private function setPrice($item, $price, $oldPrice)
+    {
+        $item=preg_replace("#<price>(.*?)<\/price>#s","<price>$price</price>",$item);
+        $item=preg_replace("#<oldprice>(.*?)<\/oldprice>#s","<oldprice>$oldPrice</oldprice>",$item);
+        if (strripos($item,"<oldprice>")===false)
+        {
+            $item=str_ireplace("</price>","</price>".PHP_EOL."<oldprice>$oldPrice</oldprice>",$item);
+        }
+        return $item;
+    }
+
+    private function getPrice($item)
+    {
+        preg_match("#<price>(.*?)<\/price>#",$item,$matches);
+        $name=$matches[1];
+        return $name;
+    }
+
+    private function getOldPrice ($item)
+    {
+        preg_match("#<oldprice>(.*?)<\/oldprice>#",$item,$matches);
+        $name=$matches[1];
+        return $name;
+    }
+
+    private function addCategories($xmlhead)
+    {
+        /*Спортивные штаны для мальчиков
+        джинсы для мальчиков
+        Ветровки для мальчиков 
+        Сарафаны для девочек
+        шорты для мальчиков 
+        Куртки для мальчиков 
+        Пальто для мальчиков*/
     }
     
     private function getFootwear($items)
