@@ -742,6 +742,9 @@ class Gufo
             }
         }
         $XMLBodyNew=$newItems1;
+        $tmp=$this->getItemsArr($XMLBodyNew);
+        $items1_new=$this->addDiscounts($tmp);
+        $XMLBodyNew=$items1_new;
         $newXml=$XMLHead.PHP_EOL."</categories>".PHP_EOL."<items>".PHP_EOL.$XMLBodyNew.PHP_EOL."</items>".PHP_EOL."</price>";
         file_put_contents("gufo_new.xml",$newXml);
         //file_put_contents("gufo_new.xml",$XMLnew);
@@ -907,6 +910,71 @@ class Gufo
                 }
             }
         }
+    }
+
+    private function addDiscounts($items)
+    {
+        if (is_array ($items))
+        {
+            foreach ($items as $item)
+            {
+                $price=null;
+                $oldPrice=null;
+                $price=$this->getPrice($item);
+                $oldPrice=$this->getOldPrice($item);
+                if (!empty($oldPrice))
+                {
+                    $price_tmp=round($oldPrice*0.95);
+                    if ($price_tmp>=$price)
+                    {
+                        $price=$price_tmp;
+                    }
+                }
+                else
+                {
+                    $oldPrice=$price;
+                    $price=round($price*0.95);
+                }
+
+                
+                //echo "$vendor: $name $price-$oldPrice<br>";
+                if (!empty($price))
+                {
+                    $item=$this->setPrice($item,$price,$oldPrice);
+
+                    //echo $item;
+                }
+                //break;
+                $items_new.=$item.PHP_EOL;
+
+            }
+        }
+        return $items_new;
+    }
+
+    private function getPrice($item)
+    {
+        preg_match("#<price>(.*?)<\/price>#",$item,$matches);
+        $name=$matches[1];
+        return $name;
+    }
+
+    private function getOldPrice ($item)
+    {
+        preg_match("#<oldprice>(.*?)<\/oldprice>#",$item,$matches);
+        $name=$matches[1];
+        return $name;
+    }
+
+    private function setPrice($item, $price, $oldPrice)
+    {
+        $item=preg_replace("#<price>(.*?)<\/price>#s","<price>$price</price>",$item);
+        $item=preg_replace("#<oldprice>(.*?)<\/oldprice>#s","<oldprice>$oldPrice</oldprice>",$item);
+        if (strripos($item,"<oldprice>")===false)
+        {
+            $item=str_ireplace("</price>","</price>".PHP_EOL."<oldprice>$oldPrice</oldprice>",$item);
+        }
+        return $item;
     }
 
 }
