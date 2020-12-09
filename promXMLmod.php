@@ -250,6 +250,8 @@ class testXML
     
     private function setDescr($item)
     {
+        $const="<p>&nbsp;</p><hr />
+        <p>Вас приветствует NO TABOO - самая крутая и большая сеть секс-шопов в Украине!</p><p>Если вы покупаете у нас впервые, то бесплатная доставка по Украине доступна при покупке от 500 грн. Обладателям нашей дисконтной карты доставка бесплатна при любой сумме заказа.</p><p>Мы находимся в городах : Киев, Львов, Одесса, Винница, Черкассы, Запорожье, днепр, Чернигов, Полтава (в этих городах есть курьерская доставка)&nbsp;Доставка курьером ночью осуществляется в Киеве, Львове, Одессе, Днепре.</p><p>Высокий сервис обслуживания и все товары в наличии - это очень важно для современного человека покупающего удовольствие... и это все у нас есть!</p>";
         $desc=trim($this->getDescription($item));
         
         $desc=str_replace('<p><br></p>',"",$desc);
@@ -270,12 +272,15 @@ class testXML
                     break;
                 }
             }
+
+            $desc.=$const;
             $item=preg_replace("#<description>(.*?)</description>#s","<description>$desc</description>",$item);
             //echo "$desc<br>";
         }
         else
         {
             $desc=htmlspecialchars_decode($desc);
+            $desc.=$const;
             $item=preg_replace("#<description>(.*?)</description>#s","<description>$desc</description>",$item);
         }
         return $item;
