@@ -88,18 +88,6 @@ class Gufo
     }
     
     /**
-     * setDescription
-     *
-     * @param  mixed $item
-     * @return void
-     */
-    private function setDescription($item)
-    {
-        $name=$this->getItemName($item);
-        $item=str_ireplace("<description></description>","<description>$name</description>",$item);
-    }
-    
-    /**
      * getItemName
      *
      * @param  mixed $item
@@ -562,6 +550,7 @@ class Gufo
                 }
             }
             $item=str_ireplace("<description></description>","<description>$desc</description>",$item);
+            $item=str_ireplace("<description/>","<description>$desc</description>",$item);
             //echo "$desc<br>";
         }
         return $item;
@@ -742,9 +731,9 @@ class Gufo
             }
         }
         $XMLBodyNew=$newItems1;
-        $tmp=$this->getItemsArr($XMLBodyNew);
-        $items1_new=$this->addDiscounts($tmp);
-        $XMLBodyNew=$items1_new;
+        //$tmp=$this->getItemsArr($XMLBodyNew);
+        //$items1_new=$this->addDiscounts($tmp);
+        //$XMLBodyNew=$items1_new;
         $newXml=$XMLHead.PHP_EOL."</categories>".PHP_EOL."<items>".PHP_EOL.$XMLBodyNew.PHP_EOL."</items>".PHP_EOL."</price>";
         file_put_contents("gufo_new.xml",$newXml);
         //file_put_contents("gufo_new.xml",$XMLnew);
