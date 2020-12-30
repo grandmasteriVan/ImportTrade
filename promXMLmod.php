@@ -11,16 +11,16 @@ class testXML
      * путь к оригинальному файлу выгрузки
      * @var string - путь к оригинальной ХМЛ
      */
-    //private $pathOrig="prom_ua.xml";
-    private $pathOrig="/home/yc395735/aaaa.in.ua/www/system/storage/download/prom_ua.xml";    
+    private $pathOrig="prom_ua.xml";
+    //private $pathOrig="/home/yc395735/aaaa.in.ua/www/system/storage/download/prom_ua.xml";    
     /**
      * pathMod
      * путь к модифицированной выгрузке
      *
      * @var string - путь к модифицированному ХМЛ
      */
-    //private $pathMod="new_test.xml";
-    private $pathMod="/home/yc395735/aaaa.in.ua/www/system/storage/download/prom_ua1.xml";
+    private $pathMod="new_test.xml";
+    //private $pathMod="/home/yc395735/aaaa.in.ua/www/system/storage/download/prom_ua1.xml";
         
     /**
      * readFile
@@ -251,13 +251,15 @@ class testXML
     private function setDescr($item)
     {
         $const="<p>&nbsp;</p><hr />
-        <p>Вас приветствует NO TABOO - самая крутая и большая сеть секс-шопов в Украине!</p><p>Если вы покупаете у нас впервые, то бесплатная доставка по Украине доступна при покупке от 500 грн. Обладателям нашей дисконтной карты доставка бесплатна при любой сумме заказа.</p><p>Мы находимся в городах : Киев, Львов, Одесса, Винница, Черкассы, Запорожье, Днепр, Чернигов, Полтава (в этих городах есть курьерская доставка)&nbsp;Доставка курьером ночью осуществляется в Киеве, Львове, Одессе, Днепре.</p><p>Высокий сервис обслуживания и все товары в наличии - это очень важно для современного человека покупающего удовольствие... и это все у нас есть!</p>";
+        <p>Вас приветствует NO TABOO - самая крутая и большая сеть секс-шопов в Украине!</p><p>Если вы покупаете у нас впервые, то бесплатная доставка по Украине доступна при покупке от 500 грн. Обладателям нашей дисконтной карты доставка бесплатна при любой сумме заказа.</p><p>Мы находимся в городах: Киев, Львов, Одесса, Винница, Черкассы, Запорожье, Днепр, Чернигов, Полтава (в этих городах есть наша курьерская доставка).&nbsp;Доставка курьером ночью осуществляется в Киеве, Львове, Одессе, Днепре.</p><p>Высокий сервис обслуживания и все товары в наличии - это очень важно для современного человека покупающего удовольствие... и это все у нас есть!</p>";
         $desc=trim($this->getDescription($item));
         
-        $desc=str_replace('<p><br></p>',"",$desc);
-        $desc=str_replace('&lt;p&gt;&lt;br&gt;&lt;/p&gt;',"",$desc);
-        $desc=strip_tags($desc);
+        
+        //$desc=str_replace('&lt;p&gt;&lt;br&gt;&lt;/p&gt;',"",$desc);
+        $desc=html_entity_decode($desc);
+        //$desc=strip_tags($desc);
         //echo $desc."<br>";
+        $desc=str_replace("<p><br></p>","",$desc);
         if (empty($desc))
         {
             $name=$this->getItemName($item);
@@ -2607,6 +2609,11 @@ class testXML
         //скидка на черную пятниу
         //$tmp=$this->getItemsArr($items_new);
         //$items_new=$this->addDiscounts($tmp);
+        
+        //скидка на сваком до НГ
+        $tmp=$this->getItemsArr($items_new);
+        $items_new=$this->setDiscSvacom($tmp);
+        //////////////////////////////////////
         $items_new="<items>".$items_new."</items>";
         //начинаем собирать финальную ХМЛку
         $XMLnew=$xmlHead.PHP_EOL."</categories>".PHP_EOL.$items_new.PHP_EOL."</price>";
@@ -2670,7 +2677,61 @@ class testXML
         {
             $item=str_ireplace("</price>","</price>".PHP_EOL."<oldprice>$oldPrice</oldprice>",$item);
         }
+        $item=str_ireplace("<oldprice></oldprice>","",$item);
         return $item;
+    }
+
+    private function setDiscSvacom($items)
+    {
+        if (is_array($items))
+        {
+            foreach ($items as $item)
+            {
+                $id=$this->getItemId($item);
+                if ($id==26212||$id==26211)
+                {
+                    $item=$this->setPrice($item,2900,3650);
+                }
+                if ($id==25000||$id==27685)
+                {
+                    $item=$this->setPrice($item,2150,2700);
+                }
+                if ($id==25007||$id==27686)
+                {
+                    $item=$this->setPrice($item,1750,1950);
+                }
+                if ($id==24949||$id==24948)
+                {
+                    $item=$this->setPrice($item,1750,1995);
+                }
+                if ($id==24908||$id==24907||$id==24900)
+                {
+                    $item=$this->setPrice($item,1119,1550);
+                }
+                if ($id==24902)
+                {
+                    $item=$this->setPrice($item,1550,1850);
+                }
+                if ($id==24898||$id==24903)
+                {
+                    $item=$this->setPrice($item,1550,2150);
+                }
+                if ($id==31069||$id==27681)
+                {
+                    $item=$this->setPrice($item,1850,2450);
+                }
+                if ($id==27676)
+                {
+                    $item=$this->setPrice($item,2300,2680);
+                }
+                if ($id==27678)
+                {
+                    $item=$this->setPrice($item,2170,2495);
+                }
+                $items_new.=$item.PHP_EOL;
+            }
+            return $items_new;
+        }
     }
 
     private function addDiscounts($items)
