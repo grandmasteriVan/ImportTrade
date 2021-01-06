@@ -2609,7 +2609,10 @@ class testXML
         //скидка на черную пятниу
         //$tmp=$this->getItemsArr($items_new);
         //$items_new=$this->addDiscounts($tmp);
-        
+        //делаем фейковую ссылку
+        $tmp=$this->getItemsArr($items_new);
+        $items_new=$this->addFakeDisc($tmp);
+
         //скидка на сваком до НГ
         $tmp=$this->getItemsArr($items_new);
         $items_new=$this->setDiscSvacom($tmp);
@@ -2788,6 +2791,31 @@ class testXML
             }
             return $items_new;
         }
+    }
+
+    private function addFakeDisc($items)
+    {
+        if (is_array($items))
+        {
+            foreach ($items as $item)
+            {
+                $price=$this->getPrice($item);
+                $oldPrice=$this->getOldPrice($item);
+                $vendor=$this->getVendor($item);
+                if (strcmp($vendor, "Zalo")!=0)
+                {
+                    //$newOldPrice=round($price+($price/100*rand(10,20)));
+                    $newOldPrice=round($price*1.15,-1);
+                    if ($oldPrice>$newOldPrice)
+                    {
+                        $newOldPrice=$oldPrice;
+                    }
+                    $item=$this->setPrice($item,$price,$newOldPrice);
+                    $items_new.=$item.PHP_EOL;
+                }
+            }
+        }
+        return $items_new;
     }
 
     private function addDiscounts($items)
