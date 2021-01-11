@@ -80,6 +80,7 @@ class Rozetka
         {
             $item=preg_replace("#<oldprice>(.*?)<\/oldprice>#s","<price_promo>$promo</price_promo>",$item);
         }*/
+        $item=str_ireplace("<oldprice></oldprice>","",$item);
         return $item;
     }
 
@@ -91,7 +92,7 @@ class Rozetka
             {
                 $price=null;
                 $oldPrice=null;
-                $proimo=null;
+                $promo=null;
                 //достаем оригинальную цену товара
                 $price=$this->getPrice($item);
                 //достаем оригинальную старую цену товара (емли она есть - значит у нас была скидка)
@@ -132,6 +133,15 @@ class Rozetka
         return $items_new;
     }
 
+    private function addDiscObsessive($item)
+    {
+        $oldPrice=$this->getOldPrice($item);
+        $price=$this->getPrice($item);
+        $price=round(0.95*$price);
+        $item=$this->setPrice($item,$price,$oldPrice,null);
+        return $item;
+    }
+
     public function test()
     {
         $xml=$this->readFile();
@@ -143,21 +153,22 @@ class Rozetka
         {
             //echo count($items);
             //Отфильтровываем товары по производителю
-            /*
-            foreach ($items as $item)
+            
+            /*foreach ($items as $item)
             {
                 $vendor=$this->getItemVendor($item);
                 //echo "vendor=$vendor<br>";
-                if (strcmp($vendor,"Le Frivole")==0)
+                if (strcmp($vendor,"Obsessive")==0)
                 {
+                    $item=$this->addDiscObsessive($item);
                     $newItems.=$item;
                 }
             }*/
             //добавляем виртуальную скидку
-            $newItems=$this->addDisc($items);
+            //$newItems=$this->addDisc($items);
             $newXml=$xmlhead.PHP_EOL."</categories>".PHP_EOL."<offers>".PHP_EOL.$newItems.PHP_EOL."</offers>".PHP_EOL."</shop>".PHP_EOL."</yml_catalog>";
             $newXml=preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $newXml);
-            file_put_contents("rozetka_disc.xml",$newXml);
+            file_put_contents("rozetka_meseduce.xml",$newXml);
 
         }
         else
