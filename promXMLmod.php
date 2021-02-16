@@ -2630,8 +2630,8 @@ class testXML
         $items_new=$this->addFakeDisc($tmp);
 
         //скидка на сваком до НГ
-        $tmp=$this->getItemsArr($items_new);
-        $items_new=$this->setDiscSvacom($tmp);
+        //$tmp=$this->getItemsArr($items_new);
+        //$items_new=$this->setDiscSvacom($tmp);
         //////////////////////////////////////
         //добавляем в выгрузку сатисфаеры
         //$tmp=$this->getItemsArr($items_new);
