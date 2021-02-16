@@ -2639,6 +2639,7 @@ class testXML
         //var_dump($items_new);
 
 
+
         $items_new="<items>".$items_new."</items>";
         //начинаем собирать финальную ХМЛку
         $XMLnew=$xmlHead.PHP_EOL."</categories>".PHP_EOL.$items_new.PHP_EOL."</price>";
@@ -2712,6 +2713,8 @@ class testXML
         //var_dump($xml);
         $xml=$this->stripHead($xml);
         $itemsArr=$this->getItemsArr($xml);
+        $new_items=$this->setPriceSatisfyer($itemsArr);
+        $itemsArr=$this->getItemsArr($new_items);
         //echo "<pre>";print_r($itemsArr);echo"</pre>";
    
         if (is_array($itemsArr))
@@ -2936,6 +2939,23 @@ class testXML
         if ($id==31523)
         {
             $desc='<p><font><font>&nbsp;</font><font>Satisfyer Men Heat Vibration исполнит ваши желания, когда и где вы хотите!&nbsp;</font><font>Этот вибрационный мастурбатор для современного мужчины оснащен инновационной функцией нагрева и делает ваше времяпрепровождение в одиночестве захватывающе реалистичным.&nbsp;</font><font>Наслаждайтесь уютным теплом этого мягкого мастурбатора и отправляйтесь во взрывные кульминационные оргазмы при температуре до 40 градусов.&nbsp;</font><font>Взаимодействие захватывающей функции нагрева и возбуждающих мощных вибраций обеспечивает возбуждающую стимуляцию головки полового члена.</font></font></p> <p><font><font>Men Heat Vibration сочетает в себе мужской дизайн с простым, интуитивно понятным управлением - с помощью кнопок включения / выключения и +/- вы можете удобно управлять им одной рукой.&nbsp;</font><font>Благодаря широкому отверстию вы можете использовать мастурбатор, даже когда ваш пенис не находится в состоянии эрекции, и мгновенно согреться от 0 до 100.</font></font><br /> <font><font>Погрузитесь в свои фантазии и получите удовольствие от 11 различных уровней вибрации.</font></font></p> <p><font>Men Heat Vibration водонепроницаем (IPX7) и может подарить вам такой теплый экстаз, который вы хотите даже в душе или ванне.&nbsp;</font><font>После использования материал из нежного силикона и АБС-пластика можно легко очистить теплой водой с мылом или дезинфицирующим средством для чистки секс-игрушек.&nbsp;</font><font>Встроенные аккумуляторы можно заряжать с помощью прилагаемого магнитного USB-кабеля для зарядки.&nbsp;</font><font>Сексуальное благополучие для мужчин еще никогда не было таким простым - попробуйте сейчас и получите горячее удовольствие, которого вы заслуживаете!&nbsp;</font></p> <p><strong>Компания Satisfyer предоставляет на свои товары 15 лет гарантии. В случае неисправности игрушка обращайтесь на сайт производителя (<a href="https://us.satisfyer.com/">https://us.satisfyer.com/</a>) и вам обеспечат гарантийное обслуживание.</strong></p> <p>Характеристики:</p> <table> <tbody> <tr> <td><font><font>Материал:</font></font></td> <td><font><font>АБС-пластик, Силикон</font></font></td> </tr> <tr> <td><font><font>Водонепроницаемый:</font></font></td> <td><font><font>да</font></font></td> </tr> <tr> <td><font><font>Цвет:</font></font></td> <td><font><font>Черный</font></font></td> </tr> <tr> <td><font><font>Ширина:</font></font></td> <td><font><font>3,1 &Prime;, 78 мм</font></font></td> </tr> <tr> <td><font><font>Вес:</font></font></td> <td><font><font>6,8 унций, 193 г</font></font></td> </tr> <tr> <td><font><font>Аккумулятор:</font></font></td> <td><font><font>Литий-ионный</font></font></td> </tr> <tr> <td><font><font>Длина:</font></font></td> <td><font><font>3,3 &Prime;, 83 мм</font></font></td> </tr> <tr> <td><font><font>Высота:</font></font></td> <td><font><font>5,5 &Prime;, 140 мм</font></font></td> </tr> <tr> <td><font><font>С вибрацией:</font></font></td> <td><font><font>да</font></font></td> </tr> <tr> <td><font><font>Стимуляция:</font></font></td> <td><font><font>Пенис</font></font></td> </tr> <tr> <td><font><font>Подходит для:</font></font></td> <td><font><font>мужчин</font></font></td> </tr> </tbody> </table> <ul> </ul>';
+        }
+        if ($id==39556)
+        {
+            $desc='<p>Вибромассажер Satisfyer Wand-er Woman приглашает Вас в мир удовольствия всего тела.&nbsp;Его обтекаемая форма и&nbsp;размер специально разработаны для целевого давления, которое снимает напряжение и снимает стресс со всего тела.&nbsp;Wand-er Woman соблазнит Вас и&nbsp;Вашего любовника захватывающей дух стимуляцией ваших самых интимных зон.</p>
+            <p>Мотор&nbsp;расположен в&nbsp;головке массажёра,&nbsp;очень мощный, и сможет довести до&nbsp;оргазма без особой прелюдии,&nbsp;и даже через одежду.&nbsp;</p>
+            <p>Satisfyer Wand-er Woman идеально подходит для игры соло и с партнером. Работает&nbsp;очень тихо, а благодаря водонепроницаемой конструкции его можно использовать даже в ванне.&nbsp;</p>
+            <p>Габариты<em>:</em> длина 34&nbsp;см, ширина 5,7&nbsp;см.</p>
+            <p>Характеристики:</p>
+            <ul>
+            <li>стимуляция клитора и других эрогенных зон;</li>
+            <li>силиконовое покрытие;</li>
+            <li>10 режимов вибрации + 5 уровней интенсивности;</li>
+            <li>мощный мотор для интенсивного воздействия;</li>
+            <li>полная водонепроницаемость;</li>
+            <li>перезаряжаемый.</li>
+            </ul>
+            <p><strong>Компания Satisfyer предоставляет на свои товары 15 лет гарантии. В случае неисправности игрушка обращайтесь на сайт производителя ( <a data-cke-saved-href="https://us.satisfyer.com/" href="https://us.satisfyer.com/" rel="noopener noreferrer" target="_blank">https://us.satisfyer.com/</a>) и вам обеспечат гарантийное обслуживание.</strong></p>';
         }
         $itemHead=preg_replace("#<description>(.*?)<\/description>#s","<description>$desc</description>",$itemHead);
         return $itemHead;
@@ -3742,6 +3762,17 @@ class testXML
             <param name="Ширина" unit="мм">78</param>
             <param name="Вес" unit="г">193</param>';
         }
+        if ($id==39556)
+        {
+            $params='<param name="Тип интимной игрушки" unit="">Вибратор</param>
+            <param name="Пол" unit="">Унисекс</param>
+            <param name="Тип вибратора" unit="">Клиторальный</param>
+            <param name="Функция вибрации" unit="">Да</param>
+            <param name="Тип элементов питания" unit="">Li-Ion</param>
+            <param name="Водостойкость" unit="">Да</param>
+            <param name="Режим работы" unit="">Вибрация</param>
+            <param name="Цвет" unit="">Белый</param>';
+        }
 
         $params='<country>Германия</country>'.PHP_EOL.$params;
         return $params;
@@ -3953,6 +3984,10 @@ class testXML
                 if ($id==33861)
                 {
                     $item=$this->setPrice($item,550,610);
+                }
+                if ($id==39556)
+                {
+                    $item=$this->setPrice($item,1450,1615);
                 }
                 $items_new.=$item.PHP_EOL;
             }
