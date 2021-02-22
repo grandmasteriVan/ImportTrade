@@ -27,7 +27,7 @@ class testXML
      *
      * @var string
      */
-    private $pathSatisfyer="https://sexgood.com.ua/index.php?route=extension/feed/neoseo_product_feed&name=prom_ua";
+    private $pathSatisfyer="https://sexgood.com.ua/system/storage/download/prom_ua.xml";
 
     /**
      * readFile
