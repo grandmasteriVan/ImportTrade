@@ -164,6 +164,58 @@ class Gufo_v2
         return $paramName;
     }
 
+    private function getParams($item)
+    {
+        //var_dump ($item);
+        if (preg_match_all("#<param name(.*?)<\/param>#",$item,$matches))
+        {
+            //var_dump ($matches);
+            $params=$matches[0];
+            /*foreach($matches as $param)
+            {
+                $params[]="<param name".$param[1]."</param>";
+            }*/
+        }
+        else
+        {
+            $id=$this->getItemId($item);
+            echo "No params found for $id<br>";
+        }
+        //var_dump ($params);
+        return $params;
+    }
+
+    /**
+     * getParamName
+     * получаем имя конкретного параметра
+     * @param  mixed $param - параметр
+     * @return void - имя параметра
+     */
+    private function getParamName($param)
+    {
+        if (preg_match("#\"(.+?)\"#",$param,$matches))
+        {
+            $paramName=$matches[1];
+        }
+        return $paramName;
+    }
+
+    /**
+     * getParamVal
+     * Получаем значение параметра
+     * @param  mixed $param - параметр
+     * @return void - значение параметра
+     */
+    private function getParamVal($param)
+    {
+        //var_dump ($param);
+        if (preg_match("#>(.+?)<#",$param,$matches))
+        {
+            $paramVal=$matches[1];
+        }
+        return $paramVal;
+    }
+
     
 
     public function test()
@@ -187,7 +239,36 @@ class Gufo_v2
             foreach ($itemArr as $item)
             {
                 $itemCode=$this->getItemCode($item);
+                $params=$this->getParams($item);
+                if (is_array($params))
+                {
+                    //echo "<pre>";print_r($params);echo "</pre>";
+                    $sex=null;$season=null;$type=null;
+                    foreach ($params as $param)
+                    {
+                        $paramName=$this->getParamName($param);
+                        //echo "$paramName<br>";
+                        if (strcmp($paramName,"Пол")==0)
+                        {
+                            $sex=$this->getParamVal($param);
+                            //echo "$sex<br>";
+                        }
+                        if (strcmp($paramName,"Сезон")==0)
+                        {
+                            $season=$this->getParamVal($param);
+                        }
+                        if (strcmp($paramName,"Тип товара")==0)
+                        {
+                            $type=$this->getParamVal($param);
+                        }
+                    }
+                }
+                else 
+                {
+                    echo "No params<br>";
+                }
                 $offers=null;
+                
                 if (is_array($offersArr))
                 {
                     foreach ($offersArr as $offer)
@@ -209,7 +290,7 @@ class Gufo_v2
                                     {
                                         //echo "Yay<br>";
                                         $characteristics=$this->getCharactList($import);
-                                        $color=null;$material=null;$size=null;$height=null;$age=null;
+                                        $color=null;$material=null;$size=null;$height=null;$age=null;$lining=null;
                                         //echo "<pre>";print_r($characteristics);echo "</pre>";
                                         if (is_array($characteristics))
                                         {
@@ -237,9 +318,13 @@ class Gufo_v2
                                                 {
                                                     $color=$this->getCharVal($char);
                                                 }
+                                                if (strcmp($charName,"Подклад")==0)
+                                                {
+                                                    $color=$this->getCharVal($lining);
+                                                }
                                             }
                                         }
-                                        $offers[]=array('barcode'=>$offerBarCode,'quantity'=>$quantity, 'materila'=>$material,'age'=>$age,'size'=>$size,'height'=>$height,'color'=>$color);
+                                        $offers[]=array('barcode'=>$offerBarCode,'quantity'=>$quantity, 'material'=>$material,'lining'=>$lining,'age'=>$age,'size'=>$size,'height'=>$height,'color'=>$color,'sex'=>$sex,'season'=>$season,'type'=>$type);
                                         //$characteristics=
                                         
                                     }
