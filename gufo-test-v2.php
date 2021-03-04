@@ -140,7 +140,7 @@ class Gufo_v2
         }
         else
         {
-            echo ($import);
+            //echo ($import);
             //$id=$this->getItemId($item);
             //echo "No params found for $id<br>";
         }
@@ -372,13 +372,13 @@ class Gufo_v2
                                                 }
                                                 if (strcmp($charName,"Подклад")==0)
                                                 {
-                                                    $color=$this->getCharVal($lining);
+                                                    $lining=$this->getCharVal($lining);
                                                 }
                                             }
                                         }
                                         $offers[]=array('barcode'=>$offerBarCode,'quantity'=>$quantity,'style'=>$style,'material'=>$material,'lining'=>$lining,'age'=>$age,'size'=>$size,'height'=>$height,'color'=>$color,'sex'=>$sex,'season'=>$season,'type'=>$type);
                                         //$characteristics=
-                                        
+                                        break;
                                     }
                                     
                                 }
@@ -393,16 +393,16 @@ class Gufo_v2
 
                     }
                 }
-                echo "item code=".$itemCode."<br>";
+                //echo "item code=".$itemCode."<br>";
                 //echo "<pre>";print_r($offers);echo "</pre>";
                 $new_offers[]=array ('code'=>$itemCode,'head'=>$itemHead,$offers);
                 //echo "<pre>";print_r($new_offers);echo "</pre>";
                 //break; //по айтемам
                 
-                if (count ($new_offers)>2)
-                {
-                    break;
-                }
+                //if (count ($new_offers)>2)
+                //{
+                //    break;
+                //}
             }
         }
         else
@@ -410,7 +410,7 @@ class Gufo_v2
             echo "No item arr<br>";
         }
         //echo "<pre>";print_r($new_offers);echo "</pre>";
-        //echo count ($new_offers);
+        echo count ($new_offers);
         $new_items=null;
         if (is_array($new_offers))
         {
@@ -418,20 +418,24 @@ class Gufo_v2
             {
                 $n=1;
                 $head=$offer['head'];
-                echo "<pre>";print_r($offer);echo "</pre>";
+                //echo "<pre>";print_r($offer);echo "</pre>";
                 $positions=$offer[0];
                 //break;
                 foreach ($positions as $position)
                 {
                     $params=null;
                     $id=$this->getItemId($head);
-                    echo "<pre>";print_r($position);echo "</pre>";
+                    //echo "<pre>";print_r($position);echo "</pre>";
                     $new_item=$head."<country>Китай</country>";
-                    $new_item=str_ireplace("<item id=\"$id\"","<item id=\"$id-$n\" group_id=\"$id\"",$new_item);
+                    if (count($positions)>1)
+                    {
+                        $new_item=str_ireplace("<item id=\"$id\"","<item id=\"$id-$n\" group_id=\"$id\"",$new_item);
+                    }
+                    
                     $quantity=$position['quantity'];
                     $new_item=preg_replace("#<quantity_in_stock>(.*?)<\/quantity_in_stock>#s","<quantity_in_stock>$quantity</quantity_in_stock>",$new_item);
                     //вот тут у нас есть сформированное заглавие позиции
-                    var_dump($new_item);
+                    //var_dump($new_item);
                     //все параметры имеет только первый айтем группы. Остальные имеют только те параметры, по которым идет различие
                     if ($n==1)
                     {
@@ -444,11 +448,6 @@ class Gufo_v2
                         {
                             $lining=$position['lining'];
                             $params.="<param name=\"Подкладка\">$lining</param>".PHP_EOL;
-                        }
-                        if (!is_null($position['color']))
-                        {
-                            $color=$position['color'];
-                            $params.="<param name=\"Цвет\">$color</param>".PHP_EOL;
                         }
                         if (!is_null($position['sex']))
                         {
@@ -477,18 +476,18 @@ class Gufo_v2
                         $size=$position['size'];
                         $params.="<param name=\"Размер\">$size</param>".PHP_EOL;
                     }
-                    if (!is_null($position['size']))
+                    if (!is_null($position['color']))
                     {
                         $color=$position['color'];
                         $params.="<param name=\"Цвет\">$color</param>".PHP_EOL;
                     }
-                    echo "$params".PHP_EOL;
-                    $new_item.=$params;
+                    //echo "$params".PHP_EOL;
+                    $new_item.=$params."</item>";
                     $new_items[]=$new_item;
                     $n++;
                     //break;
                 }
-                break;
+                //break;
                 //$offer=str_ireplace("<item id=\"$id\"","<item id=\"$id-$n\" group_id=\"$id\"",$item);
             }
         }
@@ -512,12 +511,23 @@ class Gufo_v2
                 }
             }
         }
+
+        if (is_array($newer_items))
+        {
+            foreach ($newer_items as $item)
+            {
+                $xmlOut.=$item;
+                //echo $xmlOut;
+                //break;
+            }
+        }
+        file_put_contents("gufo_v2.xml",$xmlOut);
     }
 
     private function makeDubbleItem($item)
     {
         $name=$this->getItemName($item);
-        $id=getItemId($item);
+        $id=$this->getItemId($item);
         $groupId=$this->getGroupId($item);
         $name_male="$name для мальчиков";
         $name_female="$name для девочек";
@@ -551,6 +561,7 @@ class Gufo_v2
     }
 }
 
+set_time_limit (30000);
 echo "Start ".date("Y-m-d H:i:s")."<br>";
 $test=new Gufo_v2();
 $test->test();
