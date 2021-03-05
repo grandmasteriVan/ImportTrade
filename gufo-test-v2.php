@@ -429,7 +429,17 @@ class Gufo_v2
                     $new_item=$head."<country>Китай</country>";
                     if (count($positions)>1)
                     {
-                        $new_item=str_ireplace("<item id=\"$id\"","<item id=\"$id-$n\" group_id=\"$id\"",$new_item);
+                        //$new_item=str_ireplace("<item id=\"$id\"","<item id=\"$id-$n\" group_id=\"$id\"",$new_item);
+                        if (!is_null($position['size'])&&(strcmp($position['size'],"one size")!=0))
+                        {
+                            $size1=$position['size'];
+                            $new_item=str_ireplace("<item id=\"$id\"","<item id=\"$id-$size1\" group_id=\"$id\"",$new_item);
+                        }
+                        else
+                        {
+                            $new_item=str_ireplace("<item id=\"$id\"","<item id=\"$id-$n\" group_id=\"$id\"",$new_item);
+                        }
+                       
                     }
                     
                     $quantity=$position['quantity'];
@@ -534,12 +544,12 @@ class Gufo_v2
         $item_male=preg_replace("#<name>(.*?)<\/name>#","<name>$name_male</name>",$item);
         $item_male=preg_replace("#<param name=\"Пол\">(.*?)<\/param>#","<param name=\"Пол\">Мальчикам</param>",$item_male);
         $item_male=str_ireplace("<item id=\"$id\"","<item id=\"$id-m\"",$item_male);
-        $item_male=str_ireplace("group_id=\"$groupId\"","<item id=\"$groupId-m\"",$item_male);
+        $item_male=str_ireplace("group_id=\"$groupId\"","group_id=\"$groupId-m\"",$item_male);
 
         $item_female=preg_replace("#<name>(.*?)<\/name>#","<name>$name_female</name>",$item);
         $item_female=preg_replace("#<param name=\"Пол\">(.*?)<\/param>#","<param name=\"Пол\">Девочкам</param>",$item_female);
         $item_female=str_ireplace("<item id=\"$id\"","<item id=\"$id-f\"",$item_female);
-        $item_female=str_ireplace("group_id=\"$groupId\"","<item id=\"$groupId-f\"",$item_female);
+        $item_female=str_ireplace("group_id=\"$groupId\"","group_id=\"$groupId-f\"",$item_female);
 
         return array($item_male,$item_female);
 
