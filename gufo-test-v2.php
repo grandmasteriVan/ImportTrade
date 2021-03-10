@@ -300,6 +300,55 @@ class Gufo_v2
         $xmlhead=substr($txt,0,$pos);
         return $xmlhead;
     }
+
+    private function getCatId($item)
+    {
+        preg_match("#<categoryId>(.*?)<\/categoryId>#",$item,$matches);
+        $id=$matches[1];
+        return $id;
+    }
+
+    private function addKeyWords($item)
+    {
+        $cat=$this->getCatId($item);
+        if ($cat!=2179&&$cat!=2180)
+        {
+            $key1="Детская одежда";
+            $key2="Модная детская одежда";
+            $key3="Стильные ".$this->getType($item);
+            $cat=$this->getCatId($item);
+            $keywords="<keywords>$key1, $key2, $key3</keywords>";
+            $item=str_ireplace("</item>",$keywords.PHP_EOL."</item>",$item);
+        }    
+        return $item;
+    }
+
+    private function getType($item)
+    {
+        $name=$this->getItemName($item);
+        $type=explode(' ',trim($name))[0];
+        return $type;
+    }
+
+    private function setDescr($item)
+    {
+        $name=$this->getItemName($item);
+        $params=$this->getParams($item);
+        if (is_array($params))
+        {
+            foreach($params as $param)
+            {
+                $parName=$this->getParamName($param);
+                $paramVal=$this->getParamVal($param);
+                $desc=$name." ".$parName." ".$paramVal.".";
+                break;
+            }
+            $item=str_ireplace("<description></description>","<description>$desc</description>",$item);
+            $item=str_ireplace("<description/>","<description>$desc</description>",$item);
+            //echo "$desc<br>";
+        }
+        return $item;
+    }
     
     
     /**
@@ -581,12 +630,18 @@ class Gufo_v2
         {
             foreach ($newer_items as $item)
             {
+                $item=$this->addKeyWords($item);
+                $item=$this->setDescr($item);
                 $xmlOut.=$item;
                 //echo $xmlOut;
                 //break;
             }
         }
-        file_put_contents("gufo_v2.xml",$XMLHead."</categories><items>".PHP_EOL.$xmlOut."</items></price>");
+        $newXML1=$XMLHead."</categories><items>".PHP_EOL.$xmlOut."</items></price>";
+        $newXML1=preg_replace("# в стиле(.*?)<\/name>#","</name>",$newXML1);
+        $newXML1=preg_replace("# в стиле(.*?)<\/description>#","</description>",$newXML1);
+        $newXML1=str_ireplace("&","&amp;",$newXML1);
+        file_put_contents("gufo_v2.xml",$newXML1);
     }
 
     private function makeDubbleItem($item)
