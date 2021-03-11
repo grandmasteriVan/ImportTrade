@@ -313,8 +313,8 @@ class Gufo_v2
         $cat=$this->getCatId($item);
         if ($cat!=2179&&$cat!=2180)
         {
-            $key1="Детская одежда";
-            $key2="Модная детская одежда";
+            $key1="Детская одежда, Одежда для подростков, Детские вещи";
+            $key2="Модная детская одежда, Брендовая детская одежда, Стильная одежда";
             $key3="Стильные ".$this->getType($item);
             $cat=$this->getCatId($item);
             $keywords="<keywords>$key1, $key2, $key3</keywords>";
