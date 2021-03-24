@@ -2635,7 +2635,8 @@ class testXML
         //////////////////////////////////////
         //добавляем в выгрузку сатисфаеры
         //$tmp=$this->getItemsArr($items_new);
-        $items_new.=$this->addSatsisfyer();
+        //$items_new.=$this->addSatsisfyer();
+        $items_new=$this->addSatsisfyer().$items_new;
         //var_dump($items_new);
 
 
