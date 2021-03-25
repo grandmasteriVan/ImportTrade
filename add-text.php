@@ -112,27 +112,31 @@ class AddText
 
     private function addLinks($text)
     {
-        if (preg_match_all("#одеж\w+#sui",$text,$matches)>0)
+        $n=0;
+        $txt=$text;
+        if (preg_match_all("#одеж\w+#sui",$text,$matches)>0&&$n<2)
         //if (is_array($matches)/*&&count($matches)>1*/)
         {
-            echo"<pre>";print_r($matches);echo"</pre>";
+            //echo"<pre>";print_r($matches);echo"</pre>";
             foreach ($matches as $match)
             {
-                echo $match[0]."<br>";
-                $txt=str_ireplace ($match[0],"<a href=\"/eroticheskoe-bele/\" target=\"_blank\">$match[0]</a>",$text);
+                echo "<b>".$match[0]."</b><br>";
+                $txt=str_ireplace ($match[0],"<a href=\"/eroticheskoe-bele/\" target=\"_blank\">$match[0]</a>",$txt);
             }
             echo $txt."<br>";
+            $n++;
         }
-        if (preg_match_all("#боди#sui",$text,$matches)>0)
+        if (preg_match_all("#боди#sui",$text,$matches)>0&&$n<2)
         //if (is_array($matches)/*&&count($matches)>1*/)
         {
-            echo"<pre>";print_r($matches);echo"</pre>";
+            //echo"<pre>";print_r($matches);echo"</pre>";
             foreach ($matches as $match)
             {
-                echo $match[0]."<br>";
-                $txt=str_ireplace ($match[0],"<a href=\"/eroticheskoe-bele/\" target=\"_blank\">$match[0]</a>",$text);
+                echo "<b>".$match[0]."</b><br>";
+                $txt=str_ireplace ($match[0],"<a href=\"/eroticheskoe-bele/zhenskoe-eroticheskoe-bele/bodi-eroticheskie/0-0\" target=\"_blank\">$match[0]</a>",$txt);
             }
             echo $txt."<br>";
+            $n++;
         }
 
     }
