@@ -11,10 +11,10 @@ class Noir
             {
                 //$num = count($data);
                 //$
-                $canon=$data[5];
-                $quantity=$data[6];
-                $model=$data[7];
-                $url=$data[9];
+                $canon=$data[4];
+                $quantity=$data[5];
+                $model=$data[0];
+                $url=$data[8];
                 //echo "$url - $ean<br>";
                 //echo "<pre>";print_r($data);echo"</pre>";
                 $newArr[]=array('canon'=>$canon,'quantity'=>$quantity,'model'=>$model,'url'=>$url);
@@ -42,7 +42,7 @@ class Noir
 
     public function test()
     {
-        $products=$this->readFile('products.csv');
+        $products=$this->readFile('products2.csv');
         //находим группы товаров
         foreach ($products as $product)
         {
