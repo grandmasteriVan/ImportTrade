@@ -200,6 +200,44 @@ class AddText
             //echo $txt."<br>";
             $n++;
         }
+
+        if (preg_match_all("#топ\w+#sui",$text,$matches)>0&&$n<2)
+        //if (is_array($matches)/*&&count($matches)>1*/)
+        {
+            //echo"<pre>";print_r($matches);echo"</pre>";
+            foreach ($matches as $match)
+            {
+                echo "<b>".$match[0]."</b><br>";
+                $txt=str_ireplace ($match[0],"<a href=\"/eroticheskoe-bele/zhenskoe-eroticheskoe-bele/byustgaltery-topy/\" target=\"_blank\">$match[0]</a>",$txt);
+            }
+            //echo $txt."<br>";
+            $n++;
+        }
+        
+        if (preg_match_all("#комбинезон\w+#sui",$text,$matches)>0&&$n<2)
+        //if (is_array($matches)/*&&count($matches)>1*/)
+        {
+            //echo"<pre>";print_r($matches);echo"</pre>";
+            foreach ($matches as $match)
+            {
+                echo "<b>".$match[0]."</b><br>";
+                $txt=str_ireplace ($match[0],"<a href=\"/eroticheskoe-bele/zhenskoe-eroticheskoe-bele/kombinezony/\" target=\"_blank\">$match[0]</a>",$txt);
+            }
+            //echo $txt."<br>";
+            $n++;
+        }
+        if (preg_match_all("#ролев\w+#sui",$text,$matches)>0&&$n<2)
+        //if (is_array($matches)/*&&count($matches)>1*/)
+        {
+            //echo"<pre>";print_r($matches);echo"</pre>";
+            foreach ($matches as $match)
+            {
+                echo "<b>".$match[0]."</b><br>";
+                $txt=str_ireplace ($match[0],"<a href=\"/eroticheskoe-bele/kostyumy-dlya-rolevyh-igr/\" target=\"_blank\">$match[0]</a>",$txt);
+            }
+            //echo $txt."<br>";
+            $n++;
+        }
         
         echo $txt."<br>";
     }
