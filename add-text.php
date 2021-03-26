@@ -123,7 +123,7 @@ class AddText
                 echo "<b>".$match[0]."</b><br>";
                 $txt=str_ireplace ($match[0],"<a href=\"/eroticheskoe-bele/\" target=\"_blank\">$match[0]</a>",$txt);
             }
-            echo $txt."<br>";
+            //echo $txt."<br>";
             $n++;
         }
         if (preg_match_all("#боди#sui",$text,$matches)>0&&$n<2)
@@ -133,12 +133,75 @@ class AddText
             foreach ($matches as $match)
             {
                 echo "<b>".$match[0]."</b><br>";
-                $txt=str_ireplace ($match[0],"<a href=\"/eroticheskoe-bele/zhenskoe-eroticheskoe-bele/bodi-eroticheskie/0-0\" target=\"_blank\">$match[0]</a>",$txt);
+                $txt=str_ireplace ($match[0],"<a href=\"/eroticheskoe-bele/zhenskoe-eroticheskoe-bele/bodi-eroticheskie/\" target=\"_blank\">$match[0]</a>",$txt);
             }
-            echo $txt."<br>";
+            //echo $txt."<br>";
             $n++;
         }
-
+       
+        if (preg_match_all("#юбк\w+#sui",$text,$matches)>0&&$n<2)
+        //if (is_array($matches)/*&&count($matches)>1*/)
+        {
+            //echo"<pre>";print_r($matches);echo"</pre>";
+            foreach ($matches as $match)
+            {
+                echo "<b>".$match[0]."</b><br>";
+                $txt=str_ireplace ($match[0],"<a href=\"/eroticheskoe-bele/zhenskoe-eroticheskoe-bele/yubki-bryuki-seksi/\" target=\"_blank\">$match[0]</a>",$txt);
+            }
+            //echo $txt."<br>";
+            $n++;
+        }
+        if (preg_match_all("#плать\w+#sui",$text,$matches)>0&&$n<2)
+        //if (is_array($matches)/*&&count($matches)>1*/)
+        {
+            //echo"<pre>";print_r($matches);echo"</pre>";
+            foreach ($matches as $match)
+            {
+                echo "<b>".$match[0]."</b><br>";
+                $txt=str_ireplace ($match[0],"<a href=\"/eroticheskoe-bele/zhenskoe-eroticheskoe-bele/platya-seksualnye/\" target=\"_blank\">$match[0]</a>",$txt);
+            }
+            //echo $txt."<br>";
+            $n++;
+        }
+        if (preg_match_all("#белье\w+#sui",$text,$matches)>0&&$n<2)
+        //if (is_array($matches)/*&&count($matches)>1*/)
+        {
+            //echo"<pre>";print_r($matches);echo"</pre>";
+            foreach ($matches as $match)
+            {
+                echo "<b>".$match[0]."</b><br>";
+                $txt=str_ireplace ($match[0],"<a href=\"/eroticheskoe-bele/\" target=\"_blank\">$match[0]</a>",$txt);
+            }
+            //echo $txt."<br>";
+            $n++;
+        }
+        if (preg_match_all("#чул\w+#sui",$text,$matches)>0&&$n<2)
+        //if (is_array($matches)/*&&count($matches)>1*/)
+        {
+            //echo"<pre>";print_r($matches);echo"</pre>";
+            foreach ($matches as $match)
+            {
+                echo "<b>".$match[0]."</b><br>";
+                $txt=str_ireplace ($match[0],"<a href=\"/eroticheskoe-bele/zhenskoe-eroticheskoe-bele/chulki-seksi/\" target=\"_blank\">$match[0]</a>",$txt);
+            }
+            //echo $txt."<br>";
+            $n++;
+        }
+        
+        if (preg_match_all("#винил\w+#sui",$text,$matches)>0&&$n<2)
+        //if (is_array($matches)/*&&count($matches)>1*/)
+        {
+            //echo"<pre>";print_r($matches);echo"</pre>";
+            foreach ($matches as $match)
+            {
+                echo "<b>".$match[0]."</b><br>";
+                $txt=str_ireplace ($match[0],"<a href=\"/eroticheskoe-bele/zhenskoe-eroticheskoe-bele/lateks-kozha-vinil/\" target=\"_blank\">$match[0]</a>",$txt);
+            }
+            //echo $txt."<br>";
+            $n++;
+        }
+        
+        echo $txt."<br>";
     }
 
     public function test()
