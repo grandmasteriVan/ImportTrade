@@ -11,16 +11,16 @@ class testXML
      * путь к оригинальному файлу выгрузки
      * @var string - путь к оригинальной ХМЛ
      */
-    //private $pathOrig="prom_ua.xml";
-    private $pathOrig="/home/yc395735/aaaa.in.ua/www/system/storage/download/prom_ua.xml";    
+    private $pathOrig="prom_ua.xml";
+    //private $pathOrig="/home/yc395735/aaaa.in.ua/www/system/storage/download/prom_ua.xml";    
     /**
      * pathMod
      * путь к модифицированной выгрузке
      *
      * @var string - путь к модифицированному ХМЛ
      */
-    //private $pathMod="new_test.xml";
-    private $pathMod="/home/yc395735/aaaa.in.ua/www/system/storage/download/prom_ua1.xml";
+    private $pathMod="new_test.xml";
+    //private $pathMod="/home/yc395735/aaaa.in.ua/www/system/storage/download/prom_ua1.xml";
            
     /**
      * pathSatisfyer
@@ -2958,6 +2958,235 @@ class testXML
             </ul>
             <p><strong>Компания Satisfyer предоставляет на свои товары 15 лет гарантии. В случае неисправности игрушка обращайтесь на сайт производителя ( <a data-cke-saved-href="https://us.satisfyer.com/" href="https://us.satisfyer.com/" rel="noopener noreferrer" target="_blank">https://us.satisfyer.com/</a>) и вам обеспечат гарантийное обслуживание.</strong></p>';
         }
+        if ($id==40875)
+        {
+            $desc='<p>Satisfyer Yummy Sunshine может многое предложить: ребристая структура, сильные вибрации и гладкий стержень из твердого силикона - все это в игривом и веселом дизайне. Изогнутый вибратор непосредственно воздействует на вашу точку G, стимулируя вас своей чувственной ребристой текстурой. Вы можете выбрать из 12 программ вибрации, состоящих из 6 уровней интенсивности и 6 моделей вибрации.</p>
+            <p>Благодаря стержню из высококачественного твердого силикона Yummy Sunshine чрезвычайно гибок и точно адаптируется к контурам вашего тела. Благодаря инновационной технологии Silicone Flex он передает вибрации на точку G с потрясающей интенсивностью, а благодаря практичному кольцу на ручке у вас всегда все под контролем.<br />
+            Водонепроницаемая (IPX7) отделка означает, что он также может присоединиться к вам во влажных помещениях, таких как душ или ванна.</p>     
+            <p><strong>Компания Satisfyer предоставляет на свои товары 15 лет гарантии. В случае неисправности игрушка обращайтесь на сайт производителя (<a href="https://us.satisfyer.com/">https://us.satisfyer.com/</a>) и вам обеспечат гарантийное обслуживание.</strong></p>            
+            <p><b>Характеристики:</b></p>            
+            <table>
+                <tbody>
+                    <tr>
+                        <td><font><font>Материал:</font></font></td>
+                        <td><font><font>АБС-пластик, Силикон</font></font></td>
+                    </tr>
+                    <tr>
+                        <td><font><font>Водонепроницаемый:</font></font></td>
+                        <td><font><font>да</font></font></td>
+                    </tr>
+                    <tr>
+                        <td><font><font>Высота:</font></font></td>
+                        <td><font><font>2,2 &Prime;, 57,27 мм</font></font></td>
+                    </tr>
+                    <tr>
+                        <td><font><font>Аккумулятор:</font></font></td>
+                        <td><font><font>Литий-ионный</font></font></td>
+                    </tr>
+                    <tr>
+                        <td><font><font>Масса:</font></font></td>
+                        <td><font><font>9,6 унций, 272 г</font></font></td>
+                    </tr>
+                    <tr>
+                        <td><font><font>Длина:</font></font></td>
+                        <td><font><font>8,9 &Prime;, 225,69 мм</font></font></td>
+                    </tr>
+                    <tr>
+                        <td><font><font>Ширина:</font></font></td>
+                        <td><font><font>1,7 &Prime;, 41,77 мм</font></font></td>
+                    </tr>
+                    <tr>
+                        <td><font><font>Цвет:</font></font></td>
+                        <td><font><font>Желтый</font></font></td>
+                    </tr>
+                    <tr>
+                        <td><font><font>С вибрацией:</font></font></td>
+                        <td><font><font>да</font></font></td>
+                    </tr>
+                    <tr>
+                        <td><font><font>Стимуляция:</font></font></td>
+                        <td><font><font>Вагинальный</font></font></td>
+                    </tr>
+                    <tr>
+                        <td><font><font>Подходит для:</font></font></td>
+                        <td><font><font>Женщин</font></font></td>
+                    </tr>
+                </tbody>
+            </table>';
+        }
+        if ($id==40876)
+        {
+            $desc='<p>Мистер Кролик легко сочетает вагинальную и клиторальную стимуляцию с дополнительной вибрацией. Его шелковисто-матовая поверхность, гибкий стержень и стимулятор клитора элегантно прилегают к вашим изгибам, обеспечивая максимальную стимуляцию и бесконечное удовольствие.&nbsp;</p>
+            <p>Этот прекрасный вибратор будет&nbsp;стимулировать ваше влагалище и клитор с помощью 2 двигателей. Более крупный, слегка изогнутый стержень обеспечивает искусную стимуляцию точки G, а меньший и более узкий стимулятор идеально подходит для стимуляции клитора. Весь корпус устройства сделан из качественного, мягкого, прочного силикона, который передает мощные и интенсивные вибрации на ваши чувственные зоны!</p>            
+            <p>Даже когда вы будете достигать пика удовольствия, вибратор всегда будет под контролем благодаря практичному кольцу на ручке. Вибратором можно легко управлять с помощью интуитивно понятной панели управления, которая предлагает 12 программ вибрации. Программы состоят из 6 уровней интенсивности и 6 ритмов!&nbsp;</p>            
+            <p>Mr.Rabbit водонепроницаем (IPX7), поэтому он может доставить вам удовольствие в душе или ванне. В случае разрядки вибратора, встроенные аккумуляторы можно зарядить с помощью прилагаемого USB-кабеля для зарядки. Гигиенический силикон можно легко очистить с помощью дезинфицирующего средства для чистки устройств для сексуального здоровья.</p>            
+            <p><strong>Компания Satisfyer предоставляет на свои товары 15 лет гарантии. В случае неисправности игрушка обращайтесь на сайт производителя ( <a href="https://us.satisfyer.com/">https://us.satisfyer.com/</a>) и вам обеспечат гарантийное обслуживание.</strong></p>            
+            <p><b>Характеристики:</b></p>            
+            <table>
+                <tbody>
+                    <tr>
+                        <td><font><font>Материал:</font></font></td>
+                        <td><font><font>АБС-пластик, Силикон</font></font></td>
+                    </tr>
+                    <tr>
+                        <td><font><font>Водонепроницаемый:</font></font></td>
+                        <td><font><font>да</font></font></td>
+                    </tr>
+                    <tr>
+                        <td><font><font>Аккумулятор:</font></font></td>
+                        <td><font><font>Литий-ионный</font></font></td>
+                    </tr>
+                    <tr>
+                        <td><font><font>Цвет:</font></font></td>
+                        <td><font><font>Розовый</font></font></td>
+                    </tr>
+                    <tr>
+                        <td><font><font>Высота:</font></font></td>
+                        <td><font><font>1,6 &Prime;, 41,57 мм</font></font></td>
+                    </tr>
+                    <tr>
+                        <td><font><font>Длина:</font></font></td>
+                        <td><font><font>8,7 &Prime;, 221,48 мм</font></font></td>
+                    </tr>
+                    <tr>
+                        <td><font><font>Масса:</font></font></td>
+                        <td><font><font>272 г</font></font></td>
+                    </tr>
+                    <tr>
+                        <td><font><font>Ширина:</font></font></td>
+                        <td><font><font>3,2 &Prime;, 81,41 мм</font></font></td>
+                    </tr>
+                    <tr>
+                        <td><font><font>С вибрацией:</font></font></td>
+                        <td><font><font>да</font></font></td>
+                    </tr>
+                    <tr>
+                        <td><font><font>Стимуляция:</font></font></td>
+                        <td><font><font>Вагинальная</font></font></td>
+                    </tr>
+                    <tr>
+                        <td><font><font>Подходит для:</font></font></td>
+                        <td><font><font>Женщин</font></font></td>
+                    </tr>
+                </tbody>
+            </table>';
+        }
+        if ($id==40874)
+        {
+            $desc='<p><font>Игривый дизайн Petting Hippo предлагает самую глубокую стимуляцию точки G, о которой вы всегда мечтали.&nbsp;</font><font>Благодаря глубокой вибрации, проходящей через объемный наконечник и гибкий стержень, эта вибрация точки G доводит вас до экстаза.</font></p>            
+            <p><font><font>Satisfyer Petting Hippo стимулирует точку G&nbsp;изогнутым наконечником и в дизайне&nbsp;бегемота.&nbsp;</font><font>Гладкий стержень из высококачественного силикона и технология Silicone Flex делают его особенно гибким, передавая сильные вибрации прямо на горячую точку.&nbsp;</font></font></p>            
+            <p><font><font>Благодаря 12 программам вибрации он удовлетворит все ваши желания!</font></font></p>            
+            <p><font><font>Практичное кольцо на ручке упрощает обращение с ним: так что вы всегда контролируете свой вибратор.</font></font></p>            
+            <p><font><font>Благодаря водонепроницаемости (IPX7) Petting Hippo&nbsp;может присоединиться к вам во влажных помещениях, таких как душ или ванна.&nbsp;</font><font>Для очистки вашего Petting Hippo, помимо очистки поверхности водой с мягким мылом, мы рекомендуем тщательную дезинфекцию с помощью дезинфицирующего спрея Satisfyer.&nbsp;</font><font>Спрей идеально сочетается с мягким материалом и делает силиконовую поверхность особенно эластичной.</font></font></p>            
+            <p><strong>Компания Satisfyer предоставляет на свои товары 15 лет гарантии. В случае неисправности игрушка обращайтесь на сайт производителя ( <a href="https://us.satisfyer.com/">https://us.satisfyer.com/</a>) и вам обеспечат гарантийное обслуживание.</strong></p>            
+            <p><b>Характеристики:</b></p>    
+            <table>
+                <tbody>
+                    <tr>
+                        <td><font><font>Материал:</font></font></td>
+                        <td><font><font>АБС-пластик, Силикон</font></font></td>
+                    </tr>
+                    <tr>
+                        <td><font><font>Водонепроницаемый:</font></font></td>
+                        <td><font><font>да</font></font></td>
+                    </tr>
+                    <tr>
+                        <td><font><font>Ширина:</font></font></td>
+                        <td><font><font>2,3 &Prime;, 58,24 мм</font></font></td>
+                    </tr>
+                    <tr>
+                        <td><font><font>Аккумулятор:</font></font></td>
+                        <td><font><font>Литий-ионный</font></font></td>
+                    </tr>
+                    <tr>
+                        <td><font><font>Высота:</font></font></td>
+                        <td><font><font>1,6 &Prime;, 40,13 мм</font></font></td>
+                    </tr>
+                    <tr>
+                        <td><font><font>Длина:</font></font></td>
+                        <td><font><font>9 &Prime;, 229,19 мм</font></font></td>
+                    </tr>
+                    <tr>
+                        <td><font><font>Масса:</font></font></td>
+                        <td><font><font>&nbsp;285 г</font></font></td>
+                    </tr>
+                    <tr>
+                        <td><font><font>Цвет:</font></font></td>
+                        <td><font><font>Розовый</font></font></td>
+                    </tr>
+                    <tr>
+                        <td><font><font>С вибрацией:</font></font></td>
+                        <td><font><font>да</font></font></td>
+                    </tr>
+                    <tr>
+                        <td><font><font>Стимуляция:</font></font></td>
+                        <td><font><font>Вагинальный</font></font></td>
+                    </tr>
+                    <tr>
+                        <td><font><font>Подходит для:</font></font></td>
+                        <td><font><font>Женщин</font></font></td>
+                    </tr>
+                </tbody>
+            </table>';
+        }
+        if ($id==30622)
+        {
+            $desc='<p><font>Позвольте мягким лепесткам Power Flower танцевать вокруг ваших чувствительных зон, пока вибрации шелковистого силиконового вибратора погружают вас в экстаз.&nbsp;</font><font>Он идеально подходит для&nbsp;пробуждения эрогенных зон!</font></p>
+            <p><font>Power Flower от Satisfyer вдохновит вас своими игривыми &quot;язычками&quot;, напоминающими романтические лепестки, которые возбуждают клитор трепещущими вибрациями. Благодаря выбору из 12 программ вибрации, вибратор особенно мощный, стимулируя вас от мягких до интенсивных вибраций - с выбором между 6 уровнями интенсивности и 6 моделями вибрации.<br />
+            Поскольку Power Flower изготовлен из высококачественного силикона, он особенно универсален в использовании и точно адаптируется к контурам вашего тела. Технология Silicone Flex с особой интенсивностью передает вибрации к вашим чувственным зонам.</font></p>            
+            <p><font>Практичное кольцо на ручке позволяет держать вибратор под контролем, даже когда вы достигаете пиков наслаждения. Благодаря водонепроницаемости (IPX7) Power Flower может доставить вам удовольствие в душе или ванне, а также его легко чистить.&nbsp;</font></p>            
+            <p><strong>Компания Satisfyer предоставляет на свои товары 15 лет гарантии. В случае неисправности игрушка обращайтесь на сайт производителя (<a href="https://us.satisfyer.com/">https://us.satisfyer.com/</a>) и вам обеспечат гарантийное обслуживание.</strong></p>            
+            <p><b>Характеристики:</b></p>
+            
+            <table>
+                <tbody>
+                    <tr>
+                        <td><font><font>Материал:</font></font></td>
+                        <td><font><font>АБС-пластик, Силикон</font></font></td>
+                    </tr>
+                    <tr>
+                        <td><font><font>С вибрацией:</font></font></td>
+                        <td><font><font>да</font></font></td>
+                    </tr>
+                    <tr>
+                        <td><font><font>Ширина:</font></font></td>
+                        <td><font><font>2 &Prime;, 52,51 мм</font></font></td>
+                    </tr>
+                    <tr>
+                        <td><font><font>Длина:</font></font></td>
+                        <td><font><font>7,4 &Prime;, 188,46 мм</font></font></td>
+                    </tr>
+                    <tr>
+                        <td><font><font>Масса:</font></font></td>
+                        <td><font><font>7,3 унции, 206,5 г</font></font></td>
+                    </tr>
+                    <tr>
+                        <td><font><font>Подходит для:</font></font></td>
+                        <td><font><font>Женщин</font></font></td>
+                    </tr>
+                    <tr>
+                        <td><font><font>Стимуляция:</font></font></td>
+                        <td><font><font>Клиторальный, Вагинальный</font></font></td>
+                    </tr>
+                    <tr>
+                        <td><font><font>Цвет:</font></font></td>
+                        <td><font><font>красный</font></font></td>
+                    </tr>
+                    <tr>
+                        <td><font><font>Высота:</font></font></td>
+                        <td><font><font>1,6 &Prime;, 39,71 мм</font></font></td>
+                    </tr>
+                    <tr>
+                        <td><font><font>Аккумулятор:</font></font></td>
+                        <td><font><font>Литий-ионный</font></font></td>
+                    </tr>
+                    <tr>
+                        <td><font><font>Водонепроницаемый:</font></font></td>
+                        <td><font><font>да</font></font></td>
+                    </tr>
+                </tbody>
+            </table>';
+        }
         $itemHead=preg_replace("#<description>(.*?)<\/description>#s","<description>$desc</description>",$itemHead);
         return $itemHead;
         
@@ -3773,6 +4002,74 @@ class testXML
             <param name="Водостойкость" unit="">Да</param>
             <param name="Режим работы" unit="">Вибрация</param>
             <param name="Цвет" unit="">Белый</param>';
+        }
+        if ($id==40875)
+        {
+            $params='<param name="Тип интимной игрушки">Вибратор</param>
+            <param name="Пол">Женский</param>
+            <param name="Тип вибратора">G-точки</param>
+            <param name="Материал">Силикон</param>
+            <param name="Функция вибрации">Да</param>
+            <param name="Регулировка размера">Нет</param>
+            <param name="Количество скоростей вибрации">12</param>
+            <param name="Регулятор уровня вибрации">Ступенчатый</param>
+            <param name="Тип элементов питания">Li-Ion</param>
+            <param name="Водостойкость">Да</param>
+            <param name="Режим работы">Вибрация</param>
+            <param name="Цвет">Желтый</param>
+            <param name="Длина" unit="мм">225</param>
+            <param name="Диаметр" unit="мм">41</param>';
+        }
+        if ($id==40876)
+        {
+            $params='<param name="Тип интимной игрушки">Вибратор</param>
+            <param name="Пол">Женский</param>
+            <param name="Тип вибратора">Комбинированный</param>
+            <param name="Материал">Силикон</param>
+            <param name="Функция вибрации">Да</param>
+            <param name="Регулировка размера">Нет</param>
+            <param name="Количество скоростей вибрации">6</param>
+            <param name="Регулятор уровня вибрации">Ступенчатый</param>
+            <param name="Тип элементов питания">Li-Ion</param>
+            <param name="Водостойкость">Да</param>
+            <param name="Режим работы">Вибрация</param>
+            <param name="Цвет">Розовый</param>
+            <param name="Длина" unit="мм">221</param>
+            <param name="Диаметр" unit="мм">41</param>';
+        }
+        if ($id==40874)
+        {
+            $params='<param name="Тип интимной игрушки">Вибратор</param>
+            <param name="Пол">Женский</param>
+            <param name="Тип вибратора">G-точки</param>
+            <param name="Материал">Силикон</param>
+            <param name="Функция вибрации">Да</param>
+            <param name="Регулировка размера">Нет</param>
+            <param name="Количество скоростей вибрации">12</param>
+            <param name="Регулятор уровня вибрации">Ступенчатый</param>
+            <param name="Тип элементов питания">Li-Ion</param>
+            <param name="Водостойкость">Да</param>
+            <param name="Режим работы">Вибрация</param>
+            <param name="Цвет">Розовый</param>
+            <param name="Длина" unit="мм">229</param>
+            <param name="Диаметр" unit="мм">40</param>';
+        }
+        if ($id==30622)
+        {
+            $params='<param name="Тип интимной игрушки">Вибратор</param>
+            <param name="Пол">Женский</param>
+            <param name="Тип вибратора">Комбинированный</param>
+            <param name="Материал">Силикон</param>
+            <param name="Функция вибрации">Да</param>
+            <param name="Регулировка размера">Нет</param>
+            <param name="Количество скоростей вибрации">6</param>
+            <param name="Регулятор уровня вибрации">Ступенчатый</param>
+            <param name="Тип элементов питания">Li-Ion</param>
+            <param name="Водостойкость">Да</param>
+            <param name="Режим работы">Вибрация</param>
+            <param name="Цвет">Красный</param>
+            <param name="Длина" unit="мм">188</param>
+            <param name="Диаметр" unit="мм">45</param>';
         }
 
         $params='<country>Германия</country>'.PHP_EOL.$params;
