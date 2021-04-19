@@ -11,23 +11,23 @@ class testXML
      * путь к оригинальному файлу выгрузки
      * @var string - путь к оригинальной ХМЛ
      */
-    private $pathOrig="prom_ua.xml";
-    //private $pathOrig="/home/yc395735/aaaa.in.ua/www/system/storage/download/prom_ua.xml";    
+    //private $pathOrig="prom_ua.xml";
+    private $pathOrig="/home/yc395735/aaaa.in.ua/www/system/storage/download/prom_ua.xml";    
     /**
      * pathMod
      * путь к модифицированной выгрузке
      *
      * @var string - путь к модифицированному ХМЛ
      */
-    private $pathMod="new_test.xml";
-    //private $pathMod="/home/yc395735/aaaa.in.ua/www/system/storage/download/prom_ua1.xml";
+    //private $pathMod="new_test.xml";
+    private $pathMod="/home/yc395735/aaaa.in.ua/www/system/storage/download/prom_ua1.xml";
            
     /**
      * pathSatisfyer
      *
      * @var string
      */
-    private $pathSatisfyer="https://sexgood.com.ua/system/storage/download/prom_ua.xml";
+    private $pathSatisfyer="https://sexgood.com.ua/system/storage/download/satisfyer.xml";
 
     /**
      * readFile
