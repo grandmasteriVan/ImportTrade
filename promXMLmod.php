@@ -11,16 +11,16 @@ class testXML
      * путь к оригинальному файлу выгрузки
      * @var string - путь к оригинальной ХМЛ
      */
-    //private $pathOrig="prom_ua.xml";
-    private $pathOrig="/home/yc395735/aaaa.in.ua/www/system/storage/download/prom_ua.xml";    
+    private $pathOrig="prom_ua.xml";
+    //private $pathOrig="/home/yc395735/aaaa.in.ua/www/system/storage/download/prom_ua.xml";    
     /**
      * pathMod
      * путь к модифицированной выгрузке
      *
      * @var string - путь к модифицированному ХМЛ
      */
-    //private $pathMod="new_test.xml";
-    private $pathMod="/home/yc395735/aaaa.in.ua/www/system/storage/download/prom_ua1.xml";
+    private $pathMod="new_test.xml";
+    //private $pathMod="/home/yc395735/aaaa.in.ua/www/system/storage/download/prom_ua1.xml";
            
     /**
      * pathSatisfyer
@@ -4487,6 +4487,69 @@ class testXML
             }
         }
         return $items_new;
+    }
+
+    private function addKeyWords($item)
+    {
+        $catId=$this->getCatId($item);
+        $words=null;
+        //Костюмы для ролевых игр
+        if ($catId==3)
+        {
+            $words[]="костюм для ролевых игр";
+            $words[]="эротические костюмы для ролевых игр";
+            $words[]="наряды для ролевых игр";
+            $words[]="эротические ролевые костюмы";
+            $words[]="белье для ролевых игр";
+            $words[]="эротические костюмы для взрослых";
+            $words[]="игровые костюмы для взрослых";
+            $words[]="костюм для ролевых игр секс шоп";
+            $words[]="эротические костюмы секс шоп";
+        }
+        //Cмарт вибраторы
+        if ($catId==265)
+        {
+            $words[]="умный вибратор";
+            $words[]="смарт вибратор";
+            $words[]="управляемые вибраторы";
+            $words[]="беспроводной умный вибратор";
+            $words[]="секс игрушка вибратор";
+            $words[]="вибраторы для секса";
+            $words[]="блютуз вибратор";
+            $words[]="вибратор секс-шоп";
+        }
+        //Анальные души (клизмы)
+        if ($catId==266)
+        {
+            $words[]="клизмы для анального секса";
+            $words[]="клизма для анала";
+            $words[]="анальный душ";
+            $words[]="клизма";
+            $words[]="клизма перед аналом";
+            $words[]="эротическая клизма";
+            $words[]="клизмы для анального секса";
+            $words[]="секс шоп клизма";
+            $words[]="анальная клизма сексшоп";
+        }
+        //Анальные игрушки
+        if ($catId==1)
+        {
+            $words[]="анальная секс игрушка";
+            $words[]="Анальные игрушки";
+            $words[]="анальная пробка игрушка";
+            $words[]="игрушки для попы";
+            $words[]="игрушки для анального секса";
+            $words[]="игрушка в попу";
+            $words[]="пробка для секса";
+        }
+        //Смазки, лубриканты
+        if ($catId==5)
+        {
+            //лубриканты
+            //смазки лубриканты
+            //интимная смазка
+
+        }
     }
     
 }
