@@ -9,9 +9,9 @@ class Tonga
     private $pathPharm="pharm.xml";
     private $pathUnderwear="underwear.xml";
 
-    private $pathFullCSV="full.xml";
-    private $pathPharmCSV="pharm.xml";
-    private $pathUnderwearCSV="underwear.xml";
+    private $pathFullCSV="full.csv";
+    private $pathPharmCSV="pharm.csv";
+    private $pathUnderwearCSV="underwear.csv";
 
     private function readFile()
     {
@@ -171,7 +171,7 @@ class Tonga
     {
         if (preg_match_all("#<vendorCode>(.+?)<\/vendorCode>#",$item,$matches))
         {
-            $article=$matches[1];
+            $article=$matches[1][0];
         }
         return $article;
     }
@@ -180,7 +180,7 @@ class Tonga
     {
         if (preg_match_all("#<name>(.+?)<\/name>#",$item,$matches))
         {
-            $name=$matches[1];
+            $name=$matches[1][0];
         }
         $name=str_ireplace("<![CDATA[","",$name);
         $name=str_ireplace("]]>","",$name);
@@ -191,18 +191,19 @@ class Tonga
     {
         if (preg_match_all("#<description>(.+?)<\/description>#",$item,$matches))
         {
-            $desc=$matches[1];
+            $desc=$matches[1][0];
         }
-        //$name=str_ireplace("<![CDATA[","",$name);
-        //$name=str_ireplace("]]>","",$name);
+        $desc=str_ireplace("<![CDATA[","",$desc);
+        $desc=str_ireplace("]]>","",$desc);
+        $desc=strip_tags($desc);
         return $desc;
     }
 
-    private function getItemVendor()
+    private function getItemVendor($item)
     {
         if (preg_match_all("#<vendor>(.+?)<\/vendor>#",$item,$matches))
         {
-            $vendor=$matches[1];
+            $vendor=$matches[1][0];
         }
         return $vendor;
     }
@@ -284,10 +285,15 @@ class Tonga
         return $catArr;
     }
 
-    private function getCatString($catId,$catArr)
+    private function catString($catId,$catArr)
     {
-        $catString="";
-        if ($catId!=100000&&$catId!=200000&&$catId!=300000&&$catId!=400000&&$catId!=2059)
+        
+    }
+
+    private function getCatString($catId,$catArr,$catStr)
+    {
+        //$catString="";
+        if ($catId!=1068&&$catId!=1069&&$catId!=1062&&$catId!=1061&&$catId!=1150&&$catId!=1156)
         {
             foreach ($catArr as $cat)
             {
@@ -295,11 +301,14 @@ class Tonga
                 {
                     $name=$cat['name'];
                     //echo "$name;";
-                    $this->getCatString($cat['parrent'],$catArr);
+                    $catStr=$name."/".$catStr;
+                    $catStr=$this->getCatString($cat['parrent'],$catArr,$catStr);
                     //echo "$name/";
-                    $catString.=$name."/";
+                    //$catStr.=$name."/";
                 }
             }
+            //echo $catStr."<br>";
+            
         }
         else 
         {
@@ -309,15 +318,22 @@ class Tonga
                 {
                     $name=$cat['name'];
                     //echo "$name<br>";
-                    $catString=$name."/";
+                    $catStr=$name."/".$catStr;
+                    $catStr=substr($catStr,0,-1);
+                    //echo $catStr."<br>";
+                    //return $catStr;
                 }
             }
+            //echo $catStr."<br>";
             
         }
         //$catString=rtrim($catString,"/");
         //$catString=substr($catString,0,-1);
-        echo $catString;
-        
+        //echo $catString;
+        //return $catString;
+        //echo "<br>";
+        //echo $catStr;
+        return $catStr;
     }
 
     private function getItemCat($item)
@@ -329,11 +345,18 @@ class Tonga
 
     public function makeCSV()
     {
+        file_put_contents($this->pathFullCSV, '');
+        file_put_contents($this->pathPharmCSV, '');
+        file_put_contents($this->pathUnderwearCSV, '');
         $xml=$this->readFile();
         $categories=$this->getCats($xml);
         $xmlHead=$this->getXMLhead($xml);
         $xml_new=$this->stripHead($xml);
         $items=$this->getItemsArr($xml_new);
+        
+        $handle1=fopen($this->pathFullCSV, 'w+');
+        $handle2=fopen($this->pathPharmCSV, 'w+');
+        $handle3=fopen($this->pathUnderwearCSV, 'w+');
         if (is_array($items))
         {
             foreach ($items as $item)
@@ -342,16 +365,36 @@ class Tonga
                 //var_dump($item);
                 
                 $article=$this->getItemArticle($item);
+                //echo "article=".$article." ";
                 $name=$this->getItemName($item);
                 $description=$this->getItemDescription($item);
                 $vendor=$this->getItemVendor($item);
                 $pictures=$this->getItemPictures($item);
                 $price=$this->getItemPrice($item);
                 $catId=$this->getItemCat($item);
-                $this->getCatString($catId,$categories);
-                break;
+                $catStr=$this->getCatString($catId,$categories,"");
+                //echo $catStr."<br>";
+                $arr=array($article,$name,$description,$catStr,$vendor,$pictures,$price);
+                //echo "<pre>";print_r($arr);echo"</pre>";
+                //пишем все 
+                fputcsv($handle1, $arr);
+
+                if ($catId==1069||$catId==1007||$catId==1088||$catId==1089||$catId==1145||$catId==1146||$catId==11147||$catId==1090||$catId==1091||$catId==1092||$catId==1093||$catId==1094||$catId==1095||$catId==1055||$catId==1096||$catId==1097||$catId==1098||$catId==1099||$catId==1100||$catId==1008||$catId==1084||$catId==1085||$catId==1060)
+                {
+                    //аптека
+                    fputcsv($handle2, $arr);   
+                }
+                if ($catId==1062||$catId==1005||$catId==1128||$catId==1129||$catId==1130||$catId==1131||$catId==1132||$catId==1133||$catId==1134||$catId==1136||$catId==1137||$catId==1138||$catId==1139||$catId==1140||$catId==1141||$catId==1142||$catId==1143)
+                {
+                    //белье
+                    fputcsv($handle3, $arr);
+                }
+                //break;
             }
         }
+        fclose($handle1);
+        fclose($handle2);
+        fclose($handle3);
     }
 
 
