@@ -4,9 +4,14 @@ header('Content-Type: text/html; charset=utf-8');
 class Tonga
 {
     private $pathOrig="29.xml";
+
     private $pathFull="full.xml";
     private $pathPharm="pharm.xml";
     private $pathUnderwear="underwear.xml";
+
+    private $pathFullCSV="full.xml";
+    private $pathPharmCSV="pharm.xml";
+    private $pathUnderwearCSV="underwear.xml";
 
     private function readFile()
     {
@@ -162,9 +167,197 @@ class Tonga
         }
     }
 
+    private function getItemArticle($item)
+    {
+        if (preg_match_all("#<vendorCode>(.+?)<\/vendorCode>#",$item,$matches))
+        {
+            $article=$matches[1];
+        }
+        return $article;
+    }
+
+    private function getItemName($item)
+    {
+        if (preg_match_all("#<name>(.+?)<\/name>#",$item,$matches))
+        {
+            $name=$matches[1];
+        }
+        $name=str_ireplace("<![CDATA[","",$name);
+        $name=str_ireplace("]]>","",$name);
+        return $name;
+    }
+
+    private function getItemDescription($item)
+    {
+        if (preg_match_all("#<description>(.+?)<\/description>#",$item,$matches))
+        {
+            $desc=$matches[1];
+        }
+        //$name=str_ireplace("<![CDATA[","",$name);
+        //$name=str_ireplace("]]>","",$name);
+        return $desc;
+    }
+
+    private function getItemVendor()
+    {
+        if (preg_match_all("#<vendor>(.+?)<\/vendor>#",$item,$matches))
+        {
+            $vendor=$matches[1];
+        }
+        return $vendor;
+    }
+
+    private function getItemPrice($item)
+    {
+        if (preg_match_all("#<price>(.+?)<\/price>#",$item,$matches))
+        {
+            $price=$matches[1][0];
+        }
+        //echo "<pre>";print_r($matches);echo "</pre>";
+        //echo "<br>price=".$price."<br>";
+        return $price;
+    }
+
+    private function getItemPictures($item)
+    {
+        /*if (preg_match("<vendor>(.+?)<\/vendor>",$param,$matches))
+        {
+            $vendor=$matches[1];
+        }
+        return $vendor;*/
+        preg_match_all("#<picture>(.+?)<\/picture>#",$item,$matches);
+        //echo "<pre>";print_r($matches);echo "</pre>";
+        $pics=$matches[1];
+        //echo "<pre>";print_r($pics);echo "</pre>";
+        $pictures="";
+        if (is_array($pics))
+        {
+            foreach ($pics as $pic)
+            {
+                $pictures.=",$pic";
+            }
+        }
+        $pictures=ltrim($pictures,",");
+        //echo $pictures;
+        return $pictures;
+    }
+
+    private function getId($cat)
+    {
+        preg_match("#category id=\"(.*?)\"#",$cat,$matches);
+        $name=$matches[1];
+        return $name;
+    }
+
+    private function getParrentId($cat)
+    {
+        preg_match("#parentId=\"(.*?)\"#",$cat,$matches);
+        $name=$matches[1];
+        return $name;
+    }
+
+    private function getName($cat)
+    {
+        preg_match("#\">(.*?)<\/category>#",$cat,$matches);
+        $name=$matches[1];
+        return $name;
+    }
+
+    private function getCats($xml)
+    {
+        preg_match("#<categories>(.*?)</categories>#s",$xml,$matches);
+        $cats=$matches[1];
+        //echo "<pre>";print_r($cats);echo"</pre>";
+        $arr=explode("</category>",$cats);
+        //echo "<pre>";print_r($arr);echo"</pre>";
+        array_pop($arr);
+        foreach($arr as $cat)
+        {
+            $cat=$cat."</category>";
+            $id=$this->getId($cat);
+            $parrent=$this->getParrentId($cat);
+            $name=$this->getName($cat);
+            //echo "$id-$parrent-$name<br>";
+            $catArr[]=array('id'=>$id,'parrent'=>$parrent,'name'=>$name);
+        }
+        //echo "<pre>";print_r($catArr);echo"</pre>";
+        return $catArr;
+    }
+
+    private function getCatString($catId,$catArr)
+    {
+        $catString="";
+        if ($catId!=100000&&$catId!=200000&&$catId!=300000&&$catId!=400000&&$catId!=2059)
+        {
+            foreach ($catArr as $cat)
+            {
+                if ($catId==$cat['id'])
+                {
+                    $name=$cat['name'];
+                    //echo "$name;";
+                    $this->getCatString($cat['parrent'],$catArr);
+                    //echo "$name/";
+                    $catString.=$name."/";
+                }
+            }
+        }
+        else 
+        {
+            foreach ($catArr as $cat)
+            {
+                if ($catId==$cat['id'])
+                {
+                    $name=$cat['name'];
+                    //echo "$name<br>";
+                    $catString=$name."/";
+                }
+            }
+            
+        }
+        //$catString=rtrim($catString,"/");
+        //$catString=substr($catString,0,-1);
+        echo $catString;
+        
+    }
+
+    private function getItemCat($item)
+    {
+        preg_match("#<categoryId>(.*?)</categoryId>#",$item,$matches);
+        $name=$matches[1];
+        return $name;
+    }
+
+    public function makeCSV()
+    {
+        $xml=$this->readFile();
+        $categories=$this->getCats($xml);
+        $xmlHead=$this->getXMLhead($xml);
+        $xml_new=$this->stripHead($xml);
+        $items=$this->getItemsArr($xml_new);
+        if (is_array($items))
+        {
+            foreach ($items as $item)
+            {
+                $item=$this->setPrice($item);
+                //var_dump($item);
+                
+                $article=$this->getItemArticle($item);
+                $name=$this->getItemName($item);
+                $description=$this->getItemDescription($item);
+                $vendor=$this->getItemVendor($item);
+                $pictures=$this->getItemPictures($item);
+                $price=$this->getItemPrice($item);
+                $catId=$this->getItemCat($item);
+                $this->getCatString($catId,$categories);
+                break;
+            }
+        }
+    }
+
 
 }
 echo "<b>Start</b> ".date("Y-m-d H:i:s")."<br>";
 $test=new Tonga();
-$test->parseXML();
+//$test->parseXML();
+$test->makeCSV();
 echo "<b>Done</b> ".date("Y-m-d H:i:s");
