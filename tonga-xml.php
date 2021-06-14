@@ -401,6 +401,6 @@ class Tonga
 }
 echo "<b>Start</b> ".date("Y-m-d H:i:s")."<br>";
 $test=new Tonga();
-//$test->parseXML();
+$test->parseXML();
 $test->makeCSV();
 echo "<b>Done</b> ".date("Y-m-d H:i:s");
