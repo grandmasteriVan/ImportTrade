@@ -13,6 +13,12 @@ class Tonga
     private $pathPharmCSV="pharm.csv";
     private $pathUnderwearCSV="underwear.csv";
 
+    private $pathFullXLS="full.xls";
+    private $pathPharmXLS="pharm.xls";
+    private $pathUnderwearXLS="underwear.xls";
+
+    private $stockCSV="stock.csv";
+
     private function readFile()
     {
         $xml=file_get_contents($this->pathOrig);
@@ -345,6 +351,8 @@ class Tonga
 
     public function makeCSV()
     {
+        
+        
         file_put_contents($this->pathFullCSV, '');
         file_put_contents($this->pathPharmCSV, '');
         file_put_contents($this->pathUnderwearCSV, '');
@@ -375,6 +383,7 @@ class Tonga
                 $catStr=$this->getCatString($catId,$categories,"");
                 //echo $catStr."<br>";
                 $arr=array($article,$name,$description,$catStr,$vendor,$pictures,$price);
+                $arr1[]=$arr;
                 //echo "<pre>";print_r($arr);echo"</pre>";
                 //пишем все 
                 fputcsv($handle1, $arr);
@@ -382,12 +391,14 @@ class Tonga
                 if ($catId==1069||$catId==1007||$catId==1088||$catId==1089||$catId==1145||$catId==1146||$catId==11147||$catId==1090||$catId==1091||$catId==1092||$catId==1093||$catId==1094||$catId==1095||$catId==1055||$catId==1096||$catId==1097||$catId==1098||$catId==1099||$catId==1100||$catId==1008||$catId==1084||$catId==1085||$catId==1060)
                 {
                     //аптека
-                    fputcsv($handle2, $arr);   
+                    fputcsv($handle2, $arr);
+                    $arr2[]=$arr;   
                 }
                 if ($catId==1062||$catId==1005||$catId==1128||$catId==1129||$catId==1130||$catId==1131||$catId==1132||$catId==1133||$catId==1134||$catId==1136||$catId==1137||$catId==1138||$catId==1139||$catId==1140||$catId==1141||$catId==1142||$catId==1143)
                 {
                     //белье
                     fputcsv($handle3, $arr);
+                    $arr3[]=$arr;
                 }
                 //break;
             }
@@ -395,7 +406,88 @@ class Tonga
         fclose($handle1);
         fclose($handle2);
         fclose($handle3);
+
+        require_once 'PHPExcel.php';
+        require_once 'PHPExcel/Writer/Excel5.php';
+        
+        $xls = new PHPExcel();
+        $xls->setActiveSheetIndex(0);
+        $sheet = $xls->getActiveSheet();
+
+        $line = 0;
+        foreach ($arr1 as $line => $item) 
+        {
+            $line++;
+            foreach ($item as $col => $row) 
+            {
+                $sheet->setCellValueByColumnAndRow($col, $line, $row);
+            }
+        }
+
+        $objWriter = new PHPExcel_Writer_Excel5($xls);
+        $objWriter->save($this->pathFullXLS);
+        
+        ///////////////////////////
+        $xls = new PHPExcel();
+        $xls->setActiveSheetIndex(0);
+        $sheet = $xls->getActiveSheet();
+
+        $line = 0;
+        foreach ($arr2 as $line => $item) 
+        {
+            $line++;
+            foreach ($item as $col => $row) 
+            {
+                $sheet->setCellValueByColumnAndRow($col, $line, $row);
+            }
+        }
+
+        $objWriter = new PHPExcel_Writer_Excel5($xls);
+        $objWriter->save($this->pathPharmXLS);
+
+        ///////////////////////////
+        $xls = new PHPExcel();
+        $xls->setActiveSheetIndex(0);
+        $sheet = $xls->getActiveSheet();
+
+        $line = 0;
+        foreach ($arr3 as $line => $item) 
+        {
+            $line++;
+            foreach ($item as $col => $row) 
+            {
+                $sheet->setCellValueByColumnAndRow($col, $line, $row);
+            }
+        }
+
+        $objWriter = new PHPExcel_Writer_Excel5($xls);
+        $objWriter->save($this->pathUnderwearXLS);
     }
+
+    /*private function getItemQuantity($item)
+    {
+        
+    }*/
+
+    /*public function makeStock()
+    {
+        file_put_contents($this->stockCSV, '');
+        $xml=$this->readFile();
+        $xml_new=$this->stripHead($xml);
+        $items=$this->getItemsArr($xml_new);
+        $handle=fopen($this->stockCSV, 'w+');
+
+        if (is_array($items))
+        {
+            foreach ($items as $item)
+            {
+                $article=$this->getItemArticle($item);
+                $name=$this->getItemName($item);
+                $quantity=$this->getItemQuantity($item);
+            }
+        }
+
+    }*/
 
 
 }
