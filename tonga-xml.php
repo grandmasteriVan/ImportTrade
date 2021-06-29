@@ -17,7 +17,8 @@ class Tonga
     private $pathPharmXLS="pharm.xls";
     private $pathUnderwearXLS="underwear.xls";
 
-    private $stockCSV="stock.csv";
+    private $stockCSV="ostatki.csv";
+    private $stock = "stock.xls";
 
     private function readFile()
     {
@@ -407,6 +408,7 @@ class Tonga
         fclose($handle2);
         fclose($handle3);
 
+        //пишим в ексельку
         require_once 'PHPExcel.php';
         require_once 'PHPExcel/Writer/Excel5.php';
         
@@ -469,25 +471,89 @@ class Tonga
         
     }*/
 
-    /*public function makeStock()
+    public function makeStock()
     {
-        file_put_contents($this->stockCSV, '');
+        //читаем файл с остатками (в переменной stocks будут лежать артикул и остаток)
+        if (($handle = fopen($this->stockCSV, "r")) !== FALSE)    
+        {
+            while (($data = fgetcsv($handle, 1000, "\t")) !== FALSE)
+            {
+                //echo "<pre>";print_r($data);echo "</pre>";
+                if ($data[1]>5)
+                {
+                    $data[1]=">5";
+                }
+                $stocks[]=$data;
+            }
+        }
+        fclose($handle);
+        //echo "<pre>";print_r($stocks);echo "</pre>";
+
+        //читаем xml
         $xml=$this->readFile();
         $xml_new=$this->stripHead($xml);
         $items=$this->getItemsArr($xml_new);
-        $handle=fopen($this->stockCSV, 'w+');
-
         if (is_array($items))
         {
             foreach ($items as $item)
             {
-                $article=$this->getItemArticle($item);
+                $item=$this->setPrice($item);
+
                 $name=$this->getItemName($item);
-                $quantity=$this->getItemQuantity($item);
+                $price=$this->getItemPrice($item);
+                $id=$this->getItemArticle($item);
+                $xmlArr[]=array($id,$name,$price);
+                
             }
         }
+        //echo "<pre>";print_r($xmlArr);echo "</pre>";
+        $tmp=null;
+        if (is_array($xmlArr)&&is_array($stocks))
+        {
+            foreach ($xmlArr as $arr)
+            {
+                
+                $id=$arr[0];
+                $name=$arr[1];
+                $price=$arr[2];
+                foreach ($stocks as $stock)
+                {
+                    if (strcmp($id,$stock[0])==0)
+                    {
+                        $st=$stock[1];
+                        $tmp=array($id,$st,$price,$name);
+                        $arr1[]=$tmp;
+                        //echo "<pre>";print_r($tmp);echo "</pre>";
+                        break;
+                    }
+                }
+            }
+            require_once 'PHPExcel.php';
+            require_once 'PHPExcel/Writer/Excel5.php';
+            
+            $xls = new PHPExcel();
+            $xls->setActiveSheetIndex(0);
+            $sheet = $xls->getActiveSheet();
 
-    }*/
+            $line = 0;
+            foreach ($arr1 as $line => $item) 
+            {
+                $line++;
+                foreach ($item as $col => $row) 
+                {
+                    $sheet->setCellValueByColumnAndRow($col, $line, $row);
+                }
+            }
+
+            $objWriter = new PHPExcel_Writer_Excel5($xls);
+            $objWriter->save($this->stock);
+        }
+
+        
+
+    }
+
+
 
 
 }
@@ -495,4 +561,5 @@ echo "<b>Start</b> ".date("Y-m-d H:i:s")."<br>";
 $test=new Tonga();
 $test->parseXML();
 $test->makeCSV();
+$test->makeStock();
 echo "<b>Done</b> ".date("Y-m-d H:i:s");
