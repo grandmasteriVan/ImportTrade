@@ -577,7 +577,7 @@ class Tonga
         
         file_put_contents($this->pathAmurchik, '');
         $arr=$this->readExelFile($this->pathOrigAmurchik);
-        //echo "<pre>";print_r($arr);echo "</pre>";
+        echo "<pre>";print_r($arr);echo "</pre>";
 
         if (($handle = fopen($this->stockCSV, "r")) !== FALSE)    
         {
@@ -595,11 +595,16 @@ class Tonga
 
         if (is_array($arr)&&is_array($stocks))
         {
+            echo "yay!";
             $handle=fopen($this->pathAmurchik, 'w+');
             foreach ($arr as $ar)
             {
                 $id=$ar[0];
                 $price=$ar[10];
+                if ($price==null)
+                {
+                    $price=0;
+                }
                 $name=$ar[5];
                 foreach ($stocks as $stock)
                 {
@@ -627,8 +632,8 @@ class Tonga
 echo "<b>Start</b> ".date("Y-m-d H:i:s")."<br>";
 set_time_limit (30000);
 $test=new Tonga();
-//$test->parseXML();
-//$test->makeCSV();
-//$test->makeStock();
+$test->parseXML();
+$test->makeCSV();
+$test->makeStock();
 $test->makeAmurchik();
 echo "<b>Done</b> ".date("Y-m-d H:i:s");
