@@ -21,7 +21,7 @@ class Tonga
     private $stock = "stock.xls";
 
     //амурчик
-    private $pathOrigAmurchik="36.xlsx";
+    private $pathOrigAmurchik="https://www.tonga.in.ua/content/export/36.xlsx";
     private $pathAmurchik="Amurchik.csv";
 
     private function readFile()
@@ -570,6 +570,11 @@ class Tonga
     
     public function makeAmurchik()
     {
+        $url = $this->pathOrigAmurchik;
+        $path = '36.xlsx';
+        file_put_contents($path, file_get_contents($url));
+        $this->pathOrigAmurchik=$path;
+        
         file_put_contents($this->pathAmurchik, '');
         $arr=$this->readExelFile($this->pathOrigAmurchik);
         //echo "<pre>";print_r($arr);echo "</pre>";
@@ -622,8 +627,8 @@ class Tonga
 echo "<b>Start</b> ".date("Y-m-d H:i:s")."<br>";
 set_time_limit (30000);
 $test=new Tonga();
-$test->parseXML();
-$test->makeCSV();
-$test->makeStock();
+//$test->parseXML();
+//$test->makeCSV();
+//$test->makeStock();
 $test->makeAmurchik();
 echo "<b>Done</b> ".date("Y-m-d H:i:s");
