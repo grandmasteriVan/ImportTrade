@@ -16,9 +16,13 @@ class Tonga
     private $pathFullXLS="full.xls";
     private $pathPharmXLS="pharm.xls";
     private $pathUnderwearXLS="underwear.xls";
-
+    //остатки
     private $stockCSV="ostatki.csv";
     private $stock = "stock.xls";
+
+    //амурчик
+    private $pathOrigAmurchik="36.xlsx";
+    private $pathAmurchik="Amurchik.csv";
 
     private function readFile()
     {
@@ -553,13 +557,73 @@ class Tonga
 
     }
 
+    private function readExelFile($filepath)
+    {
+        require_once 'PHPExcel.php'; //подключаем наш фреймворк
+        $ar=array(); //инициализируем массив
+        $inputFileType = PHPExcel_IOFactory::identify($filepath);  // узнаем тип файла, excel может хранить файлы в разных форматах, xls, xlsx и другие
+        $objReader = PHPExcel_IOFactory::createReader($inputFileType); // создаем объект для чтения файла
+        $objPHPExcel = $objReader->load($filepath); // загружаем данные файла в объект
+        $ar = $objPHPExcel->getActiveSheet()->toArray(); // выгружаем данные из объекта в массив
+        return $ar; //возвращаем массив
+    }
+    
+    public function makeAmurchik()
+    {
+        file_put_contents($this->pathAmurchik, '');
+        $arr=$this->readExelFile($this->pathOrigAmurchik);
+        //echo "<pre>";print_r($arr);echo "</pre>";
+
+        if (($handle = fopen($this->stockCSV, "r")) !== FALSE)    
+        {
+            while (($data = fgetcsv($handle, 1000, "\t")) !== FALSE)
+            {
+                //echo "<pre>";print_r($data);echo "</pre>";
+                if ($data[1]>5)
+                {
+                    $data[1]=">5";
+                }
+                $stocks[]=$data;
+            }
+        }
+        fclose($handle);
+
+        if (is_array($arr)&&is_array($stocks))
+        {
+            $handle=fopen($this->pathAmurchik, 'w+');
+            foreach ($arr as $ar)
+            {
+                $id=$ar[0];
+                $price=$ar[10];
+                $name=$ar[5];
+                foreach ($stocks as $stock)
+                {
+                    if (strcmp($id,$stock[0])==0)
+                    {
+                        $st=$stock[1];
+                        $tmp=array($id,$st,$price,$name);
+                        $arr1[]=$tmp;
+                        //echo "<pre>";print_r($tmp);echo "</pre>";
+                        fputcsv($handle, $tmp);
+                        break;
+                    }
+                }
+            }
+            fclose($handle);
+        }
+    }
+
+
+
 
 
 
 }
 echo "<b>Start</b> ".date("Y-m-d H:i:s")."<br>";
+set_time_limit (30000);
 $test=new Tonga();
 $test->parseXML();
 $test->makeCSV();
 $test->makeStock();
+$test->makeAmurchik();
 echo "<b>Done</b> ".date("Y-m-d H:i:s");
