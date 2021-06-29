@@ -577,7 +577,7 @@ class Tonga
         
         file_put_contents($this->pathAmurchik, '');
         $arr=$this->readExelFile($this->pathOrigAmurchik);
-        echo "<pre>";print_r($arr);echo "</pre>";
+        //echo "<pre>";print_r($arr);echo "</pre>";
 
         if (($handle = fopen($this->stockCSV, "r")) !== FALSE)    
         {
