@@ -267,7 +267,7 @@ class testXML
     private function setDescr($item)
     {
         $const="<p>&nbsp;</p><hr />
-        <p>Вас приветствует NO TABOO - самая крутая и большая сеть секс-шопов в Украине!</p><p>Мы находимся в городах: Киев, Львов, Одесса, Винница, Черкассы, Запорожье, Днепр, Чернигов, Полтава (в этих городах есть наша курьерская доставка).&nbsp;Доставка курьером ночью осуществляется в Киеве, Львове, Одессе, Днепре.</p><p>Высокий сервис обслуживания и все товары в наличии - это очень важно для современного человека покупающего удовольствие... и это все у нас есть!</p>";
+        <p>Вас приветствует NO TABOO - самая крутая и большая сеть секс-шопов в Украине!</p><p>Мы находимся в городах: Киев, Львов, Одесса, Винница, Черкассы, Запорожье, Днепр, Чернигов, Полтава, Харьков (в этих городах есть наша курьерская доставка).&nbsp;Доставка курьером ночью осуществляется в Киеве, Львове, Одессе, Днепре.</p><p>Высокий сервис обслуживания и все товары в наличии - это очень важно для современного человека покупающего удовольствие... и это все у нас есть!</p>";
         $desc=trim($this->getDescription($item));
         
         
@@ -2708,7 +2708,7 @@ class testXML
         return $item;
     }
 
-    public function addSatsisfyer()
+    /*public function addSatsisfyer()
     {
         $xml=$this->readSatisfyerFile();
         //var_dump($xml);
@@ -2736,9 +2736,9 @@ class testXML
             }
             return $items_new;
         }
-    }
+    }*/
 
-    private function setSatsisfyerDesc($itemHead,$id)
+    /*private function setSatsisfyerDesc($itemHead,$id)
     {
         if ($id==33861)
         {
@@ -3190,9 +3190,9 @@ class testXML
         $itemHead=preg_replace("#<description>(.*?)<\/description>#s","<description>$desc</description>",$itemHead);
         return $itemHead;
         
-    }
+    }*/
 
-    private function setSatsisfyerCategory($item,$id)
+    /*private function setSatsisfyerCategory($item,$id)
     {
         if ($id==39543||$id==39543||$id==39542||$id==39548||$id==39537||$id==39539||$id==39538)
         {
@@ -3203,9 +3203,9 @@ class testXML
             $item=preg_replace("#<categoryId>(.*?)<\/categoryId>#s","<categoryId>166</categoryId>",$item);
         }
         return $item;
-    }
+    }*/
 
-    private function getSatisfyerParams($id)
+    /*private function getSatisfyerParams($id)
     {
         if ($id==33861)
         {
@@ -4074,9 +4074,9 @@ class testXML
 
         $params='<country>Германия</country>'.PHP_EOL.$params;
         return $params;
-    }
+    }*/
 
-    private function setPriceSatisfyer($items)
+    /*private function setPriceSatisfyer($items)
     {
         if (is_array($items))
         {
@@ -4291,7 +4291,7 @@ class testXML
             }
             return $items_new;
         }
-    }
+    }*/
     
     private function setDiscSvacom($items)
     {
